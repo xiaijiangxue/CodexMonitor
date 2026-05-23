@@ -21,6 +21,7 @@ import {
   SettingsToggleRow,
   SettingsToggleSwitch,
 } from "@/features/design-system/components/settings/SettingsPrimitives";
+import { LanguageSetting } from "../LanguageSetting";
 
 type SettingsDisplaySectionProps = {
   appSettings: AppSettings;
@@ -188,6 +189,7 @@ export function SettingsDisplaySection({
           <option value="dim">Dim</option>
         </select>
       </div>
+      <LanguageSetting />
       <SettingsToggleRow
         title="Show remaining Codex limits"
         subtitle="Display what is left instead of what is used."
