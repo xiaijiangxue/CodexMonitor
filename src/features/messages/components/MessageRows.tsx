@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { createPortal } from "react-dom";
 import Brain from "lucide-react/dist/esm/icons/brain";
 import Check from "lucide-react/dist/esm/icons/check";
@@ -108,6 +109,7 @@ const MessageImageGrid = memo(function MessageImageGrid({
   onOpen: (index: number) => void;
   hasText: boolean;
 }) {
+  const { t } = useTranslation("messages");
   return (
     <div
       className={`message-image-grid${hasText ? " message-image-grid--with-text" : ""}`}
@@ -119,7 +121,7 @@ const MessageImageGrid = memo(function MessageImageGrid({
           type="button"
           className="message-image-thumb"
           onClick={() => onOpen(index)}
-          aria-label={`Open image ${index + 1}`}
+          aria-label={t("openImage", { n: index + 1 })}
         >
           <img src={image.src} alt={image.label} loading="lazy" />
         </button>

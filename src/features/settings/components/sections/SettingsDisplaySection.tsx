@@ -22,6 +22,7 @@ import {
   SettingsToggleSwitch,
 } from "@/features/design-system/components/settings/SettingsPrimitives";
 import { LanguageSetting } from "../LanguageSetting";
+import { useTranslation } from "react-i18next";
 
 type SettingsDisplaySectionProps = {
   appSettings: AppSettings;
@@ -159,18 +160,20 @@ export function SettingsDisplaySection({
     });
   };
 
+  const { t } = useTranslation("settings");
+
   return (
     <SettingsSection
-      title="Display & Sound"
-      subtitle="Tune visuals and audio alerts to your preferences."
+      title={t("displayTitle")}
+      subtitle={t("displaySubtitle")}
     >
-      <div className="settings-subsection-title">Display</div>
+      <div className="settings-subsection-title">{t("displaySectionTitle")}</div>
       <div className="settings-subsection-subtitle">
-        Adjust how the window renders backgrounds and effects.
+        {t("displaySectionSubtitle")}
       </div>
       <div className="settings-field">
         <label className="settings-field-label" htmlFor="theme-select">
-          Theme
+          {t("displayTheme")}
         </label>
         <select
           id="theme-select"
@@ -183,16 +186,16 @@ export function SettingsDisplaySection({
             })
           }
         >
-          <option value="system">System</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-          <option value="dim">Dim</option>
+          <option value="system">{t("displayThemeSystem")}</option>
+          <option value="light">{t("displayThemeLight")}</option>
+          <option value="dark">{t("displayThemeDark")}</option>
+          <option value="dim">{t("displayThemeDim")}</option>
         </select>
       </div>
       <LanguageSetting />
       <SettingsToggleRow
-        title="Show remaining Codex limits"
-        subtitle="Display what is left instead of what is used."
+        title={t("displayShowRemaining")}
+        subtitle={t("displayShowRemainingSub")}
       >
         <SettingsToggleSwitch
           pressed={appSettings.usageShowRemaining}
@@ -205,8 +208,8 @@ export function SettingsDisplaySection({
         />
       </SettingsToggleRow>
       <SettingsToggleRow
-        title="Show file path in messages"
-        subtitle="Display the parent path next to file links in messages."
+        title={t("displayShowFilePath")}
+        subtitle={t("displayShowFilePathSub")}
       >
         <SettingsToggleSwitch
           pressed={appSettings.showMessageFilePath}
@@ -219,8 +222,8 @@ export function SettingsDisplaySection({
         />
       </SettingsToggleRow>
       <SettingsToggleRow
-        title="Split chat and diff center panes"
-        subtitle="Show chat and diff side by side instead of swapping between them."
+        title={t("displaySplitChatDiff")}
+        subtitle={t("displaySplitChatDiffSub")}
       >
         <SettingsToggleSwitch
           pressed={appSettings.splitChatDiffView}
@@ -233,8 +236,8 @@ export function SettingsDisplaySection({
         />
       </SettingsToggleRow>
       <SettingsToggleRow
-        title="Auto-generate new thread titles"
-        subtitle="Generate a short title from your first message (uses extra tokens)."
+        title={t("displayAutoTitle")}
+        subtitle={t("displayAutoTitleSub")}
       >
         <SettingsToggleSwitch
           pressed={appSettings.threadTitleAutogenerationEnabled}
@@ -247,13 +250,13 @@ export function SettingsDisplaySection({
           }
         />
       </SettingsToggleRow>
-      <div className="settings-subsection-title">Chat</div>
+      <div className="settings-subsection-title">{t("displayChatSection")}</div>
       <div className="settings-subsection-subtitle">
-        Control how much conversation history is retained per thread.
+        {t("displayChatSectionSub")}
       </div>
       <SettingsToggleRow
-        title="Unlimited chat history"
-        subtitle="Keep full thread history in memory (may impact performance)."
+        title={t("displayUnlimitedHistory")}
+        subtitle={t("displayUnlimitedHistorySub")}
       >
         <SettingsToggleSwitch
           pressed={scrollbackUnlimited}

@@ -249,8 +249,8 @@ export function HomeUsageSection({
                 const height = Math.max(6, Math.round((value / maxUsageValue) * 100));
                 const tooltip =
                   usageMetric === "tokens"
-                    ? `${formatDayLabel(day.day)} · ${formatCount(day.totalTokens)} tokens`
-                    : `${formatDayLabel(day.day)} · ${formatDuration(day.agentTimeMs ?? 0)} agent time`;
+                    ? t("chartTooltipTokens", { day: formatDayLabel(day.day), count: formatCount(day.totalTokens) })
+                    : t("chartTooltipTime", { day: formatDayLabel(day.day), duration: formatDuration(day.agentTimeMs ?? 0) });
                 return (
                   <div className="home-usage-bar" key={day.day} data-value={tooltip}>
                     <span
