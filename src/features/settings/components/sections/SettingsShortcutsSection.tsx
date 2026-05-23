@@ -48,7 +48,8 @@ function ShortcutField({
   ) => void;
   onClearShortcut: (key: ShortcutSettingKey) => void;
 }) {
-    return (
+  const { t } = useTranslation("settings");
+  return (
     <div className="settings-field">
       <div className="settings-field-label">{item.label}</div>
       <div className="settings-field-row">
@@ -56,7 +57,7 @@ function ShortcutField({
           className="settings-input settings-input--shortcut"
           value={formatShortcut(shortcutDrafts[item.draftKey])}
           onKeyDown={(event) => onShortcutKeyDown(event, item.settingKey)}
-          placeholder="Type shortcut"
+          placeholder={t("shortcuts.typePlaceholder")}
           readOnly
         />
         <button
@@ -64,7 +65,7 @@ function ShortcutField({
           className="ghost settings-button-compact"
           onClick={() => onClearShortcut(item.settingKey)}
         >
-          Clear
+          {t("shortcuts.clear")}
         </button>
       </div>
       <div className="settings-help">{item.help}</div>
@@ -84,139 +85,139 @@ export function SettingsShortcutsSection({
   const groups = useMemo<ShortcutGroup[]>(
     () => [
       {
-        title: "File",
-        subtitle: "Create agents and worktrees from the keyboard.",
+        title: t("shortcuts.groupFile"),
+        subtitle: t("shortcuts.groupFileSub"),
         items: [
           {
-            label: "New Agent",
+            label: t("shortcuts.itemNewAgent"),
             draftKey: "newAgent",
             settingKey: "newAgentShortcut",
-            help: `Default: ${formatShortcut("cmd+n")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+n") }),
           },
           {
-            label: "New Worktree Agent",
+            label: t("shortcuts.itemNewWorktreeAgent"),
             draftKey: "newWorktreeAgent",
             settingKey: "newWorktreeAgentShortcut",
-            help: `Default: ${formatShortcut("cmd+shift+n")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+shift+n") }),
           },
           {
-            label: "New Clone Agent",
+            label: t("shortcuts.itemNewCloneAgent"),
             draftKey: "newCloneAgent",
             settingKey: "newCloneAgentShortcut",
-            help: `Default: ${formatShortcut("cmd+alt+n")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+alt+n") }),
           },
           {
-            label: "Archive active thread",
+            label: t("shortcuts.itemArchiveThread"),
             draftKey: "archiveThread",
             settingKey: "archiveThreadShortcut",
-            help: `Default: ${formatShortcut(isMac ? "cmd+ctrl+a" : "ctrl+alt+a")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut(isMac ? "cmd+ctrl+a" : "ctrl+alt+a") }),
           },
         ],
       },
       {
-        title: "Composer",
-        subtitle: "Cycle between model, access, reasoning, and collaboration modes.",
+        title: t("shortcuts.groupComposer"),
+        subtitle: t("shortcuts.groupComposerSub"),
         items: [
           {
-            label: "Cycle model",
+            label: t("shortcuts.itemCycleModel"),
             draftKey: "model",
             settingKey: "composerModelShortcut",
-            help: `Press a new shortcut while focused. Default: ${formatShortcut("cmd+shift+m")}`,
+            help: t("shortcuts.pressNewHelp", { shortcut: formatShortcut("cmd+shift+m") }),
           },
           {
-            label: "Cycle access mode",
+            label: t("shortcuts.itemCycleAccess"),
             draftKey: "access",
             settingKey: "composerAccessShortcut",
-            help: `Default: ${formatShortcut("cmd+shift+a")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+shift+a") }),
           },
           {
-            label: "Cycle reasoning mode",
+            label: t("shortcuts.itemCycleReasoning"),
             draftKey: "reasoning",
             settingKey: "composerReasoningShortcut",
-            help: `Default: ${formatShortcut("cmd+shift+r")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+shift+r") }),
           },
           {
-            label: "Cycle collaboration mode",
+            label: t("shortcuts.itemCycleCollaboration"),
             draftKey: "collaboration",
             settingKey: "composerCollaborationShortcut",
-            help: `Default: ${formatShortcut("shift+tab")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("shift+tab") }),
           },
           {
-            label: "Stop active run",
+            label: t("shortcuts.itemStopRun"),
             draftKey: "interrupt",
             settingKey: "interruptShortcut",
-            help: `Default: ${formatShortcut(getDefaultInterruptShortcut())}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut(getDefaultInterruptShortcut()) }),
           },
         ],
       },
       {
-        title: "Panels",
-        subtitle: "Toggle sidebars and panels.",
+        title: t("shortcuts.groupPanels"),
+        subtitle: t("shortcuts.groupPanelsSub"),
         items: [
           {
-            label: "Toggle projects sidebar",
+            label: t("shortcuts.itemToggleProjects"),
             draftKey: "projectsSidebar",
             settingKey: "toggleProjectsSidebarShortcut",
-            help: `Default: ${formatShortcut("cmd+shift+p")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+shift+p") }),
           },
           {
-            label: "Toggle git sidebar",
+            label: t("shortcuts.itemToggleGit"),
             draftKey: "gitSidebar",
             settingKey: "toggleGitSidebarShortcut",
-            help: `Default: ${formatShortcut("cmd+shift+g")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+shift+g") }),
           },
           {
-            label: "Branch switcher",
+            label: t("shortcuts.itemBranchSwitcher"),
             draftKey: "branchSwitcher",
             settingKey: "branchSwitcherShortcut",
-            help: `Default: ${formatShortcut("cmd+b")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+b") }),
           },
           {
-            label: "Toggle debug panel",
+            label: t("shortcuts.itemToggleDebug"),
             draftKey: "debugPanel",
             settingKey: "toggleDebugPanelShortcut",
-            help: `Default: ${formatShortcut("cmd+shift+d")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+shift+d") }),
           },
           {
-            label: "Toggle terminal panel",
+            label: t("shortcuts.itemToggleTerminal"),
             draftKey: "terminal",
             settingKey: "toggleTerminalShortcut",
-            help: `Default: ${formatShortcut("cmd+shift+t")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut("cmd+shift+t") }),
           },
         ],
       },
       {
-        title: "Navigation",
-        subtitle: "Cycle between agents and workspaces.",
+        title: t("shortcuts.groupNavigation"),
+        subtitle: t("shortcuts.groupNavigationSub"),
         items: [
           {
-            label: "Next agent",
+            label: t("shortcuts.itemNextAgent"),
             draftKey: "cycleAgentNext",
             settingKey: "cycleAgentNextShortcut",
-            help: `Default: ${formatShortcut(isMac ? "cmd+ctrl+down" : "ctrl+alt+down")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut(isMac ? "cmd+ctrl+down" : "ctrl+alt+down") }),
           },
           {
-            label: "Previous agent",
+            label: t("shortcuts.itemPrevAgent"),
             draftKey: "cycleAgentPrev",
             settingKey: "cycleAgentPrevShortcut",
-            help: `Default: ${formatShortcut(isMac ? "cmd+ctrl+up" : "ctrl+alt+up")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut(isMac ? "cmd+ctrl+up" : "ctrl+alt+up") }),
           },
           {
-            label: "Next workspace",
+            label: t("shortcuts.itemNextWorkspace"),
             draftKey: "cycleWorkspaceNext",
             settingKey: "cycleWorkspaceNextShortcut",
-            help: `Default: ${formatShortcut(isMac ? "cmd+shift+down" : "ctrl+alt+shift+down")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut(isMac ? "cmd+shift+down" : "ctrl+alt+shift+down") }),
           },
           {
-            label: "Previous workspace",
+            label: t("shortcuts.itemPrevWorkspace"),
             draftKey: "cycleWorkspacePrev",
             settingKey: "cycleWorkspacePrevShortcut",
-            help: `Default: ${formatShortcut(isMac ? "cmd+shift+up" : "ctrl+alt+shift+up")}`,
+            help: t("shortcuts.defaultHelp", { shortcut: formatShortcut(isMac ? "cmd+shift+up" : "ctrl+alt+shift+up") }),
           },
         ],
       },
     ],
-    [isMac],
+    [isMac, t],
   );
 
   const normalizedSearchQuery = searchQuery.trim().toLowerCase();
@@ -258,7 +259,7 @@ export function SettingsShortcutsSection({
               className="ghost settings-button-compact"
               onClick={() => setSearchQuery("")}
             >
-              Clear
+              {t("shortcuts.clear")}
             </button>
           )}
         </div>
@@ -281,7 +282,9 @@ export function SettingsShortcutsSection({
       ))}
       {filteredGroups.length === 0 && (
         <div className="settings-empty">
-          No shortcuts match {normalizedSearchQuery ? `"${searchQuery.trim()}"` : "your search"}.
+          {normalizedSearchQuery
+            ? t("shortcuts.noMatchQuery", { query: searchQuery.trim() })
+            : t("shortcuts.noMatch")}
         </div>
       )}
     </SettingsSection>

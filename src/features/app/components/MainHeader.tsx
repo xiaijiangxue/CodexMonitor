@@ -212,7 +212,7 @@ export function MainHeader({
                 <PopoverSurface className="worktree-info-popover" role="dialog">
                   {worktreeRename && (
                     <div className="worktree-info-rename">
-                      <span className="worktree-info-label">Name</span>
+                      <span className="worktree-info-label">{t("workspace.name")}</span>
                       <div className="worktree-info-command">
                         <input
                           ref={renameInputRef}
@@ -433,7 +433,7 @@ export function MainHeader({
                         }}
                         data-tauri-drag-region="false"
                       >
-                        Create
+                        {t("workspace.create")}
                       </button>
                     </div>
                     {branchValidationMessage && (

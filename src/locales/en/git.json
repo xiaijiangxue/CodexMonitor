@@ -180,6 +180,7 @@
   "checkoutBranch": "Checkout Branch",
   "checkingOut": "Checking out...",
   "jumpToFirstFile": "Jump to first file",
+  "prSummaryAria": "Pull request summary",
   "noDescription": "No description provided.",
   "activity": "Activity",
   "commentsCount": "{{count}} comment",

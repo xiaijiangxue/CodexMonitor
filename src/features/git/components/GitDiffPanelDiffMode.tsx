@@ -171,7 +171,7 @@ export function GitDiffModeContent({
               onClick={onScanGitRoots}
               disabled={!onScanGitRoots || gitRootScanLoading || initGitRepoLoading}
             >
-              Scan workspace
+              {t("scanWorkspace")}
             </button>
             <label className="git-root-depth">
               <span>{t("depth")}</span>

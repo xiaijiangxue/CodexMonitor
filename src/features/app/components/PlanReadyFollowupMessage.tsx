@@ -19,7 +19,7 @@ export function PlanReadyFollowupMessage({
       <div
         className="bubble request-user-input-card"
         role="group"
-        aria-label="Plan ready"
+        aria-label={t("planReady")}
       >
         <div className="request-user-input-header">
           <div className="request-user-input-title">{t("planReady")}</div>

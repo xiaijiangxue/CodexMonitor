@@ -127,7 +127,7 @@ const BaseBranchStep = memo(function BaseBranchStep({
         </button>
       </div>
       <div className="review-inline-hint">{t("pickBranch")}</div>
-      <div className="review-inline-list" role="listbox" aria-label="Base branches">
+      <div className="review-inline-list" role="listbox" aria-label={t("baseBranchesAria")}>
         {reviewPrompt.isLoadingBranches ? (
           <div className="review-inline-empty">{t("loadingBranches")}</div>
         ) : branches.length === 0 ? (
@@ -199,7 +199,7 @@ const CommitStep = memo(function CommitStep({
         </button>
       </div>
       <div className="review-inline-hint">{t("selectRecentCommit")}</div>
-      <div className="review-inline-list" role="listbox" aria-label="Commits">
+      <div className="review-inline-list" role="listbox" aria-label={t("commitsAria")}>
         {reviewPrompt.isLoadingCommits ? (
           <div className="review-inline-empty">{t("loadingCommits")}</div>
         ) : commits.length === 0 ? (

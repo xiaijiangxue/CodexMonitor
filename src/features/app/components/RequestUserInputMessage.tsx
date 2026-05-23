@@ -118,7 +118,7 @@ export function RequestUserInputMessage({
       <div
         className="bubble request-user-input-card"
         role="group"
-        aria-label="User input requested"
+        aria-label={t("inputRequested")}
       >
         <div className="request-user-input-header">
           <div className="request-user-input-title">{t("inputRequested")}</div>

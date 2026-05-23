@@ -11,7 +11,7 @@ import type {
 import { PlanReadyFollowupMessage } from "../../app/components/PlanReadyFollowupMessage";
 import { RequestUserInputMessage } from "../../app/components/RequestUserInputMessage";
 import { useFileLinkOpener } from "../hooks/useFileLinkOpener";
-import { formatCount, parseReasoning } from "../utils/messageRenderUtils";
+import { parseReasoning } from "../utils/messageRenderUtils";
 import {
   DiffRow,
   ExploreRow,
@@ -245,10 +245,10 @@ export const Messages = memo(function Messages({
             const { group } = entry;
             const isCollapsed = collapsedToolGroups.has(group.id);
             const summaryParts = [
-              formatCount(group.toolCount, "tool call", "tool calls"),
+              t("toolCallCount", { count: group.toolCount }),
             ];
             if (group.messageCount > 0) {
-              summaryParts.push(formatCount(group.messageCount, "message", "messages"));
+              summaryParts.push(t("messageCount", { count: group.messageCount }));
             }
             const summaryText = summaryParts.join(", ");
             const groupBodyId = `tool-group-${group.id}`;

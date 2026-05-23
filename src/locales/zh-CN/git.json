@@ -180,6 +180,7 @@
   "checkoutBranch": "检出分支",
   "checkingOut": "检出中...",
   "jumpToFirstFile": "跳转到第一个文件",
+  "prSummaryAria": "Pull Request 摘要",
   "noDescription": "未提供描述。",
   "activity": "活动",
   "commentsCount": "{{count}} 条评论",
