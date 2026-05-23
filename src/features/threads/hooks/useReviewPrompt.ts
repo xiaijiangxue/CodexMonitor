@@ -1,3 +1,4 @@
+import i18n from "@/locales/i18n";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
   BranchInfo,
@@ -369,7 +370,7 @@ export function useReviewPrompt({
     const branch = reviewPrompt.selectedBranch.trim();
     if (!branch) {
       setReviewPrompt((prev) =>
-        prev ? { ...prev, error: "Choose a base branch." } : prev,
+        prev ? { ...prev, error: i18n.t("chooseBaseBranch", { ns: "threads" }) } : prev,
       );
       return;
     }
@@ -422,7 +423,7 @@ export function useReviewPrompt({
     const sha = reviewPrompt.selectedCommitSha.trim();
     if (!sha) {
       setReviewPrompt((prev) =>
-        prev ? { ...prev, error: "Choose a commit to review." } : prev,
+        prev ? { ...prev, error: i18n.t("chooseCommitToReview", { ns: "threads" }) } : prev,
       );
       return;
     }
@@ -447,7 +448,7 @@ export function useReviewPrompt({
     const instructions = reviewPrompt.customInstructions.trim();
     if (!instructions) {
       setReviewPrompt((prev) =>
-        prev ? { ...prev, error: "Enter custom review instructions." } : prev,
+        prev ? { ...prev, error: i18n.t("enterCustomReviewInstructions", { ns: "threads" }) } : prev,
       );
       return;
     }

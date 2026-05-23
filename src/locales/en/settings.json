@@ -535,5 +535,12 @@
     "globalConfig": "Global config.toml",
     "globalConfigPlaceholder": "Edit the global Codex config.toml…",
     "globalConfigHelp": "Stored at <3>~/.codex/config.toml</3>."
-  }
+  },
+  "keyOption": "Option",
+  "keyAlt": "Alt",
+  "keyCommand": "Command",
+  "keyWindows": "Windows",
+  "keyMeta": "Meta",
+  "shortcutShiftCmdEnter": "Shift+Cmd+Enter",
+  "shortcutShiftCtrlEnter": "Shift+Ctrl+Enter"
 }

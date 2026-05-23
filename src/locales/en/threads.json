@@ -16,5 +16,8 @@
   "threadArchived": "Thread archived",
   "running": "Running",
   "reviewing": "Reviewing",
-  "idle": "Idle"
+  "idle": "Idle",
+  "chooseBaseBranch": "Choose a base branch.",
+  "chooseCommitToReview": "Choose a commit to review.",
+  "enterCustomReviewInstructions": "Enter custom review instructions."
 }

@@ -535,5 +535,12 @@
     "globalConfig": "全局 config.toml",
     "globalConfigPlaceholder": "编辑全局 Codex config.toml...",
     "globalConfigHelp": "存储于 <3>~/.codex/config.toml</3>。"
-  }
+  },
+  "keyOption": "Option",
+  "keyAlt": "Alt",
+  "keyCommand": "Command",
+  "keyWindows": "Windows",
+  "keyMeta": "Meta",
+  "shortcutShiftCmdEnter": "Shift+Cmd+Enter",
+  "shortcutShiftCtrlEnter": "Shift+Ctrl+Enter"
 }

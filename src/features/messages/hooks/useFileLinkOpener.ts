@@ -1,3 +1,4 @@
+import i18n from "@/locales/i18n";
 import { useCallback } from "react";
 import type { MouseEvent } from "react";
 import { Menu, MenuItem, PredefinedMenuItem } from "@tauri-apps/api/menu";
@@ -110,7 +111,7 @@ export function useFileLinkOpener(
         },
       );
       pushErrorToast({
-        title: "Couldn’t open file",
+        title: i18n.t("couldNotOpenFile", { ns: "messages" }),
         message,
       });
       console.warn("Failed to open file link", { message, ...context });
@@ -193,11 +194,11 @@ export function useFileLinkOpener(
           ? revealInFileManagerLabel()
           : target.kind === "command"
             ? command
-              ? `Open in ${target.label}`
-              : "Set command in Settings"
+              ? i18n.t("openInApp", { ns: "messages", appName: target.label })
+              : i18n.t("setCommandInSettings", { ns: "messages" })
             : appName
-              ? `Open in ${appName}`
-              : "Set app name in Settings";
+              ? i18n.t("openInApp", { ns: "messages", appName })
+              : i18n.t("setAppNameInSettings", { ns: "messages" });
       const items = [
         await MenuItem.new({
           text: openLabel,
@@ -229,11 +230,11 @@ export function useFileLinkOpener(
               }),
             ]),
         await MenuItem.new({
-          text: "Download Linked File",
+          text: i18n.t("downloadLinkedFile", { ns: "messages" }),
           enabled: false,
         }),
         await MenuItem.new({
-          text: "Copy Link",
+          text: i18n.t("copyLink", { ns: "messages" }),
           action: async () => {
             const link = toFileUrl(resolvedPath, fileLocation.line, fileLocation.column);
             try {

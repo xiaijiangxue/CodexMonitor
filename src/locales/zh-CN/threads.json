@@ -16,5 +16,8 @@
   "threadArchived": "会话已归档",
   "running": "运行中",
   "reviewing": "审核中",
-  "idle": "空闲"
+  "idle": "空闲",
+  "chooseBaseBranch": "请选择目标分支。",
+  "chooseCommitToReview": "请选择要审查的提交。",
+  "enterCustomReviewInstructions": "请输入自定义审查指令。"
 }

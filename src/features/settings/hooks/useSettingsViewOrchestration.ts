@@ -1,3 +1,4 @@
+import i18n from "@/locales/i18n";
 import { useMemo } from "react";
 import type {
   AppSettings,
@@ -111,15 +112,17 @@ export function useSettingsViewOrchestration({
     [projects],
   );
 
-  const optionKeyLabel = isMacPlatform() ? "Option" : "Alt";
+  const optionKeyLabel = isMacPlatform()
+    ? i18n.t("keyOption", { ns: "settings" })
+    : i18n.t("keyAlt", { ns: "settings" });
   const metaKeyLabel = isMacPlatform()
-    ? "Command"
+    ? i18n.t("keyCommand", { ns: "settings" })
     : isWindowsPlatform()
-      ? "Windows"
-      : "Meta";
+      ? i18n.t("keyWindows", { ns: "settings" })
+      : i18n.t("keyMeta", { ns: "settings" });
   const followUpShortcutLabel = isMacPlatform()
-    ? "Shift+Cmd+Enter"
-    : "Shift+Ctrl+Enter";
+    ? i18n.t("shortcutShiftCmdEnter", { ns: "settings" })
+    : i18n.t("shortcutShiftCtrlEnter", { ns: "settings" });
 
   const selectedDictationModel = useMemo(() => {
     return (
