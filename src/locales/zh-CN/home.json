@@ -1,0 +1,14 @@
+{
+  "title": "首页",
+  "recentActivity": "最近活动",
+  "noUsageData": "暂无使用数据",
+  "apiUsage": "API 用量",
+  "activeThreads": "活跃会话",
+  "totalMessages": "消息总数",
+  "version": "版本",
+  "lastUsed": "上次使用",
+  "quickStart": "快速开始",
+  "createNewThread": "新建会话",
+  "openWorkspace": "打开工作区",
+  "importProject": "导入项目"
+}

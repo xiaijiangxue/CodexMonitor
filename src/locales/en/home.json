@@ -1,0 +1,14 @@
+{
+  "title": "Home",
+  "recentActivity": "Recent activity",
+  "noUsageData": "No usage data",
+  "apiUsage": "API Usage",
+  "activeThreads": "Active threads",
+  "totalMessages": "Total messages",
+  "version": "Version",
+  "lastUsed": "Last used",
+  "quickStart": "Quick start",
+  "createNewThread": "Create a new thread",
+  "openWorkspace": "Open workspace",
+  "importProject": "Import project"
+}
