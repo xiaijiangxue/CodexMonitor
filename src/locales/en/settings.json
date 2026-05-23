@@ -1,5 +1,27 @@
 {
   "pageTitle": "Settings",
   "close": "Close settings",
-  "sections": "Sections"
+  "sections": "Sections",
+  "backToSections": "Back to settings sections",
+  "sectionProjects": "Projects",
+  "sectionEnvironments": "Environments",
+  "sectionDisplay": "Display & Sound",
+  "sectionComposer": "Composer",
+  "sectionDictation": "Dictation",
+  "sectionShortcuts": "Shortcuts",
+  "sectionOpenApps": "Open in",
+  "sectionGit": "Git",
+  "sectionServer": "Server",
+  "sectionAgents": "Agents",
+  "sectionCodex": "Codex",
+  "sectionFeatures": "Features",
+  "sectionAbout": "About",
+  "composerPresetDefault": "Default (no helpers)",
+  "composerPresetHelpful": "Helpful",
+  "composerPresetSmart": "Smart",
+  "dictationNoteTiny": "Fastest, least accurate.",
+  "dictationNoteBase": "Balanced default.",
+  "dictationNoteSmall": "Better accuracy.",
+  "dictationNoteMedium": "High accuracy.",
+  "dictationNoteLargeV3": "Best accuracy, heavy download."
 }

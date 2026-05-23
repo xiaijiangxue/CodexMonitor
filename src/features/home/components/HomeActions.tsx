@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 type HomeActionsProps = {
   onAddWorkspace: () => void;
   onAddWorkspaceFromUrl: () => void;
@@ -7,6 +9,8 @@ export function HomeActions({
   onAddWorkspace,
   onAddWorkspaceFromUrl,
 }: HomeActionsProps) {
+  const { t } = useTranslation("home");
+
   return (
     <div className="home-actions">
       <button
@@ -17,7 +21,7 @@ export function HomeActions({
         <span className="home-icon" aria-hidden>
           +
         </span>
-        Add Workspaces
+        {t("addWorkspaces")}
       </button>
       <button
         className="home-button secondary home-add-workspace-from-url-button"
@@ -27,7 +31,7 @@ export function HomeActions({
         <span className="home-icon" aria-hidden>
           ⤓
         </span>
-        Add Workspace from URL
+        {t("addWorkspaceFromUrl")}
       </button>
     </div>
   );

@@ -11,6 +11,7 @@ import type {
   UsageMetric,
   UsageWorkspaceOption,
 } from "../homeTypes";
+import { useTranslation } from "react-i18next";
 
 type HomeProps = {
   onAddWorkspace: () => void;
@@ -51,12 +52,14 @@ export function Home({
   accountInfo,
   onSelectThread,
 }: HomeProps) {
+  const { t } = useTranslation("home");
+
   return (
     <div className="home">
       <div className="home-hero">
         <div className="home-title">Codex Monitor</div>
         <div className="home-subtitle">
-          Orchestrate agents across your local projects.
+          {t("subtitle")}
         </div>
       </div>
       <HomeLatestAgentsSection

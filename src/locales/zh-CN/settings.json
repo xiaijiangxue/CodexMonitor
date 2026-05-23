@@ -1,5 +1,27 @@
 {
   "pageTitle": "设置",
   "close": "关闭设置",
-  "sections": "设置分类"
+  "sections": "设置分类",
+  "backToSections": "返回设置分类",
+  "sectionProjects": "项目",
+  "sectionEnvironments": "环境",
+  "sectionDisplay": "显示与声音",
+  "sectionComposer": "编辑器",
+  "sectionDictation": "语音输入",
+  "sectionShortcuts": "快捷键",
+  "sectionOpenApps": "打开方式",
+  "sectionGit": "Git",
+  "sectionServer": "服务器",
+  "sectionAgents": "代理",
+  "sectionCodex": "Codex",
+  "sectionFeatures": "功能",
+  "sectionAbout": "关于",
+  "composerPresetDefault": "默认（无辅助）",
+  "composerPresetHelpful": "辅助模式",
+  "composerPresetSmart": "智能模式",
+  "dictationNoteTiny": "最快，精度最低。",
+  "dictationNoteBase": "均衡默认。",
+  "dictationNoteSmall": "更高精度。",
+  "dictationNoteMedium": "高精度。",
+  "dictationNoteLargeV3": "最佳精度，下载较大。"
 }

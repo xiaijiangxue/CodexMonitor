@@ -15,7 +15,7 @@ import { useSettingsViewOrchestration } from "@settings/hooks/useSettingsViewOrc
 import { ModalShell } from "@/features/design-system/components/modal/ModalShell";
 import { SettingsNav } from "./SettingsNav";
 import type { CodexSection } from "./settingsTypes";
-import { SETTINGS_SECTION_LABELS } from "./settingsViewConstants";
+import { useTranslation } from "react-i18next";
 import { SettingsSectionContainers } from "./sections/SettingsSectionContainers";
 
 export type SettingsViewProps = {
@@ -139,8 +139,9 @@ export function SettingsView({
   });
 
   useSettingsViewCloseShortcuts(onClose);
+  const { t } = useTranslation("settings");
 
-  const activeSectionLabel = SETTINGS_SECTION_LABELS[activeSection];
+  const activeSectionLabel = t(`section${activeSection.charAt(0).toUpperCase() + activeSection.slice(1).replace(/-(.)/g, (_, c) => c.toUpperCase())}` as const);
   const settingsBodyClassName = `settings-body${
     useMobileMasterDetail ? " settings-body-mobile-master-detail" : ""
   }${useMobileMasterDetail && showMobileDetail ? " is-detail-visible" : ""}`;
@@ -154,13 +155,13 @@ export function SettingsView({
     >
       <div className="settings-titlebar">
         <div className="settings-title" id="settings-modal-title">
-          Settings
+          {t("pageTitle")}
         </div>
         <button
           type="button"
           className="ghost icon-button settings-close"
           onClick={onClose}
-          aria-label="Close settings"
+          aria-label={t("close")}
         >
           <X aria-hidden />
         </button>
@@ -183,10 +184,10 @@ export function SettingsView({
                   type="button"
                   className="settings-mobile-back"
                   onClick={() => setShowMobileDetail(false)}
-                  aria-label="Back to settings sections"
+                  aria-label={t("backToSections")}
                 >
                   <ChevronLeft aria-hidden />
-                  Sections
+                  {t("sections")}
                 </button>
                 <div className="settings-mobile-detail-title">{activeSectionLabel}</div>
               </div>
