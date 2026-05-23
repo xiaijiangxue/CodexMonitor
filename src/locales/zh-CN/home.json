@@ -40,5 +40,6 @@
   "usageWeek": "用量周",
   "usageWeekRange": "用量周 {{start}} 至 {{end}}",
   "view": "视图",
-  "workspace": "工作区"
+  "workspace": "工作区",
+  "to": "至"
 }

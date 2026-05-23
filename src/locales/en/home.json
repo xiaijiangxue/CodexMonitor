@@ -40,5 +40,6 @@
   "usageWeek": "Usage week",
   "usageWeekRange": "Usage week {{start}} to {{end}}",
   "view": "View",
-  "workspace": "Workspace"
+  "workspace": "Workspace",
+  "to": "to"
 }
