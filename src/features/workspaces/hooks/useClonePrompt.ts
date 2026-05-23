@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import i18n from "@/locales/i18n";
 import type { WorkspaceInfo } from "../../../types";
 import { pickWorkspacePath } from "../../../services/tauri";
 
@@ -175,13 +176,13 @@ export function useClonePrompt({
     const copiesFolder = clonePrompt.copiesFolder.trim();
     if (!copyName) {
       setClonePrompt((prev) =>
-        prev ? { ...prev, error: "Copy name is required." } : prev,
+        prev ? { ...prev, error: i18n.t("copyNameRequired", { ns: "workspaces" }) } : prev,
       );
       return;
     }
     if (!copiesFolder) {
       setClonePrompt((prev) =>
-        prev ? { ...prev, error: "Copies folder is required." } : prev,
+        prev ? { ...prev, error: i18n.t("copiesFolderRequired", { ns: "workspaces" }) } : prev,
       );
       return;
     }

@@ -1,4 +1,5 @@
 import { normalizeCodexArgsInput } from "@/utils/codexArgsInput";
+import i18n from "@/locales/i18n";
 
 export type CodexArgsRecognizedSegment = {
   flag: string;
@@ -505,7 +506,7 @@ export function buildCodexArgsOptions(input: {
 }): CodexArgsOption[] {
   const seen = new Set<string>();
   const options: CodexArgsOption[] = [
-    { value: "", codexArgs: null, label: "Default" },
+    { value: "", codexArgs: null, label: i18n.t("defaultOption", { ns: "threads" }) },
   ];
 
   const candidates = [

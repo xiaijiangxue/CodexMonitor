@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import i18n from "@/locales/i18n";
 import type {
   LaunchScriptEntry,
   LaunchScriptIconId,
@@ -180,7 +181,7 @@ export function useWorkspaceLaunchScripts({
     }
     const trimmed = newDraftScript.trim();
     if (!trimmed) {
-      setNewError("Script cannot be empty.");
+      setNewError(i18n.t("scriptCannotBeEmpty", { ns: "app" }));
       return;
     }
     setIsSaving(true);
@@ -220,8 +221,8 @@ export function useWorkspaceLaunchScripts({
     }
     const trimmed = draftScript.trim();
     if (!trimmed) {
-      setError("Script cannot be empty.");
-      setErrorById((prev) => ({ ...prev, [editorOpenId]: "Script cannot be empty." }));
+      setError(i18n.t("scriptCannotBeEmpty", { ns: "app" }));
+      setErrorById((prev) => ({ ...prev, [editorOpenId]: i18n.t("scriptCannotBeEmpty", { ns: "app" }) }));
       return;
     }
     setIsSaving(true);
@@ -344,7 +345,7 @@ export function useWorkspaceLaunchScripts({
         setError(message);
         setErrorById((prev) => ({ ...prev, [pending.entryId]: message }));
         pushErrorToast({
-          title: "Launch script error",
+          title: i18n.t("launchScriptError", { ns: "app" }),
           message,
         });
       },

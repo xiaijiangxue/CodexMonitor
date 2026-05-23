@@ -6,6 +6,7 @@ import type {
   ReviewTarget,
   ServiceTier,
 } from "@/types";
+import i18n from "@/locales/i18n";
 import { clampThreadName } from "@threads/utils/threadNaming";
 import { formatRelativeTime } from "@utils/time";
 
@@ -68,13 +69,13 @@ export function buildReviewThreadTitle(target: ReviewTarget): string | null {
     if (shortSha) {
       return clampThreadName(`Review ${shortSha}`);
     }
-    return clampThreadName("Review Commit");
+    return clampThreadName(i18n.t("reviewCommit", { ns: "threads" }));
   }
   if (target.type === "baseBranch") {
     return clampThreadName(`Review ${target.branch}`);
   }
   if (target.type === "uncommittedChanges") {
-    return "Review Working Tree";
+    return i18n.t("reviewWorkingTree", { ns: "threads" });
   }
   return null;
 }
@@ -230,7 +231,7 @@ export function buildStatusLines({
   rateLimits: RateLimitSnapshot | null;
 }): string[] {
   const lines = [
-    "Session status:",
+    i18n.t("sessionStatus", { ns: "threads" }),
     `- Model: ${model ?? "default"}`,
     `- Fast mode: ${serviceTier === "fast" ? "on" : "off"}`,
     `- Reasoning effort: ${effort ?? "default"}`,
@@ -261,9 +262,9 @@ export function buildStatusLines({
   const credits = rateLimits?.credits ?? null;
   if (credits?.hasCredits) {
     if (credits.unlimited) {
-      lines.push("- Credits: unlimited");
+      lines.push(i18n.t("availableCreditsUnlimited", { ns: "app" }));
     } else if (credits.balance) {
-      lines.push(`- Credits: ${credits.balance}`);
+      lines.push(i18n.t("availableCreditsBalance", { ns: "app", balance: credits.balance }));
     }
   }
 

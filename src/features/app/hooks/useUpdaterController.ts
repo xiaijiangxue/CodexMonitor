@@ -1,4 +1,5 @@
 import { useCallback, useRef } from "react";
+import i18n from "@/locales/i18n";
 import { useUpdater } from "../../update/hooks/useUpdater";
 import { useAgentSoundNotifications } from "../../notifications/hooks/useAgentSoundNotifications";
 import { useAgentSystemNotifications } from "../../notifications/hooks/useAgentSystemNotifications";
@@ -104,8 +105,8 @@ export function useUpdaterController({
       return;
     }
     void sendNotification(
-      "Test Notification",
-      "This is a test notification from CodexMonitor.",
+      i18n.t("testNotification", { ns: "app" }),
+      i18n.t("testNotificationBody", { ns: "app" }),
     ).catch((error) => {
       onDebug({
         id: `${Date.now()}-client-notification-test-error`,

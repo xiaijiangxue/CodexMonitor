@@ -1,4 +1,5 @@
 import type { ConversationItem } from "@/types";
+import i18n from "@/locales/i18n";
 import { normalizeItem, prepareThreadItems, upsertItem } from "@utils/threadItems";
 import type { ThreadAction, ThreadState } from "../useThreadsReducer";
 import {
@@ -279,7 +280,7 @@ export function reduceThreadItems(state: ThreadState, action: ThreadAction): Thr
               id: action.itemId,
               kind: "tool",
               toolType: "plan",
-              title: "Plan",
+              title: i18n.t("planTitle", { ns: "threads" }),
               detail: "",
               status: "in_progress",
               output: "",
@@ -289,8 +290,8 @@ export function reduceThreadItems(state: ThreadState, action: ThreadAction): Thr
         ...(base as ConversationItem),
         kind: "tool",
         toolType: "plan",
-        title: "Plan",
-        detail: "Generating plan...",
+        title: i18n.t("planTitle", { ns: "threads" }),
+        detail: i18n.t("planDetail", { ns: "threads" }),
         status: "in_progress",
         output: mergeStreamingText(existingOutput, action.delta),
       } as ConversationItem;

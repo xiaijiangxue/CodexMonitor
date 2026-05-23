@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+import i18n from "@/locales/i18n";
 import type {
   ConversationItem,
   DebugEntry,
@@ -60,11 +61,11 @@ type GitStatusSummary = {
 
 function buildGitStatusText(gitStatus: GitStatusSummary) {
   if (gitStatus.error) {
-    return "Git status unavailable";
+    return i18n.t("gitStatusUnavailable", { ns: "git" });
   }
   return gitStatus.files.length > 0
-    ? `${gitStatus.files.length} file${gitStatus.files.length === 1 ? "" : "s"} changed`
-    : "Working tree clean";
+    ? i18n.t("fileChanged", { ns: "git", count: gitStatus.files.length })
+    : i18n.t("workingTreeClean", { ns: "git" });
 }
 
 function resolveShouldLoadGitHubPanelData({

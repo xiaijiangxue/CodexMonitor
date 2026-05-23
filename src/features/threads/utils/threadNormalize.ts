@@ -8,6 +8,7 @@ import type {
   TurnPlanStep,
   TurnPlanStepStatus,
 } from "@/types";
+import i18n from "@/locales/i18n";
 
 export function asString(value: unknown) {
   return typeof value === "string" ? value : value ? String(value) : "";
@@ -186,9 +187,9 @@ export function extractRpcErrorMessage(response: unknown) {
   }
   if (typeof errorValue === "object" && errorValue) {
     const message = asString((errorValue as Record<string, unknown>).message);
-    return message || "Request failed.";
+    return message || i18n.t("requestFailed", { ns: "threads" });
   }
-  return "Request failed.";
+  return i18n.t("requestFailed", { ns: "threads" });
 }
 
 export function extractReviewThreadId(response: unknown): string | null {
