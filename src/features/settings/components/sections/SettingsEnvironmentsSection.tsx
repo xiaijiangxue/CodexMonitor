@@ -175,24 +175,22 @@ export function SettingsEnvironmentsSection({
                   const clipboard = typeof navigator === "undefined" ? null : navigator.clipboard;
                   if (!clipboard?.writeText) {
                     pushErrorToast({
-                      title: "复制失败",
-                      message:
-                        "此环境中无法访问剪贴板。请手动复制脚本。",
+                      title: t("environments.copyFailed"),
+                      message: t("environments.copyClipboardUnavailable"),
                     });
                     return;
                   }
 
                   void clipboard.writeText(environmentDraftScript).catch(() => {
                     pushErrorToast({
-                      title: "复制失败",
-                      message:
-                        "无法写入剪贴板。请手动复制脚本。",
+                      title: t("environments.copyFailed"),
+                      message: t("environments.copyClipboardWriteError"),
                     });
                   });
                 }}
                 disabled={environmentSaving || environmentDraftScript.length === 0}
               >
-                复制
+                {t("environments.copy")}
               </button>
               <button
                 type="button"
@@ -200,7 +198,7 @@ export function SettingsEnvironmentsSection({
                 onClick={() => onSetEnvironmentDraftScript(environmentSavedScript ?? "")}
                 disabled={environmentSaving || !environmentDirty}
               >
-              重置
+               {t("environments.reset")}
               </button>
               <button
                 type="button"
@@ -210,17 +208,17 @@ export function SettingsEnvironmentsSection({
                 }}
                 disabled={environmentSaving || !hasAnyChanges}
               >
-              {environmentSaving ? "保存中..." : "保存"}
+              {environmentSaving ? t("environments.saving") : t("environments.save")}
               </button>
             </div>
           </div>
 
           <div className="settings-field">
             <label className="settings-field-label" htmlFor="settings-worktrees-folder">
-              工作树文件夹
+              {t("environments.worktreesFolderLabel")}
             </label>
             <div className="settings-help">
-              此项目工作树的自定义位置。留空以使用全局根目录或内置默认值。
+              {t("environments.worktreesFolderHelp")}
             </div>
             <div className="settings-field-row">
               <input
@@ -229,7 +227,7 @@ export function SettingsEnvironmentsSection({
                 className="settings-input"
                 value={worktreesFolderDraft}
                 onChange={(event) => onSetWorktreesFolderDraft(event.target.value)}
-                placeholder="/path/to/worktrees"
+                placeholder={t("environments.worktreesFolderPlaceholder")}
                 disabled={environmentSaving}
               />
               <button
@@ -241,21 +239,21 @@ export function SettingsEnvironmentsSection({
                     const selected = await open({
                       directory: true,
                       multiple: false,
-                      title: "选择工作树文件夹",
+                      title: t("environments.worktreesFolderPickerTitle"),
                     });
                     if (selected && typeof selected === "string") {
                       onSetWorktreesFolderDraft(selected);
                     }
                   } catch (error) {
                     pushErrorToast({
-                  title: "打开文件夹选择器失败",
+                  title: t("environments.folderPickerError"),
                       message: error instanceof Error ? error.message : String(error),
                     });
                   }
                 }}
                 disabled={environmentSaving}
               >
-            浏览
+            {t("environments.browse")}
               </button>
             </div>
           </div>
