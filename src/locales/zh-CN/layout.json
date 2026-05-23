@@ -1,0 +1,24 @@
+{
+  "sidebar": {
+    "threads": "会话",
+    "workspaces": "工作区",
+    "home": "首页",
+    "settings": "设置",
+    "projects": "项目",
+    "environments": "环境",
+    "prompts": "提示词",
+    "about": "关于",
+    "notifications": "通知",
+    "updates": "更新",
+    "help": "帮助",
+    "newThread": "新建会话",
+    "searchThreads": "搜索会话..."
+  },
+  "app": {
+    "title": "Codex Monitor"
+  },
+  "nav": {
+    "quickStart": "快速开始",
+    "recentActivity": "最近活动"
+  }
+}

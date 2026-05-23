@@ -1,0 +1,24 @@
+{
+  "sidebar": {
+    "threads": "Threads",
+    "workspaces": "Workspaces",
+    "home": "Home",
+    "settings": "Settings",
+    "projects": "Projects",
+    "environments": "Environments",
+    "prompts": "Prompts",
+    "about": "About",
+    "notifications": "Notifications",
+    "updates": "Updates",
+    "help": "Help",
+    "newThread": "New Thread",
+    "searchThreads": "Search threads..."
+  },
+  "app": {
+    "title": "Codex Monitor"
+  },
+  "nav": {
+    "quickStart": "Quick start",
+    "recentActivity": "Recent activity"
+  }
+}
