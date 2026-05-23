@@ -14,6 +14,11 @@ function featureNameToDescKey(name: string): string {
   return `features.desc${parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("")}`;
 }
 
+function featureNameToTitleKey(name: string): string {
+  const parts = name.split("_").filter(Boolean);
+  return `features.title${parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("")}`;
+}
+
 function featureSubtitle(
   feature: CodexFeature,
   t: (key: string, options?: Record<string, unknown>) => string,
@@ -39,10 +44,18 @@ function featureSubtitle(
   return t("features.featureKey", { name: feature.name });
 }
 
-function formatFeatureLabel(feature: CodexFeature): string {
+function formatFeatureLabel(
+  feature: CodexFeature,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): string {
   const displayName = feature.displayName?.trim();
   if (displayName) {
     return displayName;
+  }
+  const titleKey = featureNameToTitleKey(feature.name);
+  const translated = t(titleKey);
+  if (translated !== titleKey) {
+    return translated;
   }
   return feature.name
     .split("_")
@@ -123,7 +136,7 @@ export function SettingsFeaturesSection({
       {stableFeatures.map((feature) => (
         <SettingsToggleRow
           key={feature.name}
-          title={formatFeatureLabel(feature)}
+          title={formatFeatureLabel(feature, t)}
           subtitle={featureSubtitle(feature, t)}
         >
           <SettingsToggleSwitch
@@ -146,7 +159,7 @@ export function SettingsFeaturesSection({
       {experimentalFeatures.map((feature) => (
         <SettingsToggleRow
           key={feature.name}
-          title={formatFeatureLabel(feature)}
+          title={formatFeatureLabel(feature, t)}
           subtitle={featureSubtitle(feature, t)}
         >
           <SettingsToggleSwitch

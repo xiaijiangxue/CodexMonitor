@@ -7,6 +7,7 @@ import {
 } from "@/features/shared/components/MagicSparkleIcon";
 import type { SettingsAgentsSectionProps } from "@settings/hooks/useSettingsAgentsSection";
 import { fileManagerName, openInFileManagerLabel } from "@utils/platformPaths";
+import { useTranslation } from "react-i18next";
 import {
   SettingsSection,
   SettingsSubsection,
@@ -349,10 +350,12 @@ export function SettingsAgentsSection({
     }
   };
 
+  const { t } = useTranslation("settings");
+
   return (
     <SettingsSection
-      title="代理"
-      subtitle="配置多代理模式、限制和自定义代理角色。"
+      title={t("agents.title")}
+      subtitle={t("agents.subtitle")}
     >
       <div className="settings-help settings-agents-builtins-help">
         Codex 内置角色仍然可用：<code>default</code>、<code>explorer</code>

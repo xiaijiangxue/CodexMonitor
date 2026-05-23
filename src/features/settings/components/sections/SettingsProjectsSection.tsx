@@ -7,6 +7,7 @@ import {
   SettingsSubsection,
 } from "@/features/design-system/components/settings/SettingsPrimitives";
 import type { WorkspaceGroup, WorkspaceInfo } from "@/types";
+import { useTranslation } from "react-i18next";
 
 type GroupedWorkspaces = Array<{
   id: string | null;
@@ -57,10 +58,12 @@ export function SettingsProjectsSection({
   onMoveWorkspace,
   onDeleteWorkspace,
 }: SettingsProjectsSectionProps) {
+  const { t } = useTranslation("settings");
+
   return (
     <SettingsSection
-      title="项目"
-      subtitle="将相关工作区分组，并在每个分组内重新排序项目。"
+      title={t("projects.title")}
+      subtitle={t("projects.subtitle")}
     >
       <SettingsSubsection
         title="分组"
