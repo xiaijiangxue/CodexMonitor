@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { Dispatch, SetStateAction } from "react";
 import { SettingsSection } from "@/features/design-system/components/settings/SettingsPrimitives";
 import type { WorkspaceInfo } from "@/types";
@@ -44,21 +45,22 @@ export function SettingsEnvironmentsSection({
   onSetWorktreesFolderDraft,
   onSaveEnvironmentSetup,
 }: SettingsEnvironmentsSectionProps) {
+  const { t } = useTranslation("settings");
   const hasAnyChanges =
     environmentDirty || globalWorktreesFolderDirty || worktreesFolderDirty;
   const hasProjects = mainWorkspaces.length > 0;
 
   return (
     <SettingsSection
-      title="环境"
-      subtitle="配置每个项目的设置脚本和工作树位置。"
+      title={t("environments.title")}
+      subtitle={t("environments.subtitle")}
     >
       <div className="settings-field">
         <label className="settings-field-label" htmlFor="settings-global-worktrees-folder">
-          全局工作树根目录
+          {t("environments.globalRootLabel")}
         </label>
         <div className="settings-help">
-          项目未覆盖时新工作树的默认位置。每个项目在此根目录下拥有自己的子文件夹。
+          {t("environments.globalRootHelp")}
         </div>
         <div className="settings-field-row">
           <input
@@ -67,7 +69,7 @@ export function SettingsEnvironmentsSection({
             className="settings-input"
             value={globalWorktreesFolderDraft}
             onChange={(event) => onSetGlobalWorktreesFolderDraft(event.target.value)}
-            placeholder="/path/to/worktrees-root"
+            placeholder={t("environments.globalRootPlaceholder")}
             disabled={environmentSaving}
           />
           <button
@@ -79,21 +81,21 @@ export function SettingsEnvironmentsSection({
                 const selected = await open({
                   directory: true,
                   multiple: false,
-                  title: "选择全局工作树根目录",
+                  title: t("environments.folderPickerTitle"),
                 });
                 if (selected && typeof selected === "string") {
                   onSetGlobalWorktreesFolderDraft(selected);
                 }
               } catch (error) {
                 pushErrorToast({
-                  title: "Failed to open folder picker",
+                  title: t("environments.folderPickerError"),
                   message: error instanceof Error ? error.message : String(error),
                 });
               }
             }}
             disabled={environmentSaving}
           >
-            Browse
+            {t("environments.browse")}
           </button>
         </div>
         {!hasProjects ? (
@@ -104,7 +106,7 @@ export function SettingsEnvironmentsSection({
               onClick={() => onSetGlobalWorktreesFolderDraft(_globalWorktreesFolderSaved ?? "")}
               disabled={environmentSaving || !globalWorktreesFolderDirty}
             >
-              Reset
+              {t("environments.reset")}
             </button>
             <button
               type="button"
@@ -114,7 +116,7 @@ export function SettingsEnvironmentsSection({
               }}
               disabled={environmentSaving || !globalWorktreesFolderDirty}
             >
-              {environmentSaving ? "Saving..." : "Save"}
+              {environmentSaving ? t("environments.saving") : t("environments.save")}
             </button>
           </div>
         ) : null}
@@ -124,12 +126,12 @@ export function SettingsEnvironmentsSection({
       </div>
 
       {!hasProjects ? (
-        <div className="settings-empty">暂无项目。</div>
+        <div className="settings-empty">{t("environments.noProjects")}</div>
       ) : (
         <>
           <div className="settings-field">
             <label className="settings-field-label" htmlFor="settings-environment-project">
-              项目
+              {t("environments.projectLabel")}
             </label>
             <select
               id="settings-environment-project"
@@ -150,9 +152,9 @@ export function SettingsEnvironmentsSection({
           </div>
 
           <div className="settings-field">
-            <div className="settings-field-label">设置脚本</div>
+            <div className="settings-field-label">{t("environments.setupScriptLabel")}</div>
             <div className="settings-help">
-              每次创建新工作树后在专用终端中运行一次。
+              {t("environments.setupScriptHelp")}
             </div>
             {environmentError ? (
               <div className="settings-agents-error">{environmentError}</div>
@@ -161,7 +163,7 @@ export function SettingsEnvironmentsSection({
               className="settings-agents-textarea"
               value={environmentDraftScript}
               onChange={(event) => onSetEnvironmentDraftScript(event.target.value)}
-              placeholder="pnpm install"
+              placeholder={t("environments.setupScriptPlaceholder")}
               spellCheck={false}
               disabled={environmentSaving}
             />

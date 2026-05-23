@@ -9,44 +9,35 @@ import {
 import type { SettingsFeaturesSectionProps } from "@settings/hooks/useSettingsFeaturesSection";
 import { fileManagerName, openInFileManagerLabel } from "@utils/platformPaths";
 
-const FEATURE_DESCRIPTION_FALLBACKS: Record<string, string> = {
-  undo: "Create a ghost commit at each turn.",
-  shell_tool: "Enable the default shell tool.",
-  unified_exec: "Use the single unified PTY-backed exec tool.",
-  shell_snapshot: "Enable shell snapshotting.",
-  js_repl: "Enable JavaScript REPL tools backed by a persistent Node kernel.",
-  js_repl_tools_only: "Only expose js_repl tools directly to the model.",
-  web_search_request: "Deprecated. Use top-level web_search instead.",
-  web_search_cached: "Deprecated. Use top-level web_search instead.",
-  search_tool: "Removed legacy search flag kept for backward compatibility.",
-  runtime_metrics: "Enable runtime metrics snapshots via a manual reader.",
-  sqlite: "Persist rollout metadata to a local SQLite database.",
-  memory_tool: "Enable startup memory extraction and memory consolidation.",
-  child_agents_md: "Append additional AGENTS.md guidance to user instructions.",
-  apply_patch_freeform: "Include the freeform apply_patch tool.",
-  use_linux_sandbox_bwrap: "Use the bubblewrap-based Linux sandbox pipeline.",
-  request_rule: "Allow approval requests and exec rule proposals.",
-  experimental_windows_sandbox:
-    "Removed Windows sandbox flag kept for backward compatibility.",
-  elevated_windows_sandbox:
-    "Removed elevated Windows sandbox flag kept for backward compatibility.",
-  remote_models: "Refresh remote models before AppReady.",
-  powershell_utf8: "Enforce UTF-8 output in PowerShell.",
-  enable_request_compression:
-    "Compress streaming request bodies sent to codex-backend.",
-  apps: "Enable ChatGPT Apps integration.",
-  apps_mcp_gateway: "Route Apps MCP calls through the configured gateway.",
-  skill_mcp_dependency_install:
-    "Allow prompting and installing missing MCP dependencies.",
-  skill_env_var_dependency_prompt:
-    "Prompt for missing skill environment variable dependencies.",
-  steer: "Enable turn steering capability when supported by Codex.",
-  collaboration_modes: "Enable collaboration mode presets.",
-  personality: "Enable personality selection.",
-  responses_websockets:
-    "Use Responses API WebSocket transport for OpenAI by default.",
-  responses_websockets_v2: "Enable Responses API WebSocket v2 mode.",
-};
+function featureNameToDescKey(name: string): string {
+  const parts = name.split("_").filter(Boolean);
+  return `features.desc${parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("")}`;
+}
+
+function featureSubtitle(
+  feature: CodexFeature,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): string {
+  if (feature.description?.trim()) {
+    return feature.description;
+  }
+  if (feature.announcement?.trim()) {
+    return feature.announcement;
+  }
+  if (feature.stage === "deprecated") {
+    return t("features.featureDeprecated");
+  }
+  if (feature.stage === "removed") {
+    return t("features.featureRemoved");
+  }
+  const descKey = featureNameToDescKey(feature.name);
+  const translated = t(descKey);
+  // i18next returns the key string itself when no translation is found
+  if (translated !== descKey) {
+    return translated;
+  }
+  return t("features.featureKey", { name: feature.name });
+}
 
 function formatFeatureLabel(feature: CodexFeature): string {
   const displayName = feature.displayName?.trim();
@@ -58,26 +49,6 @@ function formatFeatureLabel(feature: CodexFeature): string {
     .filter((part) => part.length > 0)
     .map((part) => part[0].toUpperCase() + part.slice(1))
     .join(" ");
-}
-
-function featureSubtitle(feature: CodexFeature): string {
-  if (feature.description?.trim()) {
-    return feature.description;
-  }
-  if (feature.announcement?.trim()) {
-    return feature.announcement;
-  }
-  const fallbackDescription = FEATURE_DESCRIPTION_FALLBACKS[feature.name];
-  if (fallbackDescription) {
-    return fallbackDescription;
-  }
-  if (feature.stage === "deprecated") {
-    return "Deprecated feature flag.";
-  }
-  if (feature.stage === "removed") {
-    return "Legacy feature flag kept for backward compatibility.";
-  }
-  return `Feature key: features.${feature.name}`;
 }
 
 export function SettingsFeaturesSection({
@@ -94,7 +65,7 @@ export function SettingsFeaturesSection({
   onToggleCodexFeature,
   onUpdateAppSettings,
 }: SettingsFeaturesSectionProps) {
-    const { t } = useTranslation("settings");
+  const { t } = useTranslation("settings");
 
   return (
     <SettingsSection
@@ -102,8 +73,8 @@ export function SettingsFeaturesSection({
       subtitle={t("features.subtitle")}
     >
       <SettingsToggleRow
-        title="配置文件"
-        subtitle={`在 ${fileManagerName()} 中打开 Codex 配置。`}
+        title={t("features.configFile")}
+        subtitle={t("features.configFileSub", { fileManager: fileManagerName() })}
       >
         <button type="button" className="ghost" onClick={onOpenConfig}>
           {openInFileManagerLabel()}
@@ -111,16 +82,12 @@ export function SettingsFeaturesSection({
       </SettingsToggleRow>
       {openConfigError && <div className="settings-help">{openConfigError}</div>}
       <SettingsSubsection
-        title="稳定功能"
-        subtitle="默认启用的生产就绪功能。"
+        title={t("features.stableTitle")}
+        subtitle={t("features.stableSubtitle")}
       />
       <SettingsToggleRow
-        title="个性"
-        subtitle={
-          <>
-            选择 Codex 沟通风格（在 config.toml 中写入顶级 <code>personality</code>）。
-          </>
-        }
+        title={t("features.personality")}
+        subtitle={t("features.personalityHelp")}
       >
         <select
           id="features-personality-select"
@@ -132,15 +99,15 @@ export function SettingsFeaturesSection({
               personality: event.target.value as (typeof appSettings)["personality"],
             })
           }
-          aria-label="Personality"
+          aria-label={t("features.personality")}
         >
-          <option value="friendly">友好</option>
-          <option value="pragmatic">务实</option>
+          <option value="friendly">{t("features.personalityFriendly")}</option>
+          <option value="pragmatic">{t("features.personalityPragmatic")}</option>
         </select>
       </SettingsToggleRow>
       <SettingsToggleRow
-        title="需要响应时暂停队列消息"
-        subtitle="当 Codex 等待接受计划/变更或您的回答时，保持队列消息暂停。"
+        title={t("features.pauseTitle")}
+        subtitle={t("features.pauseSubtitle")}
       >
         <SettingsToggleSwitch
           pressed={appSettings.pauseQueuedMessagesWhenResponseRequired}
@@ -157,7 +124,7 @@ export function SettingsFeaturesSection({
         <SettingsToggleRow
           key={feature.name}
           title={formatFeatureLabel(feature)}
-          subtitle={featureSubtitle(feature)}
+          subtitle={featureSubtitle(feature, t)}
         >
           <SettingsToggleSwitch
             pressed={feature.enabled}
@@ -170,17 +137,17 @@ export function SettingsFeaturesSection({
         !featuresLoading &&
         !featureError &&
         stableFeatures.length === 0 && (
-        <div className="settings-help">Codex 未返回稳定功能标志。</div>
-      )}
+          <div className="settings-help">{t("features.noStableFlags")}</div>
+        )}
       <SettingsSubsection
-        title="实验性功能"
-        subtitle="预览和开发中的功能。"
+        title={t("features.experimentalTitle")}
+        subtitle={t("features.experimentalSubtitle")}
       />
       {experimentalFeatures.map((feature) => (
         <SettingsToggleRow
           key={feature.name}
           title={formatFeatureLabel(feature)}
-          subtitle={featureSubtitle(feature)}
+          subtitle={featureSubtitle(feature, t)}
         >
           <SettingsToggleSwitch
             pressed={feature.enabled}
@@ -195,16 +162,14 @@ export function SettingsFeaturesSection({
         hasDynamicFeatureRows &&
         experimentalFeatures.length === 0 && (
           <div className="settings-help">
-            Codex 未返回预览或开发中的功能标志。
+            {t("features.noExperimentalFlags")}
           </div>
         )}
       {featuresLoading && (
-        <div className="settings-help">正在加载 Codex 功能标志...</div>
+        <div className="settings-help">{t("features.loadingFlags")}</div>
       )}
       {!hasFeatureWorkspace && !featuresLoading && (
-        <div className="settings-help">
-          连接工作区以加载 Codex 功能标志。
-        </div>
+        <div className="settings-help">{t("features.connectForFlags")}</div>
       )}
       {featureError && <div className="settings-help">{featureError}</div>}
     </SettingsSection>

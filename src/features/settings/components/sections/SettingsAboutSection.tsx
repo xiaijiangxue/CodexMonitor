@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import type { AppSettings } from "@/types";
 import {
@@ -35,6 +36,7 @@ export function SettingsAboutSection({
   appSettings,
   onToggleAutomaticAppUpdateChecks,
 }: SettingsAboutSectionProps) {
+  const { t } = useTranslation("settings");
   const [appBuildType, setAppBuildType] = useState<AppBuildType | "unknown">("unknown");
   const [updaterEnabled, setUpdaterEnabled] = useState(false);
   const { state: updaterState, checkForUpdates, startUpdate } = useUpdater({
@@ -86,33 +88,33 @@ export function SettingsAboutSection({
   const buildDateValue = __APP_BUILD_DATE__.trim();
   const parsedBuildDate = Date.parse(buildDateValue);
   const buildDateLabel = Number.isNaN(parsedBuildDate)
-    ? buildDateValue || "未知"
+    ? buildDateValue || t("unknown")
     : new Date(parsedBuildDate).toLocaleString();
 
   return (
-    <SettingsSection title="关于" subtitle="应用版本、构建元数据和更新控制。">
+    <SettingsSection title={t("about.title")} subtitle={t("about.subtitle")}>
       <div className="settings-field">
         <div className="settings-help">
-          版本： <code>{__APP_VERSION__}</code>
+          {t("about.version")} <code>{__APP_VERSION__}</code>
         </div>
         <div className="settings-help">
-          构建类型： <code>{appBuildType}</code>
+          {t("about.buildType")} <code>{appBuildType}</code>
         </div>
         <div className="settings-help">
-          分支： <code>{__APP_GIT_BRANCH__ || "未知"}</code>
+          {t("about.branch")} <code>{__APP_GIT_BRANCH__ || t("unknown")}</code>
         </div>
         <div className="settings-help">
-          提交： <code>{__APP_COMMIT_HASH__ || "未知"}</code>
+          {t("about.commit")} <code>{__APP_COMMIT_HASH__ || t("unknown")}</code>
         </div>
         <div className="settings-help">
-          构建日期： <code>{buildDateLabel}</code>
+          {t("about.buildDate")} <code>{buildDateLabel}</code>
         </div>
       </div>
       <div className="settings-field">
-        <div className="settings-label">应用更新</div>
+        <div className="settings-label">{t("about.appUpdates")}</div>
         <SettingsToggleRow
-          title="自动检查应用更新"
-          subtitle="启用后，CodexMonitor 会在启动时检查新版本。"
+          title={t("about.autoCheckTitle")}
+          subtitle={t("about.autoCheckSubtitle")}
         >
           <SettingsToggleSwitch
             pressed={appSettings.automaticAppUpdateChecksEnabled}
@@ -122,17 +124,17 @@ export function SettingsAboutSection({
           />
         </SettingsToggleRow>
         <div className="settings-help">
-          当前运行版本 <code>{__APP_VERSION__}</code>
+          {t("about.currentVersion")} <code>{__APP_VERSION__}</code>
         </div>
         {!updaterEnabled && (
           <div className="settings-help">
-            此运行时环境无法使用更新。
+            {t("about.updatesUnavailable")}
           </div>
         )}
 
         {updaterState.stage === "error" && (
           <div className="settings-help ds-text-danger">
-            更新失败：{updaterState.error}
+            {t("about.updateFailed", { error: updaterState.error })}
           </div>
         )}
 
@@ -142,23 +144,23 @@ export function SettingsAboutSection({
           <div className="settings-help">
             {updaterState.stage === "downloading" ? (
               <>
-                正在下载更新...{" "}
+                {t("about.downloading")}{" "}
                 {updaterState.progress?.totalBytes
                   ? `${Math.round((updaterState.progress.downloadedBytes / updaterState.progress.totalBytes) * 100)}%`
                   : formatBytes(updaterState.progress?.downloadedBytes ?? 0)}
               </>
             ) : updaterState.stage === "installing" ? (
-              "正在安装更新..."
+              t("about.installing")
             ) : (
-              "正在重启..."
+              t("about.restarting")
             )}
           </div>
         ) : updaterState.stage === "available" ? (
           <div className="settings-help">
-            版本 <code>{updaterState.version}</code> 可用。
+            {t("about.versionAvailable", { version: updaterState.version })}
           </div>
         ) : updaterState.stage === "latest" ? (
-          <div className="settings-help">您已使用最新版本。</div>
+          <div className="settings-help">{t("about.latestVersion")}</div>
         ) : null}
 
         <div className="settings-controls">
@@ -169,7 +171,7 @@ export function SettingsAboutSection({
               disabled={!updaterEnabled}
               onClick={() => void startUpdate()}
             >
-              下载并安装
+              {t("about.downloadInstall")}
             </button>
           ) : (
             <button
@@ -184,7 +186,7 @@ export function SettingsAboutSection({
               }
               onClick={() => void checkForUpdates({ announceNoUpdate: true })}
             >
-              {updaterState.stage === "checking" ? "检查中..." : "检查更新"}
+              {updaterState.stage === "checking" ? t("about.checking") : t("about.checkForUpdates")}
             </button>
           )}
         </div>
