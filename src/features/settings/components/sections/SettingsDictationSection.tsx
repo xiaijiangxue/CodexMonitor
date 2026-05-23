@@ -1,4 +1,5 @@
 import type { AppSettings, DictationModelStatus } from "@/types";
+import { useTranslation } from "react-i18next";
 import {
   SettingsSection,
   SettingsToggleRow,
@@ -42,14 +43,16 @@ export function SettingsDictationSection({
 }: SettingsDictationSectionProps) {
   const dictationProgress = dictationModelStatus?.progress ?? null;
 
+  const { t } = useTranslation("settings");
+
   return (
     <SettingsSection
-      title="Dictation"
-      subtitle="Enable microphone dictation with on-device transcription."
+      title={t("dictation.title")}
+      subtitle={t("dictation.subtitle")}
     >
       <SettingsToggleRow
-        title="Enable dictation"
-        subtitle="Downloads the selected Whisper model on first use."
+        title={t("dictation.enableTitle")}
+        subtitle={t("dictation.enableSubtitle")}
       >
         <SettingsToggleSwitch
           pressed={appSettings.dictationEnabled}
@@ -78,7 +81,7 @@ export function SettingsDictationSection({
       </SettingsToggleRow>
       <div className="settings-field">
         <label className="settings-field-label" htmlFor="dictation-model">
-          Dictation model
+          语音输入模型
         </label>
         <select
           id="dictation-model"
@@ -98,12 +101,12 @@ export function SettingsDictationSection({
           ))}
         </select>
         <div className="settings-help">
-          {selectedDictationModel.note} Download size: {selectedDictationModel.size}.
+          {selectedDictationModel.note} 下载大小：{selectedDictationModel.size}。
         </div>
       </div>
       <div className="settings-field">
         <label className="settings-field-label" htmlFor="dictation-language">
-          Preferred dictation language
+          首选语音输入语言
         </label>
         <select
           id="dictation-language"
@@ -116,7 +119,7 @@ export function SettingsDictationSection({
             })
           }
         >
-          <option value="">Auto-detect only</option>
+          <option value="">仅自动检测</option>
           <option value="en">English</option>
           <option value="es">Spanish</option>
           <option value="fr">French</option>
@@ -137,12 +140,12 @@ export function SettingsDictationSection({
           <option value="zh">Chinese</option>
         </select>
         <div className="settings-help">
-          Auto-detect stays on; this nudges the decoder toward your preference.
+          自动检测保持开启；这会使解码器偏向您的偏好。
         </div>
       </div>
       <div className="settings-field">
         <label className="settings-field-label" htmlFor="dictation-hold-key">
-          Hold-to-dictate key
+          长按语音输入键
         </label>
         <select
           id="dictation-hold-key"
@@ -155,25 +158,25 @@ export function SettingsDictationSection({
             })
           }
         >
-          <option value="">Off</option>
+          <option value="">关闭</option>
           <option value="alt">{optionKeyLabel}</option>
           <option value="shift">Shift</option>
           <option value="control">Control</option>
           <option value="meta">{metaKeyLabel}</option>
         </select>
         <div className="settings-help">
-          Hold the key to start dictation, release to stop and process.
+          按住键开始语音输入，松开停止并处理。
         </div>
       </div>
       {dictationModelStatus && (
         <div className="settings-field">
-          <div className="settings-field-label">Model status ({selectedDictationModel.label})</div>
+          <div className="settings-field-label">模型状态（{selectedDictationModel.label}）</div>
           <div className="settings-help">
-            {dictationModelStatus.state === "ready" && "Ready for dictation."}
-            {dictationModelStatus.state === "missing" && "Model not downloaded yet."}
-            {dictationModelStatus.state === "downloading" && "Downloading model..."}
+            {dictationModelStatus.state === "ready" && "语音输入已就绪。"}
+            {dictationModelStatus.state === "missing" && "模型尚未下载。"}
+            {dictationModelStatus.state === "downloading" && "正在下载模型..."}
             {dictationModelStatus.state === "error" &&
-              (dictationModelStatus.error ?? "Download error.")}
+              (dictationModelStatus.error ?? "下载错误。")}
           </div>
           {dictationProgress && (
             <div className="settings-download-progress">
@@ -203,7 +206,7 @@ export function SettingsDictationSection({
                 onClick={onDownloadDictationModel}
                 disabled={!onDownloadDictationModel}
               >
-                Download model
+                下载模型
               </button>
             )}
             {dictationModelStatus.state === "downloading" && (
@@ -213,7 +216,7 @@ export function SettingsDictationSection({
                 onClick={onCancelDictationDownload}
                 disabled={!onCancelDictationDownload}
               >
-                Cancel download
+                取消下载
               </button>
             )}
             {dictationReady && (
@@ -223,7 +226,7 @@ export function SettingsDictationSection({
                 onClick={onRemoveDictationModel}
                 disabled={!onRemoveDictationModel}
               >
-                Remove model
+                移除模型
               </button>
             )}
           </div>

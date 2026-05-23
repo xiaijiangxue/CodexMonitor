@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useMemo, useState, type KeyboardEvent } from "react";
 import {
   SettingsSection,
@@ -47,7 +48,7 @@ function ShortcutField({
   ) => void;
   onClearShortcut: (key: ShortcutSettingKey) => void;
 }) {
-  return (
+    return (
     <div className="settings-field">
       <div className="settings-field-label">{item.label}</div>
       <div className="settings-field-row">
@@ -76,6 +77,7 @@ export function SettingsShortcutsSection({
   onShortcutKeyDown,
   onClearShortcut,
 }: SettingsShortcutsSectionProps) {
+  const { t } = useTranslation("settings");
   const isMac = isMacPlatform();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -235,18 +237,18 @@ export function SettingsShortcutsSection({
 
   return (
     <SettingsSection
-      title="Shortcuts"
-      subtitle="Customize keyboard shortcuts for file actions, composer, panels, and navigation."
+      title={t("shortcuts.title")}
+      subtitle={t("shortcuts.subtitle")}
     >
       <div className="settings-field settings-shortcuts-search">
         <label className="settings-field-label" htmlFor="settings-shortcuts-search">
-          Search shortcuts
+          {t("shortcuts.searchLabel")}
         </label>
         <div className="settings-field-row">
           <input
             id="settings-shortcuts-search"
             className="settings-input"
-            placeholder="Search shortcuts"
+            placeholder={t("shortcuts.searchPlaceholder")}
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
           />
@@ -260,7 +262,7 @@ export function SettingsShortcutsSection({
             </button>
           )}
         </div>
-        <div className="settings-help">Filter by section name, action, or default shortcut.</div>
+        <div className="settings-help">{t("shortcuts.searchHelp")}</div>
       </div>
       {filteredGroups.map((group, index) => (
         <div key={group.title}>

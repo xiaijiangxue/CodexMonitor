@@ -1,4 +1,5 @@
 import type { CodexFeature } from "@/types";
+import { useTranslation } from "react-i18next";
 import {
   SettingsSection,
   SettingsSubsection,
@@ -93,14 +94,16 @@ export function SettingsFeaturesSection({
   onToggleCodexFeature,
   onUpdateAppSettings,
 }: SettingsFeaturesSectionProps) {
+    const { t } = useTranslation("settings");
+
   return (
     <SettingsSection
-      title="Features"
-      subtitle="Manage stable and experimental Codex features."
+      title={t("features.title")}
+      subtitle={t("features.subtitle")}
     >
       <SettingsToggleRow
-        title="Config file"
-        subtitle={`Open the Codex config in ${fileManagerName()}.`}
+        title="配置文件"
+        subtitle={`在 ${fileManagerName()} 中打开 Codex 配置。`}
       >
         <button type="button" className="ghost" onClick={onOpenConfig}>
           {openInFileManagerLabel()}
@@ -108,15 +111,14 @@ export function SettingsFeaturesSection({
       </SettingsToggleRow>
       {openConfigError && <div className="settings-help">{openConfigError}</div>}
       <SettingsSubsection
-        title="Stable Features"
-        subtitle="Production-ready features enabled by default."
+        title="稳定功能"
+        subtitle="默认启用的生产就绪功能。"
       />
       <SettingsToggleRow
-        title="Personality"
+        title="个性"
         subtitle={
           <>
-            Choose Codex communication style (writes top-level <code>personality</code> in
-            config.toml).
+            选择 Codex 沟通风格（在 config.toml 中写入顶级 <code>personality</code>）。
           </>
         }
       >
@@ -132,13 +134,13 @@ export function SettingsFeaturesSection({
           }
           aria-label="Personality"
         >
-          <option value="friendly">Friendly</option>
-          <option value="pragmatic">Pragmatic</option>
+          <option value="friendly">友好</option>
+          <option value="pragmatic">务实</option>
         </select>
       </SettingsToggleRow>
       <SettingsToggleRow
-        title="Pause queued messages when a response is required"
-        subtitle="Keep queued messages paused while Codex is waiting for plan accept/changes or your answers."
+        title="需要响应时暂停队列消息"
+        subtitle="当 Codex 等待接受计划/变更或您的回答时，保持队列消息暂停。"
       >
         <SettingsToggleSwitch
           pressed={appSettings.pauseQueuedMessagesWhenResponseRequired}
@@ -168,11 +170,11 @@ export function SettingsFeaturesSection({
         !featuresLoading &&
         !featureError &&
         stableFeatures.length === 0 && (
-        <div className="settings-help">No stable feature flags returned by Codex.</div>
+        <div className="settings-help">Codex 未返回稳定功能标志。</div>
       )}
       <SettingsSubsection
-        title="Experimental Features"
-        subtitle="Preview and under-development features."
+        title="实验性功能"
+        subtitle="预览和开发中的功能。"
       />
       {experimentalFeatures.map((feature) => (
         <SettingsToggleRow
@@ -193,15 +195,15 @@ export function SettingsFeaturesSection({
         hasDynamicFeatureRows &&
         experimentalFeatures.length === 0 && (
           <div className="settings-help">
-            No preview or under-development feature flags returned by Codex.
+            Codex 未返回预览或开发中的功能标志。
           </div>
         )}
       {featuresLoading && (
-        <div className="settings-help">Loading Codex feature flags...</div>
+        <div className="settings-help">正在加载 Codex 功能标志...</div>
       )}
       {!hasFeatureWorkspace && !featuresLoading && (
         <div className="settings-help">
-          Connect a workspace to load Codex feature flags.
+          连接工作区以加载 Codex 功能标志。
         </div>
       )}
       {featureError && <div className="settings-help">{featureError}</div>}
