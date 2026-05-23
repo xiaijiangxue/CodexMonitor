@@ -1,0 +1,12 @@
+{
+  "tabs": "终端标签页",
+  "resizePanel": "调整终端面板大小",
+  "newTerminal": "新建终端",
+  "closeTab": "关闭 {{title}}",
+  "openTerminal": "打开终端以启动会话。",
+  "preparingTerminal": "正在准备终端...",
+  "startingSession": "正在启动终端会话...",
+  "terminalReady": "终端已就绪。",
+  "failedToStart": "启动终端会话失败。",
+  "autoName": "终端 {{index}}"
+}

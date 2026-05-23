@@ -1,0 +1,8 @@
+{
+  "processing": "Processing...",
+  "startDictation": "Start dictation",
+  "stopDictation": "Stop dictation",
+  "cancelTranscription": "Cancel transcription",
+  "openSettings": "Open dictation settings",
+  "disabledSettings": "Dictation disabled. Open settings"
+}

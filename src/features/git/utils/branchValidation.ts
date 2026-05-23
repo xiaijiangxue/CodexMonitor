@@ -1,35 +1,37 @@
+import i18n from "@/locales/i18n";
+
 export function validateBranchName(name: string): string | null {
   const trimmed = name.trim();
   if (trimmed.length === 0) {
     return null;
   }
   if (trimmed === "." || trimmed === "..") {
-    return "Branch name cannot be '.' or '..'.";
+    return i18n.t("git:branchNameDot");
   }
   if (/\s/.test(trimmed)) {
-    return "Branch name cannot contain spaces.";
+    return i18n.t("git:branchNameSpaces");
   }
   if (trimmed.startsWith("/") || trimmed.endsWith("/")) {
-    return "Branch name cannot start or end with '/'.";
+    return i18n.t("git:branchNameSlash");
   }
   if (trimmed.includes("//")) {
-    return "Branch name cannot contain '//'.";
+    return i18n.t("git:branchNameDoubleSlash");
   }
   if (trimmed.endsWith(".lock")) {
-    return "Branch name cannot end with '.lock'.";
+    return i18n.t("git:branchNameLock");
   }
   if (trimmed.includes("..")) {
-    return "Branch name cannot contain '..'.";
+    return i18n.t("git:branchNameDoubleDot");
   }
   if (trimmed.includes("@{")) {
-    return "Branch name cannot contain '@{'.";
+    return i18n.t("git:branchNameAt");
   }
   const invalidChars = ["~", "^", ":", "?", "*", "[", "\\"];
   if (invalidChars.some((char) => trimmed.includes(char))) {
-    return "Branch name contains invalid characters.";
+    return i18n.t("git:branchNameInvalidChars");
   }
   if (trimmed.endsWith(".")) {
-    return "Branch name cannot end with '.'.";
+    return i18n.t("git:branchNameEndDot");
   }
   return null;
 }

@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
+import i18n from "@/locales/i18n";
 import type {
   GitHubPullRequest,
   GitHubPullRequestComment,
@@ -13,10 +14,10 @@ import { pushErrorToast } from "@services/toasts";
 import { buildPullRequestReviewPrompt } from "@utils/pullRequestReviewPrompt";
 
 const REVIEW_ACTIONS: PullRequestReviewAction[] = [
-  { id: "pr-review-full", label: "Review PR", intent: "full" },
-  { id: "pr-review-risks", label: "Risk Scan", intent: "risks" },
-  { id: "pr-review-tests", label: "Test Plan", intent: "tests" },
-  { id: "pr-review-summary", label: "Summarize", intent: "summary" },
+  { id: "pr-review-full", label: i18n.t("git:reviewPR"), intent: "full" },
+  { id: "pr-review-risks", label: i18n.t("git:riskScan"), intent: "risks" },
+  { id: "pr-review-tests", label: i18n.t("git:testPlan"), intent: "tests" },
+  { id: "pr-review-summary", label: i18n.t("git:summarize"), intent: "summary" },
 ];
 
 type UsePullRequestReviewActionsOptions = {
@@ -92,7 +93,7 @@ export function usePullRequestReviewActions({
             activate: activateThread,
           });
         if (!reviewThreadId) {
-          throw new Error("Failed to start a review thread.");
+          throw new Error(i18n.t("git:failedToStartReview"));
         }
 
         const prompt = buildPullRequestReviewPrompt({
@@ -110,7 +111,7 @@ export function usePullRequestReviewActions({
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         pushErrorToast({
-          title: "PR review failed",
+          title: i18n.t("git:reviewFailed"),
           message,
         });
         return null;

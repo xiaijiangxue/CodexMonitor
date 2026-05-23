@@ -3,6 +3,10 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { FilePreviewPopover } from "./FilePreviewPopover";
 
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (k: string) => k }),
+}));
+
 vi.mock("../../app/components/OpenAppMenu", () => ({
   OpenAppMenu: () => <div data-testid="open-app-menu" />,
 }));
@@ -34,8 +38,8 @@ describe("FilePreviewPopover", () => {
       />,
     );
 
-    expect(screen.getByText("Shift + click or drag + click")).toBeTruthy();
-    expect(screen.getByText("for multi-line selection")).toBeTruthy();
+    expect(screen.getByText("selectionHintsTitle")).toBeTruthy();
+    expect(screen.getByText("selectionHintsSubtitle")).toBeTruthy();
   });
 
   it("wires drag selection mouse events to line handlers", () => {
@@ -105,7 +109,7 @@ describe("FilePreviewPopover", () => {
       />,
     );
 
-    const addButton = screen.getByRole("button", { name: "Add to chat" });
+    const addButton = screen.getByRole("button", { name: "addToChat" });
     expect(addButton.hasAttribute("disabled")).toBe(true);
   });
 });

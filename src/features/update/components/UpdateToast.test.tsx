@@ -5,6 +5,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { UpdateState } from "../hooks/useUpdater";
 import { UpdateToast } from "./UpdateToast";
 
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (k: string) => k }),
+}));
+
 vi.mock("@tauri-apps/plugin-opener", () => ({
   openUrl: vi.fn(),
 }));
@@ -28,12 +32,12 @@ describe("UpdateToast", () => {
     const region = screen.getByRole("region");
     expect(region.getAttribute("aria-live")).toBe("polite");
     expect(screen.getByRole("status")).toBeTruthy();
-    expect(screen.getAllByText("Update")).toHaveLength(2);
+    expect(screen.getAllByText("update")).toHaveLength(2);
     expect(screen.getByText("v1.2.3")).toBeTruthy();
-    expect(screen.getByText("A new version is available.")).toBeTruthy();
+    expect(screen.getByText("updateAvailableBody")).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("button", { name: "Later" }));
-    fireEvent.click(screen.getByRole("button", { name: "Update" }));
+    fireEvent.click(screen.getByRole("button", { name: "later" }));
+    fireEvent.click(screen.getByRole("button", { name: "updateNow" }));
 
     expect(onDismiss).toHaveBeenCalledTimes(1);
     expect(onUpdate).toHaveBeenCalledTimes(1);
@@ -49,7 +53,7 @@ describe("UpdateToast", () => {
       <UpdateToast state={state} onUpdate={vi.fn()} onDismiss={vi.fn()} />,
     );
 
-    expect(screen.getByText(/Downloading update/)).toBeTruthy();
+    expect(screen.getByText("downloadingUpdate")).toBeTruthy();
     expect(screen.getByText("500 B / 1000 B")).toBeTruthy();
     const fill = container.querySelector(".update-toast-progress-fill");
     expect(fill).toBeTruthy();
@@ -71,11 +75,11 @@ describe("UpdateToast", () => {
       <UpdateToast state={state} onUpdate={onUpdate} onDismiss={onDismiss} />,
     );
 
-    expect(screen.getByText("Update failed.")).toBeTruthy();
+    expect(screen.getByText("updateFailed")).toBeTruthy();
     expect(screen.getByText("Network error")).toBeTruthy();
 
-    fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
-    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    fireEvent.click(screen.getByRole("button", { name: "dismiss" }));
+    fireEvent.click(screen.getByRole("button", { name: "retry" }));
 
     expect(onDismiss).toHaveBeenCalledTimes(1);
     expect(onUpdate).toHaveBeenCalledTimes(1);
@@ -90,8 +94,8 @@ describe("UpdateToast", () => {
     );
     const scoped = within(container);
 
-    expect(scoped.getByText("You’re up to date.")).toBeTruthy();
-    fireEvent.click(scoped.getByRole("button", { name: "Dismiss" }));
+    expect(scoped.getByText("youreUpToDate")).toBeTruthy();
+    fireEvent.click(scoped.getByRole("button", { name: "dismiss" }));
     expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
@@ -114,9 +118,9 @@ describe("UpdateToast", () => {
     );
     const scoped = within(container);
 
-    expect(scoped.getByText("What's New")).toBeTruthy();
-    expect(scoped.getByText(/Loading release notes/i)).toBeTruthy();
-    fireEvent.click(scoped.getByRole("button", { name: "Dismiss" }));
+    expect(scoped.getByText("whatsNew")).toBeTruthy();
+    expect(scoped.getByText("updatedLoadingNotes")).toBeTruthy();
+    fireEvent.click(scoped.getByRole("button", { name: "dismiss" }));
     expect(onDismissPostUpdateNotice).toHaveBeenCalledTimes(1);
   });
 
@@ -145,10 +149,10 @@ describe("UpdateToast", () => {
     expect(scoped.getByText("Highlights")).toBeTruthy();
     expect(scoped.getByText("Added release notes toast")).toBeTruthy();
 
-    fireEvent.click(scoped.getByRole("button", { name: "View on GitHub" }));
+    fireEvent.click(scoped.getByRole("button", { name: "viewOnGitHub" }));
     expect(openUrlMock).toHaveBeenCalledWith(htmlUrl);
 
-    fireEvent.click(scoped.getByRole("button", { name: "Dismiss" }));
+    fireEvent.click(scoped.getByRole("button", { name: "dismiss" }));
     expect(onDismissPostUpdateNotice).toHaveBeenCalledTimes(1);
   });
 
@@ -172,10 +176,10 @@ describe("UpdateToast", () => {
     const scoped = within(container);
 
     expect(
-      scoped.getByText("Updated to v1.2.3. Release notes could not be loaded."),
+      scoped.getByText("updatedFallback"),
     ).toBeTruthy();
-    fireEvent.click(scoped.getByRole("button", { name: "View on GitHub" }));
+    fireEvent.click(scoped.getByRole("button", { name: "viewOnGitHub" }));
     expect(openUrlMock).toHaveBeenCalledWith(htmlUrl);
-    expect(scoped.queryByText("A new version is available.")).toBeNull();
+    expect(scoped.queryByText("updateAvailableBody")).toBeNull();
   });
 });

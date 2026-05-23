@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react";
+import i18n from "@/locales/i18n";
 import type {
   AppMention,
   ComposerSendIntent,
@@ -214,8 +215,8 @@ export function usePullRequestComposer({
       return [
         {
           id: "commit-review",
-          label: "Review Commit",
-          title: `Review commit ${shortSha}`,
+          label: i18n.t("git:reviewCommit"),
+          title: i18n.t("git:reviewCommitTitle", { sha: shortSha }),
           onSelect: async () => {
             await startReview(reviewCommand);
           },
@@ -237,7 +238,7 @@ export function usePullRequestComposer({
     startReview,
   ]);
 
-  const composerSendLabel = isPullRequestComposer ? "Ask PR" : undefined;
+  const composerSendLabel = isPullRequestComposer ? i18n.t("git:askPR") : undefined;
   const handleComposerSend = isPullRequestComposer
     ? handleSendPullRequestQuestion
     : handleSend;

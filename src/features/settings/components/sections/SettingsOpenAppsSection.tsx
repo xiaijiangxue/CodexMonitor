@@ -1,6 +1,7 @@
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down";
 import ChevronUp from "lucide-react/dist/esm/icons/chevron-up";
 import Trash2 from "lucide-react/dist/esm/icons/trash-2";
+import { useTranslation } from "react-i18next";
 import { SettingsSection } from "@/features/design-system/components/settings/SettingsPrimitives";
 import type { OpenAppTarget } from "@/types";
 import {
@@ -40,10 +41,11 @@ export function SettingsOpenAppsSection({
   onAddOpenApp,
   onSelectOpenAppDefault,
 }: SettingsOpenAppsSectionProps) {
+  const { t } = useTranslation("settings");
   return (
     <SettingsSection
-      title="Open in"
-      subtitle="Customize the Open in menu shown in the title bar and file previews."
+      title={t("openAgents.title")}
+      subtitle={t("openAgents.subtitle")}
     >
       <div className="settings-open-apps">
         {openAppDrafts.map((target, index) => {
@@ -55,12 +57,12 @@ export function SettingsOpenAppsSection({
             target.kind !== "command" || Boolean(target.command?.trim());
           const isComplete = labelValid && appNameValid && commandValid;
           const incompleteHint = !labelValid
-            ? "Label required"
+            ? t("openAgents.labelRequired")
             : target.kind === "app"
-              ? "App name required"
+              ? t("openAgents.nameRequired")
               : target.kind === "command"
-                ? "Command required"
-                : "Complete required fields";
+                ? t("openAgents.commandRequired")
+                : t("openAgents.completeRequired");
 
           return (
             <div
@@ -78,18 +80,18 @@ export function SettingsOpenAppsSection({
               </div>
               <div className="settings-open-app-fields">
                 <label className="settings-open-app-field settings-open-app-field--label">
-                  <span className="settings-visually-hidden">Label</span>
+                  <span className="settings-visually-hidden">{t("openAgents.label")}</span>
                   <input
                     className="settings-input settings-input--compact settings-open-app-input settings-open-app-input--label"
                     value={target.label}
-                    placeholder="Label"
+                    placeholder={t("openAgents.label")}
                     onChange={(event) =>
                       onOpenAppDraftChange(index, {
                         label: event.target.value,
                       })
                     }
                     onBlur={onCommitOpenApps}
-                    aria-label={`Open app label ${index + 1}`}
+                    aria-label={t("openAgents.ariaLabel", { index: index + 1 })}
                     data-invalid={!labelValid || undefined}
                   />
                 </label>

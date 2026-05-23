@@ -1,0 +1,16 @@
+{
+  "dismiss": "Dismiss",
+  "dismissError": "Dismiss error",
+  "approvalNeeded": "Approval needed",
+  "approvalNeededFor": "Approval needed — {{workspace}}",
+  "question": "Question",
+  "questionFor": "Question — {{workspace}}",
+  "inputNeeded": "Your input is needed.",
+  "planReady": "Plan ready",
+  "planReadyFor": "Plan ready — {{workspace}}",
+  "planReadyBody": "Plan is ready. Open CodexMonitor to respond.",
+  "agentComplete": "Agent Complete",
+  "agentError": "Agent Error",
+  "agentTaskFinished": "Your agent has finished its task.",
+  "errorOccurred": "An error occurred."
+}

@@ -1,3 +1,4 @@
+import i18n from "@/locales/i18n";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CustomPromptOption, DebugEntry, WorkspaceInfo } from "../../../types";
 import {
@@ -120,7 +121,7 @@ export function useCustomPrompts({ activeWorkspace, onDebug }: UseCustomPromptsO
 
   const requireWorkspaceId = useCallback(() => {
     if (!workspaceId) {
-      throw new Error("No workspace selected.");
+      throw new Error(i18n.t("noWorkspaceSelected", { ns: "app" }));
     }
     return workspaceId;
   }, [workspaceId]);

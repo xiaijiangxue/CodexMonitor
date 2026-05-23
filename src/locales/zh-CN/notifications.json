@@ -1,0 +1,16 @@
+{
+  "dismiss": "关闭",
+  "dismissError": "关闭错误提示",
+  "approvalNeeded": "需要审批",
+  "approvalNeededFor": "需要审批 — {{workspace}}",
+  "question": "问题",
+  "questionFor": "问题 — {{workspace}}",
+  "inputNeeded": "需要您的输入。",
+  "planReady": "计划就绪",
+  "planReadyFor": "计划就绪 — {{workspace}}",
+  "planReadyBody": "计划已就绪。打开 CodexMonitor 以响应。",
+  "agentComplete": "代理已完成",
+  "agentError": "代理错误",
+  "agentTaskFinished": "您的代理已完成任务。",
+  "errorOccurred": "发生了一个错误。"
+}

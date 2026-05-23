@@ -1,0 +1,12 @@
+{
+  "tabs": "Terminal tabs",
+  "resizePanel": "Resize terminal panel",
+  "newTerminal": "New terminal",
+  "closeTab": "Close {{title}}",
+  "openTerminal": "Open a terminal to start a session.",
+  "preparingTerminal": "Preparing terminal...",
+  "startingSession": "Starting terminal session...",
+  "terminalReady": "Terminal ready.",
+  "failedToStart": "Failed to start terminal session.",
+  "autoName": "Terminal {{index}}"
+}

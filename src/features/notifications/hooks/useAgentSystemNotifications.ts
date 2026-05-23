@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import type { DebugEntry } from "../../../types";
 import { sendNotification } from "../../../services/tauri";
 import { useAppServerEvents } from "../../app/hooks/useAppServerEvents";
@@ -42,6 +43,7 @@ export function useAgentSystemNotifications({
   onThreadNotificationSent,
   onDebug,
 }: SystemNotificationOptions) {
+  const { t } = useTranslation("notifications");
   const turnStartById = useRef(new Map<string, number>());
   const turnStartByThread = useRef(new Map<string, number>());
   const lastNotifiedAtByThread = useRef(new Map<string, number>());
@@ -157,7 +159,7 @@ export function useAgentSystemNotifications({
 
   const getNotificationContent = useCallback(
     (workspaceId: string, threadId: string, fallbackBody: string) => {
-      const title = getWorkspaceName?.(workspaceId) ?? "Agent Complete";
+      const title = getWorkspaceName?.(workspaceId) ?? t("agentComplete");
       const threadKey = buildThreadKey(workspaceId, threadId);
       const lastMessage = lastMessageByThread.current.get(threadKey);
       const body = lastMessage
@@ -165,7 +167,7 @@ export function useAgentSystemNotifications({
         : fallbackBody;
       return { title, body };
     },
-    [getWorkspaceName],
+    [getWorkspaceName, t],
   );
 
   const handleTurnStarted = useCallback(
@@ -191,7 +193,7 @@ export function useAgentSystemNotifications({
       const { title, body } = getNotificationContent(
         workspaceId,
         threadId,
-        "Your agent has finished its task.",
+        t("agentTaskFinished"),
       );
       onThreadNotificationSent?.(workspaceId, threadId);
       void notify(title, body, "success", {
@@ -219,8 +221,8 @@ export function useAgentSystemNotifications({
       if (!shouldNotify(workspaceId, threadId, durationMs, threadKey)) {
         return;
       }
-      const title = getWorkspaceName?.(workspaceId) ?? "Agent Error";
-      const body = payload.message || "An error occurred.";
+      const title = getWorkspaceName?.(workspaceId) ?? t("agentError");
+      const body = payload.message || t("errorOccurred");
       onThreadNotificationSent?.(workspaceId, threadId);
       void notify(title, truncateText(body, MAX_BODY_LENGTH), "error", {
         kind: "thread",
@@ -267,7 +269,7 @@ export function useAgentSystemNotifications({
       const { title, body } = getNotificationContent(
         event.workspaceId,
         event.threadId,
-        "Your agent has finished its task.",
+        t("agentTaskFinished"),
       );
       onThreadNotificationSent?.(event.workspaceId, event.threadId);
       void notify(title, body, "success", {

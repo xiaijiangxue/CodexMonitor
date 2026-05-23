@@ -6,6 +6,7 @@ import {
   useState,
   type ClipboardEvent,
 } from "react";
+import { useTranslation } from "react-i18next";
 import type {
   AppMention,
   AppOption,
@@ -253,6 +254,7 @@ export const Composer = memo(function Composer({
   const isDictationBusy = dictationState !== "idle";
   const canSend = text.trim().length > 0 || attachedImages.length > 0;
   const isMac = isMacPlatform();
+  const { t } = useTranslation("composer");
   const followUpShortcutLabel = isMac ? "Shift+Cmd+Enter" : "Shift+Ctrl+Enter";
   const effectiveFollowUpBehavior: FollowUpMessageBehavior =
     followUpMessageBehavior === "steer" && steerAvailable ? "steer" : "queue";
@@ -268,8 +270,8 @@ export const Composer = memo(function Composer({
     : "default";
   const effectiveSendLabel = isProcessing
     ? effectiveFollowUpBehavior === "steer"
-      ? "Steer"
-      : "Queue"
+      ? t("steer")
+      : t("queue")
     : sendLabel;
   const {
     expandFenceOnSpace,
@@ -584,25 +586,22 @@ export const Composer = memo(function Composer({
       />
       {isProcessing && composerFollowUpHintEnabled && (
         <div className="composer-followup-hint" role="status" aria-live="polite">
-          <div className="composer-followup-title">Follow-up behavior</div>
+          <div className="composer-followup-title">{t("followUpHintTitle")}</div>
           <div className="composer-followup-copy">
             {oppositeFallsBackToQueue ? (
-              <>
-                Default: Queue (Steer unavailable). Both Enter and {followUpShortcutLabel} will
-                queue this message.
-              </>
+              t("followUpDefaultQueue", { shortcut: followUpShortcutLabel })
             ) : (
-              <>
-                Default: {effectiveFollowUpBehavior === "steer" ? "Steer" : "Queue"}. Press{" "}
-                {followUpShortcutLabel} to{" "}
-                {oppositeFollowUpIntent === "steer" ? "steer" : "queue"} this message.
-              </>
+              t("followUpWithShortcut", {
+                mode: effectiveFollowUpBehavior === "steer" ? t("steer") : t("queue"),
+                shortcut: followUpShortcutLabel,
+                action: oppositeFollowUpIntent === "steer" ? t("steer") : t("queue"),
+              })
             )}
           </div>
         </div>
       )}
       {contextActions.length > 0 ? (
-        <div className="composer-context-actions" role="toolbar" aria-label="Review tools">
+        <div className="composer-context-actions" role="toolbar" aria-label={t("reviewTools")}>
           {contextActions.map((action) => (
             <button
               key={action.id}

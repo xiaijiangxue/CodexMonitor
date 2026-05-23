@@ -1,0 +1,4 @@
+{
+  "configDescription": "在 CODEX_HOME/config.toml 中配置",
+  "configLabel": "{{name}}（配置）"
+}
