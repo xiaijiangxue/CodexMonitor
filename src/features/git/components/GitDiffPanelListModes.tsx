@@ -326,7 +326,7 @@ export function GitPullRequestsModeContent({
             <div className="git-pr-meta">
               <span className="git-pr-author-inline">@{author}</span>
               {pullRequest.isDraft && (
-                <span className="git-pr-pill git-pr-draft">Draft</span>
+                <span className="git-pr-pill git-pr-draft">{t("draft")}</span>
               )}
             </div>
           </div>

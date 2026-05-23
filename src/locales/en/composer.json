@@ -1,0 +1,16 @@
+{
+  "title": "Composer",
+  "placeholder": "Type a message...",
+  "send": "Send",
+  "sendWith": "Send with {{key}}",
+  "attachFiles": "Attach files",
+  "expand": "Expand composer",
+  "collapse": "Collapse composer",
+  "formatting": "Formatting",
+  "markdownSupported": "Markdown is supported",
+  "addContext": "Add context",
+  "slashCommands": "Commands",
+  "mentionProjects": "Mention projects",
+  "codeBlock": "Code block",
+  "dragAndDrop": "Drop files to attach"
+}

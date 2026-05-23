@@ -1,0 +1,19 @@
+{
+  "about": "关于",
+  "version": "版本",
+  "build": "构建",
+  "checkForUpdates": "检查更新",
+  "upToDate": "Codex Monitor 已是最新版本",
+  "updateAvailable": "有可用更新",
+  "downloading": "正在下载更新...",
+  "installUpdate": "安装更新",
+  "skipVersion": "跳过此版本",
+  "releaseNotes": "发布说明",
+  "website": "网站",
+  "documentation": "文档",
+  "github": "GitHub",
+  "twitter": "Twitter",
+  "discord": "Discord",
+  "licenses": "许可证",
+  "acknowledgements": "致谢"
+}

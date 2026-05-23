@@ -1,0 +1,19 @@
+{
+  "about": "About",
+  "version": "Version",
+  "build": "Build",
+  "checkForUpdates": "Check for updates",
+  "upToDate": "Codex Monitor is up to date",
+  "updateAvailable": "Update available",
+  "downloading": "Downloading update...",
+  "installUpdate": "Install update",
+  "skipVersion": "Skip this version",
+  "releaseNotes": "Release notes",
+  "website": "Website",
+  "documentation": "Documentation",
+  "github": "GitHub",
+  "twitter": "Twitter",
+  "discord": "Discord",
+  "licenses": "Licenses",
+  "acknowledgements": "Acknowledgements"
+}

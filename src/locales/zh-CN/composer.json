@@ -1,0 +1,16 @@
+{
+  "title": "编辑器",
+  "placeholder": "输入消息...",
+  "send": "发送",
+  "sendWith": "按 {{key}} 发送",
+  "attachFiles": "附件",
+  "expand": "展开编辑器",
+  "collapse": "收起编辑器",
+  "formatting": "格式",
+  "markdownSupported": "支持 Markdown",
+  "addContext": "添加上下文",
+  "slashCommands": "命令",
+  "mentionProjects": "提及项目",
+  "codeBlock": "代码块",
+  "dragAndDrop": "拖放文件到此处"
+}

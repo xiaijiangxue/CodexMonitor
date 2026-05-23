@@ -1,5 +1,6 @@
 import type { GitLogEntry } from "../../../types";
 import type { MouseEvent as ReactMouseEvent } from "react";
+import { useTranslation } from "react-i18next";
 import Check from "lucide-react/dist/esm/icons/check";
 import Minus from "lucide-react/dist/esm/icons/minus";
 import Plus from "lucide-react/dist/esm/icons/plus";
@@ -44,6 +45,7 @@ export function CommitButton({
   commitLoading,
   onCommit,
 }: CommitButtonProps) {
+  const { t } = useTranslation("git");
   const hasMessage = commitMessage.trim().length > 0;
   const hasChanges = hasStagedFiles || hasUnstagedFiles;
   const canCommit = hasMessage && hasChanges && !commitLoading;
@@ -63,12 +65,12 @@ export function CommitButton({
         disabled={!canCommit}
         title={
           !hasMessage
-            ? "Enter a commit message"
+            ? t("enterCommitMessage")
             : !hasChanges
-              ? "No changes to commit"
+              ? t("noChangesToCommit")
               : hasStagedFiles
-                ? "Commit staged changes"
-                : "Commit all unstaged changes"
+                ? t("commitStagedChanges")
+                : t("commitAllUnstagedChanges")
         }
       >
         {commitLoading ? (
@@ -88,7 +90,7 @@ export function CommitButton({
             <path d="M20 6 9 17l-5-5" />
           </svg>
         )}
-        <span>{commitLoading ? "Committing..." : "Commit"}</span>
+        <span>{commitLoading ? t("committing") : t("commit")}</span>
       </button>
     </div>
   );
@@ -107,6 +109,7 @@ export function SidebarError({
   action,
   onDismiss,
 }: SidebarErrorProps) {
+  const { t } = useTranslation("git");
   return (
     <div className={`sidebar-error sidebar-error-${variant}`}>
       <div className="sidebar-error-body">
@@ -129,8 +132,8 @@ export function SidebarError({
         type="button"
         className="ghost icon-button sidebar-error-dismiss"
         onClick={onDismiss}
-        aria-label="Dismiss error"
-        title="Dismiss error"
+        aria-label={t("dismissError")}
+        title={t("dismissError")}
       >
         <X size={12} aria-hidden />
       </button>
