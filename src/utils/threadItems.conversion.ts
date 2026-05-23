@@ -1,6 +1,7 @@
 import type { ConversationItem } from "../types";
 import { parseCollabToolCallItem } from "./threadItems.collab";
 import { asNumber, asString } from "./threadItems.shared";
+import i18n from "../locales/i18n";
 
 function extractImageInputValue(input: Record<string, unknown>) {
   const value =
@@ -75,7 +76,7 @@ export function buildConversationItem(
       id,
       kind: "tool",
       toolType: "plan",
-      title: "Plan",
+      title: i18n.t("planLabel", { ns: "messages" }),
       detail: asString(item.status ?? ""),
       status: asString(item.status ?? ""),
       output: asString(item.text ?? ""),
@@ -90,7 +91,7 @@ export function buildConversationItem(
       id,
       kind: "tool",
       toolType: type,
-      title: command ? `Command: ${command}` : "Command",
+      title: command ? `${i18n.t("commandLabel", { ns: "messages" })} ${command}` : i18n.t("commandFallback", { ns: "messages" }),
       detail: asString(item.cwd ?? ""),
       status: asString(item.status ?? ""),
       output: asString(item.aggregatedOutput ?? ""),
@@ -136,8 +137,8 @@ export function buildConversationItem(
       id,
       kind: "tool",
       toolType: type,
-      title: "File changes",
-      detail: paths || "Pending changes",
+      title: i18n.t("fileChanges", { ns: "messages" }),
+      detail: paths || i18n.t("pendingChanges", { ns: "messages" }),
       status: asString(item.status ?? ""),
       output: diffOutput,
       changes: normalizedChanges,
@@ -151,7 +152,7 @@ export function buildConversationItem(
       id,
       kind: "tool",
       toolType: type,
-      title: `Tool: ${server}${tool ? ` / ${tool}` : ""}`,
+      title: i18n.t("toolCallTitle", { ns: "messages", server, tool }),
       detail: args,
       status: asString(item.status ?? ""),
       output: asString(item.result ?? item.error ?? ""),
@@ -166,9 +167,9 @@ export function buildConversationItem(
       id,
       kind: "tool",
       toolType: type,
-      title: "Web search",
+      title: i18n.t("webSearch", { ns: "messages" }),
       detail: asString(item.query ?? ""),
-      status: status || "completed",
+      status: status || i18n.t("completed", { ns: "messages" }),
       output: "",
     };
   }
@@ -177,7 +178,7 @@ export function buildConversationItem(
       id,
       kind: "tool",
       toolType: type,
-      title: "Image view",
+      title: i18n.t("imageView", { ns: "messages" }),
       detail: asString(item.path ?? ""),
       status: "",
       output: "",
@@ -189,9 +190,9 @@ export function buildConversationItem(
       id,
       kind: "tool",
       toolType: type,
-      title: "Context compaction",
-      detail: "Compacting conversation context to fit token limits.",
-      status: status || "completed",
+      title: i18n.t("contextCompaction", { ns: "messages" }),
+      detail: i18n.t("compactingContext", { ns: "messages" }),
+      status: status || i18n.t("completed", { ns: "messages" }),
       output: "",
     };
   }

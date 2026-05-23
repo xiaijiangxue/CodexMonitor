@@ -41,5 +41,14 @@
   "usageWeekRange": "Usage week {{start}} to {{end}}",
   "view": "View",
   "workspace": "Workspace",
-  "to": "to"
+  "to": "to",
+  "accountTypeChatgpt": "ChatGPT account",
+  "accountTypeApikey": "API key",
+  "accountTypeConnected": "Connected account",
+  "windowDays": "{{count}} day",
+  "windowDays_plural": "{{count}} days",
+  "windowHours": "{{hours}}h window",
+  "windowMinutes": "{{minutes}}m window",
+  "dayCount": "{{count}} day",
+  "dayCount_plural": "{{count}} days"
 }

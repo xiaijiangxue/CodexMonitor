@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Check from "lucide-react/dist/esm/icons/check";
 import Copy from "lucide-react/dist/esm/icons/copy";
 import Terminal from "lucide-react/dist/esm/icons/terminal";
@@ -107,6 +108,7 @@ export function MainHeader({
   launchScriptsState,
   worktreeRename,
 }: MainHeaderProps) {
+  const { t } = useTranslation("layout");
   const [branchQuery, setBranchQuery] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [copyFeedback, setCopyFeedback] = useState(false);
@@ -202,7 +204,7 @@ export function MainHeader({
                 className="workspace-branch-static-button"
                 onClick={infoMenu.toggle}
                 data-tauri-drag-region="false"
-                title="Worktree info"
+                title={t("workspace.worktreeInfo")}
               >
                 {worktreeLabel || branchName}
               </MenuTrigger>
@@ -257,8 +259,8 @@ export function MainHeader({
                           disabled={
                             worktreeRename.isSubmitting || !worktreeRename.isDirty
                           }
-                          aria-label="Confirm rename"
-                          title="Confirm rename"
+                          aria-label={t("workspace.confirmRename")}
+                          title={t("workspace.confirmRename")}
                         >
                           <Check aria-hidden />
                         </button>
@@ -274,16 +276,15 @@ export function MainHeader({
                       {worktreeRename.upstream && (
                         <div className="worktree-info-upstream">
                           <span className="worktree-info-subtle">
-                            Do you want to update the upstream branch to{" "}
-                            <strong>{worktreeRename.upstream.newBranch}</strong>?
-                          </span>
+                            {t("workspace.updateUpstreamQuestion", { branchName: worktreeRename.upstream.newBranch })}
+                            </span>
                           <button
                             type="button"
                             className="ghost worktree-info-upstream-button"
                             onClick={worktreeRename.upstream.onConfirm}
                             disabled={worktreeRename.upstream.isSubmitting}
                           >
-                            Update upstream
+                            {t("workspace.updateUpstream")}
                           </button>
                           {worktreeRename.upstream.error && (
                             <div className="worktree-info-error">
@@ -294,10 +295,10 @@ export function MainHeader({
                       )}
                     </div>
                   )}
-                  <div className="worktree-info-title">Worktree</div>
+                  <div className="worktree-info-title">{t("workspace.worktree")}</div>
                   <div className="worktree-info-row">
                     <span className="worktree-info-label">
-                      Terminal{parentPath ? " (repo root)" : ""}
+                      {parentPath ? t("workspace.terminalRepoRoot") : t("workspace.terminal")}
                     </span>
                     <div className="worktree-info-command">
                       <code className="worktree-info-code">
@@ -310,18 +311,18 @@ export function MainHeader({
                           await navigator.clipboard.writeText(cdCommand);
                         }}
                         data-tauri-drag-region="false"
-                        aria-label="Copy command"
-                        title="Copy command"
+                        aria-label={t("workspace.copyCommand")}
+                        title={t("workspace.copyCommand")}
                       >
                         <Copy aria-hidden />
                       </button>
                     </div>
                     <span className="worktree-info-subtle">
-                      Open this worktree in your terminal.
+                      {t("workspace.openInTerminal")}
                     </span>
                   </div>
                   <div className="worktree-info-row">
-                    <span className="worktree-info-label">Reveal</span>
+                    <span className="worktree-info-label">{t("workspace.reveal")}</span>
                     <button
                       type="button"
                       className="worktree-info-reveal"
@@ -398,14 +399,14 @@ export function MainHeader({
                             }
                           }
                         }}
-                        placeholder="Search or create branch"
+                        placeholder={t("workspace.searchCreateBranch")}
                         className="branch-input"
                         autoCorrect="off"
                         autoCapitalize="none"
                         spellCheck={false}
                         autoFocus
                         data-tauri-drag-region="false"
-                        aria-label="Search branches"
+                        aria-label={t("workspace.searchBranches")}
                       />
                       <button
                         type="button"
@@ -440,7 +441,7 @@ export function MainHeader({
                     )}
                     {canCreate && !branchValidationMessage && (
                       <div className="branch-create-hint">
-                        Create branch “{trimmedQuery}”
+                        {t("workspace.createBranch", { query: trimmedQuery })}
                       </div>
                     )}
                   </div>
@@ -454,7 +455,7 @@ export function MainHeader({
                     itemRole="menuitem"
                     itemDataTauriDragRegion="false"
                     emptyClassName="branch-empty"
-                    emptyText="No branches found"
+                    emptyText={t("workspace.noBranchesFound")}
                     onSelect={async (branch) => {
                       if (branch.name === branchName) {
                         return;
@@ -545,9 +546,9 @@ export function MainHeader({
             className={`ghost main-header-action ds-tooltip-trigger${isTerminalOpen ? " is-active" : ""}`}
             onClick={onToggleTerminal}
             data-tauri-drag-region="false"
-            aria-label="Toggle terminal panel"
-            title="Terminal"
-            data-tooltip="Terminal"
+            aria-label={t("workspace.toggleTerminal")}
+            title={t("workspace.terminalTooltip")}
+            data-tooltip={t("workspace.terminalTooltip")}
             data-tooltip-placement="bottom"
           >
             <Terminal size={14} aria-hidden />
@@ -559,9 +560,9 @@ export function MainHeader({
           onClick={handleCopyClick}
           disabled={!canCopyThread || !onCopyThread}
           data-tauri-drag-region="false"
-          aria-label="Copy thread"
-          title="Copy thread"
-          data-tooltip="Copy thread"
+          aria-label={t("workspace.copyThread")}
+          title={t("workspace.copyThread")}
+          data-tooltip={t("workspace.copyThread")}
           data-tooltip-placement="bottom"
         >
           <span className="main-header-icon" aria-hidden>

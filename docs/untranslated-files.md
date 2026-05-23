@@ -1,5 +1,8 @@
 # 未汉化文件列表
 
+> 最后更新: 2026-05-24 | 主分支已完成 11 个提交 | 124 文件变更 5168 行新增
+
+
 - src/features/app/components/ApprovalToasts.tsx
 - src/features/app/components/LaunchScriptButton.tsx
 - src/features/app/components/LaunchScriptEntryButton.tsx

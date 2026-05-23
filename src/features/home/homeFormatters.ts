@@ -1,4 +1,5 @@
 import type { AccountSnapshot, LocalUsageDay } from "../../types";
+import i18n from "../../locales/i18n";
 
 export function formatCompactNumber(value: number | null | undefined) {
   if (value === null || value === undefined) {
@@ -79,7 +80,7 @@ export function formatDayLabel(value: string | null | undefined) {
 
 export function formatWeekRange(days: LocalUsageDay[]) {
   if (days.length === 0) {
-    return "No usage data";
+    return i18n.t("noUsageData", { ns: "home" });
   }
   const first = days[0];
   const last = days[days.length - 1];
@@ -108,12 +109,12 @@ export function formatAccountTypeLabel(
   value: AccountSnapshot["type"] | null | undefined,
 ) {
   if (value === "chatgpt") {
-    return "ChatGPT account";
+    return i18n.t("accountTypeChatgpt", { ns: "home" });
   }
   if (value === "apikey") {
-    return "API key";
+    return i18n.t("accountTypeApikey", { ns: "home" });
   }
-  return "Connected account";
+  return i18n.t("accountTypeConnected", { ns: "home" });
 }
 
 export function formatWindowDuration(valueMins: number | null | undefined) {
@@ -122,13 +123,13 @@ export function formatWindowDuration(valueMins: number | null | undefined) {
   }
   if (valueMins >= 60 * 24) {
     const days = Math.round(valueMins / (60 * 24));
-    return `${days} day${days === 1 ? "" : "s"} window`;
+    return i18n.t("windowDays", { count: days, ns: "home" });
   }
   if (valueMins >= 60) {
     const hours = Math.round(valueMins / 60);
-    return `${hours}h window`;
+    return i18n.t("windowHours", { hours, ns: "home" });
   }
-  return `${Math.round(valueMins)}m window`;
+  return i18n.t("windowMinutes", { minutes: Math.round(valueMins), ns: "home" });
 }
 
 export function buildWindowCaption(
@@ -158,5 +159,5 @@ export function formatDayCount(value: number | null | undefined) {
   if (value === null || value === undefined) {
     return "--";
   }
-  return `${value} day${value === 1 ? "" : "s"}`;
+  return i18n.t("dayCount", { count: value, ns: "home" });
 }

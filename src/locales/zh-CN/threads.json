@@ -13,5 +13,8 @@
   "noMatchingThreads": "没有匹配的会话",
   "createFirstThread": "创建您的第一个会话开始使用。",
   "threadDeleted": "会话已删除",
-  "threadArchived": "会话已归档"
+  "threadArchived": "会话已归档",
+  "running": "运行中",
+  "reviewing": "审核中",
+  "idle": "空闲"
 }

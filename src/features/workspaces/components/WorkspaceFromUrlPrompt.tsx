@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { ModalShell } from "../../design-system/components/modal/ModalShell";
 
 type WorkspaceFromUrlPromptProps = {
@@ -30,6 +31,7 @@ export function WorkspaceFromUrlPrompt({
   onCancel,
   onConfirm,
 }: WorkspaceFromUrlPromptProps) {
+  const { t } = useTranslation("workspaces");
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export function WorkspaceFromUrlPrompt({
 
   return (
     <ModalShell
-      ariaLabel="Add workspace from URL"
+      ariaLabel={t("addWorkspaceFromUrl")}
       className="workspace-from-url-modal"
       cardClassName="workspace-from-url-modal-card"
       onBackdropClick={() => {
@@ -48,9 +50,9 @@ export function WorkspaceFromUrlPrompt({
       }}
     >
       <div className="workspace-from-url-modal-content">
-        <div className="ds-modal-title">Add workspace from URL</div>
+        <div className="ds-modal-title">{t("addWorkspaceFromUrl")}</div>
         <label className="ds-modal-label" htmlFor="workspace-url-input">
-          Remote Git URL
+          {t("remoteGitUrl")}
         </label>
         <input
           id="workspace-url-input"
@@ -61,30 +63,30 @@ export function WorkspaceFromUrlPrompt({
           placeholder="https://github.com/org/repo.git"
         />
         <label className="ds-modal-label" htmlFor="workspace-url-target-name">
-          Target folder name (optional)
+          {t("targetFolderNameOptional")}
         </label>
         <input
           id="workspace-url-target-name"
           className="ds-modal-input"
           value={targetFolderName}
           onChange={(event) => onTargetFolderNameChange(event.target.value)}
-          placeholder="Defaults to repo name"
+          placeholder={t("defaultsToRepoName")}
         />
         <label className="ds-modal-label" htmlFor="workspace-url-destination">
-          Destination parent folder
+          {t("destinationParentFolder")}
         </label>
         <div style={{ display: "flex", gap: 8 }}>
           <textarea
             id="workspace-url-destination"
             className="ds-modal-input"
             value={destinationPath}
-            placeholder="Not set"
+            placeholder={t("notSet")}
             readOnly
             rows={1}
             wrap="off"
           />
           <button type="button" className="ghost ds-modal-button" onClick={onChooseDestinationPath}>
-            Choose…
+            {t("choose")}
           </button>
           <button
             type="button"
@@ -92,20 +94,20 @@ export function WorkspaceFromUrlPrompt({
             onClick={onClearDestinationPath}
             disabled={destinationPath.trim().length === 0 || isBusy}
           >
-            Clear
+            {t("clear")}
           </button>
         </div>
         {error && <div className="ds-modal-error">{error}</div>}
         <div className="ds-modal-actions">
           <button className="ghost ds-modal-button" onClick={onCancel} disabled={isBusy}>
-            Cancel
+            {t("cancel")}
           </button>
           <button
             className="primary ds-modal-button"
             onClick={onConfirm}
             disabled={isBusy || !canSubmit}
           >
-            {isBusy ? "Cloning…" : "Clone and Add"}
+            {isBusy ? t("cloning") : t("cloneAndAdd")}
           </button>
         </div>
       </div>

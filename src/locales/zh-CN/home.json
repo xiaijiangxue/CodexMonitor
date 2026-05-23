@@ -41,5 +41,14 @@
   "usageWeekRange": "用量周 {{start}} 至 {{end}}",
   "view": "视图",
   "workspace": "工作区",
-  "to": "至"
+  "to": "至",
+  "accountTypeChatgpt": "ChatGPT 账户",
+  "accountTypeApikey": "API 密钥",
+  "accountTypeConnected": "已连接账户",
+  "windowDays": "{{count}} 天",
+  "windowDays_plural": "{{count}} 天",
+  "windowHours": "{{hours}} 小时窗口",
+  "windowMinutes": "{{minutes}} 分钟窗口",
+  "dayCount": "{{count}} 天",
+  "dayCount_plural": "{{count}} 天"
 }

@@ -13,5 +13,8 @@
   "noMatchingThreads": "No matching threads",
   "createFirstThread": "Create your first thread to get started.",
   "threadDeleted": "Thread deleted",
-  "threadArchived": "Thread archived"
+  "threadArchived": "Thread archived",
+  "running": "Running",
+  "reviewing": "Reviewing",
+  "idle": "Idle"
 }

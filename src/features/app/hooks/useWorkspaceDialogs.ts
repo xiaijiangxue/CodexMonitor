@@ -4,6 +4,7 @@ import type { WorkspaceInfo } from "../../../types";
 import { isMobilePlatform } from "../../../utils/platformPaths";
 import { pickWorkspacePaths } from "../../../services/tauri";
 import type { AddWorkspacesFromPathsResult } from "../../workspaces/hooks/useWorkspaceCrud";
+import i18n from "../../../locales/i18n";
 
 const RECENT_REMOTE_WORKSPACE_PATHS_STORAGE_KEY = "mobile-remote-workspace-recent-paths";
 const RECENT_REMOTE_WORKSPACE_PATHS_LIMIT = 5;
@@ -184,7 +185,7 @@ export function useWorkspaceDialogs() {
         prev
           ? {
               ...prev,
-              error: "Enter at least one absolute directory path.",
+              error: i18n.t("enterDirectoryPath", { ns: "workspaces" }),
             }
           : prev,
       );
@@ -219,43 +220,37 @@ export function useWorkspaceDialogs() {
 
       const lines: string[] = [];
       lines.push(
-        `Added ${result.added.length} workspace${result.added.length === 1 ? "" : "s"}.`,
+        i18n.t("addedWorkspaces", { count: result.added.length, ns: "workspaces" }) + ".",
       );
       if (result.skippedExisting.length > 0) {
         lines.push(
-          `Skipped ${result.skippedExisting.length} already added workspace${
-            result.skippedExisting.length === 1 ? "" : "s"
-          }.`,
+          i18n.t("skippedExisting", { count: result.skippedExisting.length, ns: "workspaces" }) + ".",
         );
       }
       if (result.skippedInvalid.length > 0) {
         lines.push(
-          `Skipped ${result.skippedInvalid.length} invalid path${
-            result.skippedInvalid.length === 1 ? "" : "s"
-          } (not a folder).`,
+          i18n.t("skippedInvalid", { count: result.skippedInvalid.length, ns: "workspaces" }),
         );
       }
       if (result.failures.length > 0) {
         lines.push(
-          `Failed to add ${result.failures.length} workspace${
-            result.failures.length === 1 ? "" : "s"
-          }.`,
+          i18n.t("failedToAdd", { count: result.failures.length, ns: "workspaces" }) + ".",
         );
         const details = result.failures
           .slice(0, 3)
           .map(({ path, message: failureMessage }) => `- ${path}: ${failureMessage}`);
         if (result.failures.length > 3) {
-          details.push(`- …and ${result.failures.length - 3} more`);
+          details.push(`- ...and ${result.failures.length - 3} more`);
         }
         lines.push("");
-        lines.push("Failures:");
+        lines.push(i18n.t("failures", { ns: "workspaces" }));
         lines.push(...details);
       }
 
       const title =
         result.failures.length > 0
-          ? "Some workspaces failed to add"
-          : "Some workspaces were skipped";
+          ? i18n.t("failedHeader", { ns: "workspaces" })
+          : i18n.t("skippedHeader", { ns: "workspaces" });
       await message(lines.join("\n"), {
         title,
         kind: result.failures.length > 0 ? "error" : "warning",
@@ -267,24 +262,22 @@ export function useWorkspaceDialogs() {
   const confirmWorkspaceRemoval = useCallback(
     async (workspaces: WorkspaceInfo[], workspaceId: string) => {
       const workspace = workspaces.find((entry) => entry.id === workspaceId);
-      const workspaceName = workspace?.name || "this workspace";
+      const workspaceName = workspace?.name || i18n.t("thisWorkspace", { ns: "workspaces" });
       const worktreeCount = workspaces.filter(
         (entry) => entry.parentId === workspaceId,
       ).length;
       const detail =
         worktreeCount > 0
-          ? `\n\nThis will also delete ${worktreeCount} worktree${
-              worktreeCount === 1 ? "" : "s"
-            } on disk.`
+          ? "\n\n" + i18n.t("willDeleteWorktrees", { count: worktreeCount, ns: "workspaces" })
           : "";
 
       return ask(
-        `Are you sure you want to delete "${workspaceName}"?\n\nThis will remove the workspace from CodexMonitor.${detail}`,
+        i18n.t("confirmDeleteMessage", { name: workspaceName, ns: "workspaces" }) + detail,
         {
-          title: "Delete Workspace",
+          title: i18n.t("deleteWorkspaceTitle", { ns: "workspaces" }),
           kind: "warning",
-          okLabel: "Delete",
-          cancelLabel: "Cancel",
+          okLabel: i18n.t("delete", { ns: "workspaces" }),
+          cancelLabel: i18n.t("cancel", { ns: "workspaces" }),
         },
       );
     },
@@ -294,14 +287,14 @@ export function useWorkspaceDialogs() {
   const confirmWorktreeRemoval = useCallback(
     async (workspaces: WorkspaceInfo[], workspaceId: string) => {
       const workspace = workspaces.find((entry) => entry.id === workspaceId);
-      const workspaceName = workspace?.name || "this worktree";
+      const workspaceName = workspace?.name || i18n.t("thisWorktree", { ns: "workspaces" });
       return ask(
-        `Are you sure you want to delete "${workspaceName}"?\n\nThis will close the agent, remove its worktree, and delete it from CodexMonitor.`,
+        i18n.t("confirmDeleteWorktreeMessage", { name: workspaceName, ns: "workspaces" }),
         {
-          title: "Delete Worktree",
+          title: i18n.t("deleteWorktreeTitle", { ns: "workspaces" }),
           kind: "warning",
-          okLabel: "Delete",
-          cancelLabel: "Cancel",
+          okLabel: i18n.t("delete", { ns: "workspaces" }),
+          cancelLabel: i18n.t("cancel", { ns: "workspaces" }),
         },
       );
     },
@@ -311,7 +304,7 @@ export function useWorkspaceDialogs() {
   const showWorkspaceRemovalError = useCallback(async (error: unknown) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     await message(errorMessage, {
-      title: "Delete workspace failed",
+      title: i18n.t("deleteFailed", { ns: "workspaces" }),
       kind: "error",
     });
   }, []);
@@ -319,7 +312,7 @@ export function useWorkspaceDialogs() {
   const showWorktreeRemovalError = useCallback(async (error: unknown) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     await message(errorMessage, {
-      title: "Delete worktree failed",
+      title: i18n.t("deleteWorktreeFailed", { ns: "workspaces" }),
       kind: "error",
     });
   }, []);
