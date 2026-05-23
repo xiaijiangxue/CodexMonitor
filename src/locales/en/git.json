@@ -233,5 +233,7 @@
   "branchNameDoubleDot": "Branch name cannot contain '..'.",
   "branchNameAt": "Branch name cannot contain '@{'.",
   "branchNameInvalidChars": "Branch name contains invalid characters.",
-  "branchNameEndDot": "Branch name cannot end with '.'."
+  "branchNameEndDot": "Branch name cannot end with '.'.",
+  "gitStatusUnavailable": "Git status unavailable",
+  "editLabel": "Edit {{count}}"
 }

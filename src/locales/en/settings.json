@@ -350,7 +350,18 @@
     "maxThreadsError": "Max threads must be an integer between {{min}} and {{max}}.",
     "maxDepthError": "Max depth must be an integer between {{min}} and {{max}}.",
     "openPathError": "Unable to open path.",
-    "loading": "Loading agents settings..."
+    "loading": "Loading agents settings...",
+    "unableToLoad": "Unable to load agents settings.",
+    "unableToUpdateCore": "Unable to update agents core settings.",
+    "unableToCreate": "Unable to create agent.",
+    "unableToUpdate": "Unable to update agent.",
+    "unableToDelete": "Unable to delete agent.",
+    "unableToReadConfig": "Unable to read agent config file.",
+    "unableToWriteConfig": "Unable to write agent config file.",
+    "generateNoWorkspace": "Add a workspace before generating agent configuration.",
+    "generateSeed": "Create a practical custom coding agent configuration.",
+    "generateEmpty": "Generated agent configuration was empty.",
+    "unableToGenerate": "Unable to generate agent configuration."
   },
   "projects": {
     "title": "Projects",
@@ -448,7 +459,27 @@
     "mobileDaemonRunning": "Mobile daemon is running on {{addr}}.",
     "mobileDaemonError": "Mobile daemon is in an error state.",
     "mobileDaemonStopped": "Mobile daemon is stopped{{addr}}.",
-    "daemonOn": "Mobile daemon is stopped ({{addr}})."
+    "daemonOn": "Mobile daemon is stopped ({{addr}}).",
+    "hostRequired": "Host is required.",
+    "hostFormat": "Use host:port (for example `macbook.tailnet.ts.net:4732`).",
+    "portRange": "Port must be between 1 and 65535.",
+    "nameRequired": "Name is required.",
+    "duplicateName": "A remote named \"{{name}}\" already exists.",
+    "savedRemoteName": "Saved remote name \"{{name}}\".",
+    "remoteHostSaved": "Remote host saved.",
+    "remoteTokenSaved": "Remote token saved.",
+    "activeRemoteSet": "Active remote set to \"{{name}}\".",
+    "addedConnected": "Added \"{{name}}\" and connected. {{count}} {{word}} reachable on the remote backend.",
+    "connectedRemote": "Connected. {{count}} {{word}} reachable on the remote backend.",
+    "unableToConnectNew": "Unable to connect to the new remote backend.",
+    "unableToConnectRemote": "Unable to connect to remote backend.",
+    "unableToLoadTailscale": "Unable to load Tailscale status.",
+    "unableToBuildTailscale": "Unable to build Tailscale daemon command.",
+    "unableToUpdateDaemon": "Unable to update mobile access daemon status.",
+    "movedRemote": "Moved \"{{name}}\" {{direction}}.",
+    "deletedRemote": "Deleted \"{{name}}\".",
+    "needsOneRemote": "You need at least one remote.",
+    "tokenMissing": "Remote backend token is required."
   },
   "features": {
     "title": "Features",
@@ -471,7 +502,10 @@
     "connectForFlags": "Connect a workspace to load Codex feature flags.",
     "featureDeprecated": "Deprecated feature flag.",
     "featureRemoved": "Legacy feature flag kept for backward compatibility.",
-    "featureKey": "Feature key: features.{{name}}"
+    "featureKey": "Feature key: features.{{name}}",
+    "unableToOpenConfig": "Unable to open config.",
+    "unableToLoadFlags": "Unable to load Codex feature flags.",
+    "unableToUpdateFeature": "Unable to update feature \"{{name}}\"."
   },
   "codex": {
     "title": "Codex",
@@ -534,7 +568,11 @@
     "globalAgentsHelp": "Stored at <3>~/.codex/AGENTS.md</3>.",
     "globalConfig": "Global config.toml",
     "globalConfigPlaceholder": "Edit the global Codex config.toml…",
-    "globalConfigHelp": "Stored at <3>~/.codex/config.toml</3>."
+    "globalConfigHelp": "Stored at <3>~/.codex/config.toml</3>.",
+    "updatesUnavailable": "Codex updates are not available in this build.",
+    "remoteFallbackName": "Remote {{index}}",
+    "primaryRemoteName": "Primary remote",
+    "newApp": "New App"
   },
   "keyOption": "Option",
   "keyAlt": "Alt",

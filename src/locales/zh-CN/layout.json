@@ -149,5 +149,16 @@
   },
   "app": {
     "title": "Codex Monitor"
-  }
+  },
+  "gitApplyLabel": "应用",
+  "gitApplyTitle": "应用更改到 {{name}}",
+  "gitApplyTitleFallback": "应用更改到父工作区",
+  "scaleShortcutTitle": "{{mod}}+ 和 {{mod}}-, {{mod}}+0 重置。",
+  "scaleShortcutText": "快捷键：{{mod}}+ 和 {{mod}}-, {{mod}}+0 重置。",
+  "diff": {
+    "view": "差异视图",
+    "dualPanel": "双栏差异",
+    "singleColumn": "单栏差异"
+  },
+  "worktrees": "工作树"
 }

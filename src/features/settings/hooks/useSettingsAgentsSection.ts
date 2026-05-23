@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import i18n from "@/locales/i18n";
 import type { AgentsSettings, GeneratedAgentConfiguration } from "@services/tauri";
 import type { ModelOption, WorkspaceInfo } from "@/types";
 import {
@@ -111,7 +112,7 @@ export const useSettingsAgentsSection = ({
       const response = await getAgentsSettings();
       setSettings(response);
     } catch (refreshError) {
-      setError(toErrorMessage(refreshError, "Unable to load agents settings."));
+      setError(toErrorMessage(refreshError, i18n.t("agents.unableToLoad", { ns: "settings" })));
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +139,7 @@ export const useSettingsAgentsSection = ({
         setSettings(response);
         return true;
       } catch (updateError) {
-        setError(toErrorMessage(updateError, "Unable to update agents core settings."));
+        setError(toErrorMessage(updateError, i18n.t("agents.unableToUpdateCore", { ns: "settings" })));
         return false;
       } finally {
         setIsUpdatingCore(false);
@@ -193,7 +194,7 @@ export const useSettingsAgentsSection = ({
         setSettings(response);
         return true;
       } catch (createError) {
-        setError(toErrorMessage(createError, "Unable to create agent."));
+        setError(toErrorMessage(createError, i18n.t("agents.unableToCreate", { ns: "settings" })));
         return false;
       } finally {
         setCreatingAgent(false);
@@ -217,7 +218,7 @@ export const useSettingsAgentsSection = ({
         setSettings(response);
         return true;
       } catch (updateError) {
-        setError(toErrorMessage(updateError, "Unable to update agent."));
+        setError(toErrorMessage(updateError, i18n.t("agents.unableToUpdate", { ns: "settings" })));
         return false;
       } finally {
         setUpdatingAgentName((current) =>
@@ -240,7 +241,7 @@ export const useSettingsAgentsSection = ({
         setSettings(response);
         return true;
       } catch (deleteError) {
-        setError(toErrorMessage(deleteError, "Unable to delete agent."));
+        setError(toErrorMessage(deleteError, i18n.t("agents.unableToDelete", { ns: "settings" })));
         return false;
       } finally {
         setDeletingAgentName((current) => (current === input.name ? null : current));
@@ -255,7 +256,7 @@ export const useSettingsAgentsSection = ({
     try {
       return await readAgentConfigToml(agentName);
     } catch (readError) {
-      setError(toErrorMessage(readError, "Unable to read agent config file."));
+      setError(toErrorMessage(readError, i18n.t("agents.unableToReadConfig", { ns: "settings" })));
       return null;
     } finally {
       setReadingConfigAgentName((current) =>
@@ -273,7 +274,7 @@ export const useSettingsAgentsSection = ({
         await refresh();
         return true;
       } catch (writeError) {
-        setError(toErrorMessage(writeError, "Unable to write agent config file."));
+        setError(toErrorMessage(writeError, i18n.t("agents.unableToWriteConfig", { ns: "settings" })));
         return false;
       } finally {
         setWritingConfigAgentName((current) =>
@@ -293,7 +294,7 @@ export const useSettingsAgentsSection = ({
       const descriptionSeed = seed.description.trim();
       const developerInstructionsSeed = seed.developerInstructions.trim();
       if (!sourceWorkspaceId || !sourceWorkspaceName) {
-        setError("Add a workspace before generating agent configuration.");
+        setError(i18n.t("agents.generateNoWorkspace", { ns: "settings" }));
         return null;
       }
 
@@ -310,7 +311,7 @@ export const useSettingsAgentsSection = ({
       const effectivePromptSeed =
         promptSeed.length > 0
           ? promptSeed
-          : "Create a practical custom coding agent configuration.";
+          : i18n.t("agents.generateSeed", { ns: "settings" });
 
       setGeneratingDescriptionTarget(target);
       setError(null);
@@ -322,7 +323,7 @@ export const useSettingsAgentsSection = ({
         const nextDescription = generated.description.trim();
         const nextInstructions = generated.developerInstructions.trim();
         if (!nextDescription && !nextInstructions) {
-          setError("Generated agent configuration was empty.");
+          setError(i18n.t("agents.generateEmpty", { ns: "settings" }));
           return null;
         }
         return {
@@ -330,7 +331,7 @@ export const useSettingsAgentsSection = ({
           developerInstructions: nextInstructions,
         };
       } catch (generateError) {
-        setError(toErrorMessage(generateError, "Unable to generate agent configuration."));
+        setError(toErrorMessage(generateError, i18n.t("agents.unableToGenerate", { ns: "settings" })));
         return null;
       } finally {
         setGeneratingDescriptionTarget((current) =>

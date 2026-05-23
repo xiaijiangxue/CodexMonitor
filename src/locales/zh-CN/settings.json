@@ -350,7 +350,18 @@
     "maxThreadsError": "最大线程数必须是 {{min}} 到 {{max}} 之间的整数。",
     "maxDepthError": "最大深度必须是 {{min}} 到 {{max}} 之间的整数。",
     "openPathError": "无法打开路径。",
-    "loading": "正在加载代理设置..."
+    "loading": "正在加载代理设置...",
+    "unableToLoad": "无法加载代理设置。",
+    "unableToUpdateCore": "无法更新代理核心设置。",
+    "unableToCreate": "无法创建代理。",
+    "unableToUpdate": "无法更新代理。",
+    "unableToDelete": "无法删除代理。",
+    "unableToReadConfig": "无法读取代理配置文件。",
+    "unableToWriteConfig": "无法写入代理配置文件。",
+    "generateNoWorkspace": "请先添加工作区再生成代理配置。",
+    "generateSeed": "创建一个实用的自定义编码代理配置。",
+    "generateEmpty": "生成的代理配置为空。",
+    "unableToGenerate": "无法生成代理配置。"
   },
   "projects": {
     "title": "项目",
@@ -448,7 +459,27 @@
     "mobileDaemonRunning": "移动端守护进程正在运行（地址 {{addr}}）。",
     "mobileDaemonError": "移动端守护进程处于错误状态。",
     "mobileDaemonStopped": "移动端守护进程已停止{{addr}}。",
-    "daemonOn": "移动端守护进程已停止（{{addr}}）。"
+    "daemonOn": "移动端守护进程已停止（{{addr}}）。",
+    "hostRequired": "主机为必填项。",
+    "hostFormat": "请使用 主机:端口 格式（例如 `macbook.tailnet.ts.net:4732`）。",
+    "portRange": "端口必须在 1 到 65535 之间。",
+    "nameRequired": "名称为必填项。",
+    "duplicateName": "名为 \"{{name}}\" 的远程已存在。",
+    "savedRemoteName": "已保存远程名称 \"{{name}}\"。",
+    "remoteHostSaved": "远程主机已保存。",
+    "remoteTokenSaved": "远程 Token 已保存。",
+    "activeRemoteSet": "已切换到远程 \"{{name}}\"。",
+    "addedConnected": "已添加 \"{{name}}\" 并连接。远程后端上可访问 {{count}} 个{{word}}。",
+    "connectedRemote": "已连接。远程后端上可访问 {{count}} 个{{word}}。",
+    "unableToConnectNew": "无法连接到新的远程后端。",
+    "unableToConnectRemote": "无法连接到远程后端。",
+    "unableToLoadTailscale": "无法加载 Tailscale 状态。",
+    "unableToBuildTailscale": "无法构建 Tailscale 守护进程命令。",
+    "unableToUpdateDaemon": "无法更新移动端访问守护进程状态。",
+    "movedRemote": "已将 \"{{name}}\" {{direction}}。",
+    "deletedRemote": "已删除 \"{{name}}\"。",
+    "needsOneRemote": "至少需要一个远程。",
+    "tokenMissing": "远程后端 Token 为必填项。"
   },
   "features": {
     "title": "功能",
@@ -471,7 +502,10 @@
     "connectForFlags": "连接工作区以加载 Codex 功能标志。",
     "featureDeprecated": "已弃用的功能标志。",
     "featureRemoved": "为向后兼容保留的旧功能标志。",
-    "featureKey": "功能键：features.{{name}}"
+    "featureKey": "功能键：features.{{name}}",
+    "unableToOpenConfig": "无法打开配置。",
+    "unableToLoadFlags": "无法加载 Codex 功能标志。",
+    "unableToUpdateFeature": "无法更新功能 \"{{name}}\"。"
   },
   "codex": {
     "title": "Codex",
@@ -534,7 +568,11 @@
     "globalAgentsHelp": "存储于 <3>~/.codex/AGENTS.md</3>。",
     "globalConfig": "全局 config.toml",
     "globalConfigPlaceholder": "编辑全局 Codex config.toml...",
-    "globalConfigHelp": "存储于 <3>~/.codex/config.toml</3>。"
+    "globalConfigHelp": "存储于 <3>~/.codex/config.toml</3>。",
+    "updatesUnavailable": "此版本中无法更新 Codex。",
+    "remoteFallbackName": "远程 {{index}}",
+    "primaryRemoteName": "主远程",
+    "newApp": "新建应用"
   },
   "keyOption": "Option",
   "keyAlt": "Alt",

@@ -19,5 +19,20 @@
   "idle": "Idle",
   "chooseBaseBranch": "Choose a base branch.",
   "chooseCommitToReview": "Choose a commit to review.",
-  "enterCustomReviewInstructions": "Enter custom review instructions."
+  "enterCustomReviewInstructions": "Enter custom review instructions.",
+  "sessionStatus": "Session status:",
+  "reviewCommit": "Review Commit",
+  "reviewWorkingTree": "Review Working Tree",
+  "newAgent": "New Agent",
+  "planTitle": "Plan",
+  "planDetail": "Generating plan...",
+  "requestFailed": "Request failed.",
+  "defaultOption": "Default",
+  "sessionStopped": "Session stopped.",
+  "failedToLoadMcpStatus": "Failed to load MCP status.",
+  "failedToLoadApps": "Failed to load apps.",
+  "failedToStartCompact": "Failed to start context compaction.",
+  "detachedReviewStarted": "Detached review started. [Open review thread](/thread/{{childId}})",
+  "detachedReviewCompleted": "Detached review completed. [Open review thread](/thread/{{threadId}})",
+  "hookUnknown": "unknown"
 }

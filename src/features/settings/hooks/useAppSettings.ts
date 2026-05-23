@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import i18n from "@/locales/i18n";
 import type { AppSettings } from "@/types";
 import { getAppSettings, runCodexDoctor, updateAppSettings } from "@services/tauri";
 import { clampUiScale, UI_SCALE_DEFAULT } from "@utils/uiScale";
@@ -70,7 +71,7 @@ function normalizeRemoteBackends(settings: AppSettings): {
     usedIds.add(id);
     return {
       id,
-      name: normalizeRemoteName(entry.name, `Remote ${index + 1}`),
+      name: normalizeRemoteName(entry.name, i18n.t("settings.remoteFallbackName", { ns: "settings", index: index + 1 })),
       provider: normalizeRemoteProvider(entry.provider),
       host: normalizeRemoteHost(entry.host),
       token: normalizeRemoteToken(entry.token),
@@ -84,7 +85,7 @@ function normalizeRemoteBackends(settings: AppSettings): {
   if (normalized.length === 0) {
     const fallback: RemoteBackendTarget = {
       id: DEFAULT_REMOTE_BACKEND_ID,
-      name: DEFAULT_REMOTE_BACKEND_NAME,
+      name: i18n.t("settings.primaryRemoteName", { ns: "settings" }),
       provider: legacyProvider,
       host: legacyHost,
       token: legacyToken,

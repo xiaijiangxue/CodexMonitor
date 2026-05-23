@@ -149,5 +149,16 @@
   },
   "app": {
     "title": "Codex Monitor"
-  }
+  },
+  "gitApplyLabel": "apply",
+  "gitApplyTitle": "Apply changes to {{name}}",
+  "gitApplyTitleFallback": "Apply changes to parent workspace",
+  "scaleShortcutTitle": "{{mod}}+ and {{mod}}-, {{mod}}+0 to reset.",
+  "scaleShortcutText": "Shortcuts: {{mod}}+ and {{mod}}-, {{mod}}+0 to reset.",
+  "diff": {
+    "view": "Diff view",
+    "dualPanel": "Dual-panel diff",
+    "singleColumn": "Single-column diff"
+  },
+  "worktrees": "Worktrees"
 }

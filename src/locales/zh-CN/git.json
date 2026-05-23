@@ -233,5 +233,7 @@
   "branchNameDoubleDot": "分支名称不能包含 '..'。",
   "branchNameAt": "分支名称不能包含 '@{'。",
   "branchNameInvalidChars": "分支名称包含无效字符。",
-  "branchNameEndDot": "分支名称不能以 '.' 结尾。"
+  "branchNameEndDot": "分支名称不能以 '.' 结尾。",
+  "gitStatusUnavailable": "Git 状态不可用",
+  "editLabel": "编辑 {{count}}"
 }

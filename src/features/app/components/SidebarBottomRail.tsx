@@ -170,19 +170,19 @@ export function SidebarBottomRail({
               className="ghost sidebar-labeled-button sidebar-utility-button"
               type="button"
               onClick={onOpenSettings}
-              aria-label="Open settings"
+              aria-label={t("sidebar.openSettings")}
             >
               <span className="sidebar-labeled-button-icon" aria-hidden>
                 <Settings size={14} aria-hidden />
               </span>
-              <span>Settings</span>
+              <span>{t("sidebar.settings")}</span>
             </button>
           {showDebugButton && (
             <button
               className="ghost sidebar-utility-button"
               type="button"
               onClick={onOpenDebug}
-              aria-label="Open debug log"
+              aria-label={t("sidebar.openDebugLog")}
             >
               <ScrollText size={14} aria-hidden />
             </button>

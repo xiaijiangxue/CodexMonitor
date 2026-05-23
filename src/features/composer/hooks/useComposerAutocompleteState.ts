@@ -93,7 +93,7 @@ export function useComposerAutocompleteState({
         label: skill.name,
         description: skill.description,
         insertText: skill.name,
-        group: "Skills" as const,
+        group: t("sectionSkills"),
       })),
       ...apps
         .filter((app) => app.isAccessible)
@@ -102,7 +102,7 @@ export function useComposerAutocompleteState({
           label: app.name,
           description: app.description,
           insertText: connectorMentionSlug(app.name),
-          group: "Apps" as const,
+          group: t("sectionApps"),
           mentionPath: `app://${app.id}`,
         })),
     ],
@@ -123,7 +123,7 @@ export function useComposerAutocompleteState({
               id: path,
               label: path,
               insertText: path,
-              group: "Files" as const,
+              group: t("sectionFiles"),
             }));
           })()
         : [],
@@ -143,7 +143,7 @@ export function useComposerAutocompleteState({
             hint: getPromptArgumentHint(prompt),
             insertText: insert.text,
             cursorOffset: insert.cursorOffset,
-            group: "Prompts" as const,
+            group: t("sectionPrompts"),
           };
         }),
     [prompts],
@@ -156,56 +156,56 @@ export function useComposerAutocompleteState({
         label: "compact",
         description: t("slashCompact"),
         insertText: "compact",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "fast",
         label: "fast",
         description: t("slashFast"),
         insertText: "fast",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "fork",
         label: "fork",
         description: t("slashFork"),
         insertText: "fork",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "mcp",
         label: "mcp",
         description: t("slashMcp"),
         insertText: "mcp",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "new",
         label: "new",
         description: t("slashNew"),
         insertText: "new",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "review",
         label: "review",
         description: t("slashReview"),
         insertText: "review",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "resume",
         label: "resume",
         description: t("slashResume"),
         insertText: "resume",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "status",
         label: "status",
         description: t("slashStatus"),
         insertText: "status",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
     ];
     if (appsEnabled) {
@@ -214,7 +214,7 @@ export function useComposerAutocompleteState({
         label: "apps",
         description: t("slashApps"),
         insertText: "apps",
-        group: "Slash",
+        group: t("sectionSlash"),
       });
     }
     return commands.sort((a, b) => a.label.localeCompare(b.label));
