@@ -12,6 +12,7 @@ import {
   removeWorkspace as removeWorkspaceService,
   updateWorkspaceSettings as updateWorkspaceSettingsService,
 } from "../../../services/tauri";
+import i18n from "@/locales/i18n";
 
 type UseWorkspaceCrudOptions = {
   onDebug?: (entry: DebugEntry) => void;
@@ -167,10 +168,10 @@ export function useWorkspaceCrud({
       const trimmedDestination = destinationPath.trim();
       const trimmedFolderName = targetFolderName?.trim() || null;
       if (!trimmedUrl) {
-        throw new Error("Remote Git URL is required.");
+        throw new Error(i18n.t("gitUrlRequired", { ns: "workspaces" }));
       }
       if (!trimmedDestination) {
-        throw new Error("Destination folder is required.");
+        throw new Error(i18n.t("destinationFolderRequired", { ns: "workspaces" }));
       }
       const shouldActivate = options?.activate !== false;
       onDebug?.({

@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import type { ThreadSummary } from "@/types";
+import i18n from "@/locales/i18n";
 
 type RenamePromptState = {
   workspaceId: string;
@@ -25,7 +26,7 @@ export function useRenameThreadPrompt({
     (workspaceId: string, threadId: string) => {
       const threads = threadsByWorkspace[workspaceId] ?? [];
       const thread = threads.find((entry) => entry.id === threadId);
-      const currentName = thread?.name || "Thread";
+      const currentName = thread?.name || i18n.t("defaultThreadName", { ns: "threads" });
       setRenamePrompt({
         workspaceId,
         threadId,

@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { ask, open } from "@tauri-apps/plugin-dialog";
 import type { AppSettings, WorkspaceGroup, WorkspaceInfo } from "@/types";
 import type { GroupedWorkspaces } from "./settingsSectionTypes";
+import i18n from "@/locales/i18n";
 
 type UseSettingsProjectsSectionArgs = {
   appSettings: AppSettings;
@@ -151,13 +152,13 @@ export const useSettingsProjectsSection = ({
       groupedWorkspaces.find((entry) => entry.id === group.id)?.workspaces ?? [];
     const detail =
       groupProjects.length > 0
-        ? `\n\n此分组中的工作区将移至"${ungroupedLabel}"。`
+        ? `\n\n${i18n.t("deleteGroupDetail", { ungroupedLabel, ns: "settings" })}`
         : "";
-    const confirmed = await ask(`删除"${group.name}"？${detail}`, {
-      title: "删除分组",
+    const confirmed = await ask(i18n.t("deleteGroupConfirm", { name: group.name, ns: "settings" }) + detail, {
+      title: i18n.t("deleteGroupTitle", { ns: "settings" }),
       kind: "warning",
-      okLabel: "删除",
-      cancelLabel: "取消",
+      okLabel: i18n.t("deleteGroupOk", { ns: "settings" }),
+      cancelLabel: i18n.t("deleteGroupCancel", { ns: "settings" }),
     });
     if (!confirmed) {
       return;

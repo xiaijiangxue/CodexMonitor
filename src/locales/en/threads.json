@@ -34,5 +34,6 @@
   "failedToStartCompact": "Failed to start context compaction.",
   "detachedReviewStarted": "Detached review started. [Open review thread](/thread/{{childId}})",
   "detachedReviewCompleted": "Detached review completed. [Open review thread](/thread/{{threadId}})",
-  "hookUnknown": "unknown"
+  "hookUnknown": "unknown",
+  "defaultThreadName": "Thread"
 }

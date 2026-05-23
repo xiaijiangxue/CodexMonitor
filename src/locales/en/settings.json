@@ -580,5 +580,15 @@
   "keyWindows": "Windows",
   "keyMeta": "Meta",
   "shortcutShiftCmdEnter": "Shift+Cmd+Enter",
-  "shortcutShiftCtrlEnter": "Shift+Ctrl+Enter"
+  "shortcutShiftCtrlEnter": "Shift+Ctrl+Enter",
+  "configModelDescription": "Configured in CODEX_HOME/config.toml",
+  "couldNotLoadGlobalAgentsMd": "Couldn’t load global AGENTS.md",
+  "couldNotSaveGlobalAgentsMd": "Couldn’t save global AGENTS.md",
+  "couldNotLoadGlobalConfigToml": "Couldn’t load global config.toml",
+  "couldNotSaveGlobalConfigToml": "Couldn’t save global config.toml",
+  "deleteGroupConfirm": "Delete \"{{name}}\"?",
+  "deleteGroupDetail": "Workspaces in this group will be moved to \"{{ungroupedLabel}}\".",
+  "deleteGroupTitle": "Delete group",
+  "deleteGroupOk": "Delete",
+  "deleteGroupCancel": "Cancel"
 }

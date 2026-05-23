@@ -107,7 +107,7 @@ export async function fetchReleaseNotesForVersion(
       continue;
     }
     if (!response.ok) {
-      throw new Error(`GitHub releases request failed (${response.status}).`);
+      throw new Error(i18n.t("githubReleaseRequestFailed", { status: response.status, ns: "app" }));
     }
     const payload = (await response.json()) as GitHubReleaseResponse;
     const body = payload.body?.trim() ? payload.body : null;

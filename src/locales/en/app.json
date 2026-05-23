@@ -221,5 +221,8 @@
   "loadingAgents": "Loading agents",
   "showLess": "Show less",
   "searchOlder": "Search older...",
-  "loadOlder": "Load older..."
+  "loadOlder": "Load older...",
+  "githubReleaseRequestFailed": "GitHub releases request failed ({{status}}).",
+  "worktreeSetupTitle": "Setup",
+  "webAudioApiUnavailable": "Web Audio API is not available in this environment"
 }

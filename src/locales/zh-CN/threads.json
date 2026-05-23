@@ -34,5 +34,6 @@
   "failedToStartCompact": "失败：无法启动上下文压缩。",
   "detachedReviewStarted": "分离审查已开始。[打开审查会话](/thread/{{childId}})",
   "detachedReviewCompleted": "分离审查已完成。[打开审查会话](/thread/{{threadId}})",
-  "hookUnknown": "未知"
+  "hookUnknown": "未知",
+  "defaultThreadName": "会话"
 }

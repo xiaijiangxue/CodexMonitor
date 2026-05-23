@@ -580,5 +580,15 @@
   "keyWindows": "Windows",
   "keyMeta": "Meta",
   "shortcutShiftCmdEnter": "Shift+Cmd+Enter",
-  "shortcutShiftCtrlEnter": "Shift+Ctrl+Enter"
+  "shortcutShiftCtrlEnter": "Shift+Ctrl+Enter",
+  "configModelDescription": "在 CODEX_HOME/config.toml 中配置",
+  "couldNotLoadGlobalAgentsMd": "无法加载全局 AGENTS.md",
+  "couldNotSaveGlobalAgentsMd": "无法保存全局 AGENTS.md",
+  "couldNotLoadGlobalConfigToml": "无法加载全局 config.toml",
+  "couldNotSaveGlobalConfigToml": "无法保存全局 config.toml",
+  "deleteGroupConfirm": "删除\"{{name}}\"?",
+  "deleteGroupDetail": "此分组中的工作区将移至\"{{ungroupedLabel}}\"。",
+  "deleteGroupTitle": "删除分组",
+  "deleteGroupOk": "删除",
+  "deleteGroupCancel": "取消"
 }

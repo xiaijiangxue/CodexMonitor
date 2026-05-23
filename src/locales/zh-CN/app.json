@@ -221,5 +221,8 @@
   "testNotificationBody": "这是来自 CodexMonitor 的测试通知。",
   "resetsLabel": "重置于 {{relative}}",
   "availableCreditsUnlimited": "可用额度：无限",
-  "availableCreditsBalance": "可用额度：{{balance}}"
+  "availableCreditsBalance": "可用额度：{{balance}}",
+  "githubReleaseRequestFailed": "GitHub 发布请求失败（{{status}}）。",
+  "worktreeSetupTitle": "设置",
+  "webAudioApiUnavailable": "Web Audio API 在此环境中不可用"
 }

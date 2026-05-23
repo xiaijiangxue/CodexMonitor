@@ -7,6 +7,7 @@ import {
   isReservedGroupName,
   normalizeGroupName,
 } from "../domain/workspaceGroups";
+import i18n from "@/locales/i18n";
 
 type UseWorkspaceGroupOpsOptions = {
   appSettings?: AppSettings;
@@ -49,14 +50,14 @@ export function useWorkspaceGroupOps({
       }
       const trimmed = normalizeGroupName(name);
       if (!trimmed) {
-        throw new Error("Group name is required.");
+        throw new Error(i18n.t("groupNameRequired", { ns: "workspaces" }));
       }
       if (isReservedGroupName(trimmed)) {
-        throw new Error(`"${RESERVED_GROUP_NAME}" is reserved.`);
+        throw new Error(i18n.t("groupNameReserved", { name: RESERVED_GROUP_NAME, ns: "workspaces" }));
       }
       const currentGroups = appSettings.workspaceGroups ?? [];
       if (isDuplicateGroupName(trimmed, currentGroups)) {
-        throw new Error("Group name already exists.");
+        throw new Error(i18n.t("groupNameAlreadyExists", { ns: "workspaces" }));
       }
       const nextSortOrder =
         currentGroups.reduce((max, group) => {
@@ -84,14 +85,14 @@ export function useWorkspaceGroupOps({
       }
       const trimmed = normalizeGroupName(name);
       if (!trimmed) {
-        throw new Error("Group name is required.");
+        throw new Error(i18n.t("groupNameRequired", { ns: "workspaces" }));
       }
       if (isReservedGroupName(trimmed)) {
-        throw new Error(`"${RESERVED_GROUP_NAME}" is reserved.`);
+        throw new Error(i18n.t("groupNameReserved", { name: RESERVED_GROUP_NAME, ns: "workspaces" }));
       }
       const currentGroups = appSettings.workspaceGroups ?? [];
       if (isDuplicateGroupName(trimmed, currentGroups, groupId)) {
-        throw new Error("Group name already exists.");
+        throw new Error(i18n.t("groupNameAlreadyExists", { ns: "workspaces" }));
       }
       const nextGroups = currentGroups.map((group) =>
         group.id === groupId ? { ...group, name: trimmed } : group,
