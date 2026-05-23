@@ -1,0 +1,17 @@
+{
+  "title": "会话",
+  "newThread": "新建会话",
+  "renameThread": "重命名会话",
+  "currentName": "当前名称：\"{{name}}\"",
+  "newName": "新名称",
+  "cancel": "取消",
+  "rename": "重命名",
+  "deleteThread": "删除会话",
+  "archiveThread": "归档会话",
+  "searchThreads": "搜索会话...",
+  "noThreads": "暂无会话",
+  "noMatchingThreads": "没有匹配的会话",
+  "createFirstThread": "创建您的第一个会话开始使用。",
+  "threadDeleted": "会话已删除",
+  "threadArchived": "会话已归档"
+}

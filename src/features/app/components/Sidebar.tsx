@@ -10,6 +10,8 @@ import type {
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import type { MouseEvent, RefObject } from "react";
 import { FolderOpen } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import i18n from "@/locales/i18n";
 import { SidebarBottomRail } from "./SidebarBottomRail";
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarSearchBar } from "./SidebarSearchBar";
@@ -71,11 +73,11 @@ function groupFlatThreadRowsByTimeBucket(
   nowMs: number,
 ): ThreadBucket[] {
   const bucketLabels: Record<ThreadBucket["id"], string> = {
-    now: "Now",
-    today: "Earlier today",
-    yesterday: "Yesterday",
-    week: "This week",
-    older: "Older",
+    now: i18n.t("time.now", { ns: "layout" }),
+    today: i18n.t("time.earlierToday", { ns: "layout" }),
+    yesterday: i18n.t("time.yesterday", { ns: "layout" }),
+    week: i18n.t("time.thisWeek", { ns: "layout" }),
+    older: i18n.t("time.older", { ns: "layout" }),
   };
   const order: ThreadBucket["id"][] = ["now", "today", "yesterday", "week", "older"];
   const bucketMap = new Map<ThreadBucket["id"], FlatThreadRow[]>();
@@ -217,6 +219,7 @@ export const Sidebar = memo(function Sidebar({
   onWorkspaceDragLeave,
   onWorkspaceDrop,
 }: SidebarProps) {
+  const { t } = useTranslation("layout");
   const [expandedWorkspaces, setExpandedWorkspaces] = useState(
     new Set<string>(),
   );
@@ -358,9 +361,9 @@ export const Sidebar = memo(function Sidebar({
   const accountButtonLabel = accountEmail
     ? accountEmail
     : accountInfo?.type === "apikey"
-      ? "API key"
-      : "Sign in to Codex";
-  const accountActionLabel = accountEmail ? "Switch account" : "Sign in";
+      ? t("account.apiKey")
+      : t("account.signInToCodex");
+  const accountActionLabel = accountEmail ? t("account.switch") : t("account.signIn");
   const showAccountSwitcher = Boolean(activeWorkspaceId);
   const accountSwitchDisabled = accountSwitching || !activeWorkspaceId;
   const accountCancelDisabled = !accountSwitching || !activeWorkspaceId;
@@ -920,7 +923,7 @@ export const Sidebar = memo(function Sidebar({
           {pinnedThreadRows.length > 0 && (
             <div className="pinned-section">
               <div className="sidebar-section-header">
-                <div className="sidebar-section-title">Pinned conversations</div>
+                <div className="sidebar-section-title">{t("sidebar.pinnedConversations")}</div>
                 <div className="sidebar-section-count">{pinnedRootCount}</div>
               </div>
               <PinnedThreadList
@@ -1015,15 +1018,15 @@ export const Sidebar = memo(function Sidebar({
           {!groupedWorkspacesForRender.length && (
             <div className="empty">
               {isSearchActive
-                ? "No conversations match your search."
-                : "Add a workspace to start."}
+                ? t("sidebar.noConversationsMatchSearch")
+                : t("sidebar.addWorkspaceToStart")}
             </div>
           )}
           {isThreadsOnlyMode &&
             groupedWorkspacesForRender.length > 0 &&
             flatThreadRows.length === 0 &&
             pinnedThreadRows.length === 0 && (
-              <div className="empty">No conversations yet.</div>
+              <div className="empty">{t("sidebar.noConversationsYet")}</div>
             )}
         </div>
       </div>

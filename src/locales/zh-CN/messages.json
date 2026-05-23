@@ -1,0 +1,23 @@
+{
+  "title": "消息",
+  "thinking": "思考中...",
+  "editing": "编辑中...",
+  "toolCall": "工具调用",
+  "toolResult": "工具结果",
+  "processing": "处理中...",
+  "error": "错误",
+  "retry": "重试",
+  "copyMessage": "复制消息",
+  "copyCode": "复制代码",
+  "copied": "已复制！",
+  "showMore": "展开更多",
+  "showLess": "收起",
+  "viewDiff": "查看差异",
+  "viewSource": "查看源码",
+  "collapsed": "已折叠",
+  "expanded": "已展开",
+  "messageDeleted": "消息已删除",
+  "confirmDelete": "确定要删除此消息吗？",
+  "noMessages": "暂无消息",
+  "startConversation": "开始对话，消息将显示在此处。"
+}

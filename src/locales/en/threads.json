@@ -1,0 +1,17 @@
+{
+  "title": "Threads",
+  "newThread": "New thread",
+  "renameThread": "Rename thread",
+  "currentName": "Current name: \"{{name}}\"",
+  "newName": "New name",
+  "cancel": "Cancel",
+  "rename": "Rename",
+  "deleteThread": "Delete thread",
+  "archiveThread": "Archive thread",
+  "searchThreads": "Search threads...",
+  "noThreads": "No threads yet",
+  "noMatchingThreads": "No matching threads",
+  "createFirstThread": "Create your first thread to get started.",
+  "threadDeleted": "Thread deleted",
+  "threadArchived": "Thread archived"
+}
