@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
+import { useTranslation } from "react-i18next";
 import type { QueuedMessage } from "../../../types";
 import {
   PopoverMenuItem,
@@ -24,9 +25,11 @@ export function ComposerQueue({
     return null;
   }
 
+  const { t } = useTranslation("composer");
+
   return (
     <div className="composer-queue">
-      <div className="composer-queue-title">Queued</div>
+      <div className="composer-queue-title">{t("queued")}</div>
       {pausedReason ? (
         <div className="composer-queue-hint">{pausedReason}</div>
       ) : null}
@@ -37,11 +40,11 @@ export function ComposerQueue({
               {item.text ||
                 (item.images?.length
                   ? item.images.length === 1
-                    ? "Image"
-                    : "Images"
+                    ? t("image")
+                    : t("images")
                   : "")}
               {item.images?.length
-                ? ` · ${item.images.length} image${item.images.length === 1 ? "" : "s"}`
+                ? ` · ${t("imageCount", { count: item.images.length })}`
                 : ""}
             </span>
             <QueueMenuButton
@@ -63,6 +66,7 @@ type QueueMenuButtonProps = {
 };
 
 function QueueMenuButton({ item, onEditQueued, onDeleteQueued }: QueueMenuButtonProps) {
+  const { t } = useTranslation("composer");
   const menu = useMenuController();
   const handleToggleMenu = useCallback(
     (event: ReactMouseEvent<HTMLButtonElement>) => {
@@ -89,7 +93,7 @@ function QueueMenuButton({ item, onEditQueued, onDeleteQueued }: QueueMenuButton
         type="button"
         className={`composer-queue-menu${menu.isOpen ? " is-open" : ""}`}
         onClick={handleToggleMenu}
-        aria-label="Queue item menu"
+        aria-label={t("queueItemMenu")}
         aria-haspopup="menu"
         aria-expanded={menu.isOpen}
       >
@@ -97,8 +101,8 @@ function QueueMenuButton({ item, onEditQueued, onDeleteQueued }: QueueMenuButton
       </button>
       {menu.isOpen && (
         <PopoverSurface className="composer-queue-item-popover" role="menu">
-          <PopoverMenuItem onClick={handleEdit}>Edit</PopoverMenuItem>
-          <PopoverMenuItem onClick={handleDelete}>Delete</PopoverMenuItem>
+          <PopoverMenuItem onClick={handleEdit}>{t("edit")}</PopoverMenuItem>
+          <PopoverMenuItem onClick={handleDelete}>{t("delete")}</PopoverMenuItem>
         </PopoverSurface>
       )}
     </div>

@@ -1,4 +1,5 @@
 import { isMacPlatform as isMacPlatformFromPaths } from "./platformPaths";
+import i18n from "../locales/i18n";
 
 export type ShortcutDefinition = {
   key: string;
@@ -34,16 +35,6 @@ const MODIFIER_LABELS_OTHER: Record<string, string> = {
   ctrl: "Ctrl",
   alt: "Alt",
   shift: "Shift",
-};
-
-const KEY_LABELS: Record<string, string> = {
-  " ": "Space",
-  space: "Space",
-  escape: "Esc",
-  arrowup: "↑",
-  arrowdown: "↓",
-  arrowleft: "←",
-  arrowright: "→",
 };
 
 const ACCELERATOR_KEYS: Record<string, string> = {
@@ -101,7 +92,7 @@ export function parseShortcut(value: string | null | undefined): ShortcutDefinit
 
 export function formatShortcut(value: string | null | undefined): string {
   if (!value) {
-    return "Not set";
+    return i18n.t("shortcuts.formatNotSet", { ns: "settings" });
   }
   const parsed = parseShortcut(value);
   if (!parsed) {
@@ -110,18 +101,23 @@ export function formatShortcut(value: string | null | undefined): string {
   const useSymbols = isMacPlatform();
   const normalized = normalizeShortcutDefinitionForPlatform(parsed, useSymbols);
   const modifierLabels = useSymbols ? MODIFIER_LABELS_MAC : MODIFIER_LABELS_OTHER;
+  const getModifierLabel = (modifier: string, label: string) => {
+    if (useSymbols) return label;
+    const key = `shortcuts.mod${modifier.charAt(0).toUpperCase() + modifier.slice(1)}`;
+    return i18n.t(key, { ns: "settings", defaultValue: label });
+  };
   const modifiers = MODIFIER_ORDER.flatMap((modifier) => {
     if (modifier === "cmd" && normalized.meta) {
-      return modifierLabels.cmd;
+      return getModifierLabel(modifier, modifierLabels.cmd);
     }
     if (modifier === "ctrl" && normalized.ctrl) {
-      return modifierLabels.ctrl;
+      return getModifierLabel(modifier, modifierLabels.ctrl);
     }
     if (modifier === "alt" && normalized.alt) {
-      return modifierLabels.alt;
+      return getModifierLabel(modifier, modifierLabels.alt);
     }
     if (modifier === "shift" && normalized.shift) {
-      return modifierLabels.shift;
+      return getModifierLabel(modifier, modifierLabels.shift);
     }
     return [];
   });
@@ -129,11 +125,38 @@ export function formatShortcut(value: string | null | undefined): string {
     ? modifiers
     : modifiers.filter((modifier, index) => modifiers.indexOf(modifier) === index);
   const keyLabel =
-    KEY_LABELS[parsed.key] ??
+    getLocalizedKeyLabel(parsed.key) ??
     (parsed.key.length === 1 ? parsed.key.toUpperCase() : parsed.key);
   return useSymbols
     ? [...uniqueModifiers, keyLabel].join("")
     : [...uniqueModifiers, keyLabel].join("+");
+}
+
+function getLocalizedKeyLabel(key: string): string | undefined {
+  const KEY_I18N_MAP: Record<string, string> = {
+    " ": "Space",
+    space: "Space",
+    escape: "Esc",
+    arrowup: "↑",
+    arrowdown: "↓",
+    arrowleft: "←",
+    arrowright: "→",
+  };
+  const KEY_I18N_KEY: Record<string, string> = {
+    " ": "keySpace",
+    space: "keySpace",
+    escape: "keyEsc",
+  };
+  const defaultLabel = KEY_I18N_MAP[key];
+  if (!defaultLabel) {
+    return undefined;
+  }
+  const i18nKey = KEY_I18N_KEY[key];
+  if (i18nKey) {
+    return i18n.t(`shortcuts.${i18nKey}`, { ns: "settings", defaultValue: defaultLabel });
+  }
+  // Arrow symbols and other universal labels don't need translation
+  return defaultLabel;
 }
 
 export function buildShortcutValue(event: KeyboardEvent): string | null {

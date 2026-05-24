@@ -2,15 +2,15 @@ import type { AppSettings } from "@/types";
 import type { CodexSection, ShortcutDraftKey, ShortcutSettingKey } from "./settingsTypes";
 
 export const DICTATION_MODELS = [
-  { id: "tiny", label: "Tiny", size: "75 MB", note: "Fastest, least accurate." },
-  { id: "base", label: "Base", size: "142 MB", note: "Balanced default." },
-  { id: "small", label: "Small", size: "466 MB", note: "Better accuracy." },
-  { id: "medium", label: "Medium", size: "1.5 GB", note: "High accuracy." },
+  { id: "tiny", label: "极小", size: "75 MB", note: "最快，精度最低。" },
+  { id: "base", label: "基础", size: "142 MB", note: "速度与精度均衡。" },
+  { id: "small", label: "较小", size: "466 MB", note: "精度较好。" },
+  { id: "medium", label: "中等", size: "1.5 GB", note: "高精度。" },
   {
     id: "large-v3",
-    label: "Large V3",
+    label: "大型 V3",
     size: "3.0 GB",
-    note: "Best accuracy, heavy download.",
+    note: "最佳精度，下载量大。",
   },
 ];
 
@@ -29,9 +29,9 @@ type ComposerPresetSettings = Pick<
 >;
 
 export const COMPOSER_PRESET_LABELS: Record<ComposerPreset, string> = {
-  default: "Default (no helpers)",
-  helpful: "Helpful",
-  smart: "Smart",
+  default: "默认（无辅助）",
+  helpful: "辅助增强",
+  smart: "智能增强",
 };
 
 export const COMPOSER_PRESET_CONFIGS: Record<
@@ -74,19 +74,19 @@ export const SETTINGS_MOBILE_BREAKPOINT_PX = 720;
 export const DEFAULT_REMOTE_HOST = "127.0.0.1:4732";
 
 export const SETTINGS_SECTION_LABELS: Record<CodexSection, string> = {
-  projects: "Projects",
-  environments: "Environments",
-  display: "Display & Sound",
-  about: "About",
-  composer: "Composer",
-  dictation: "Dictation",
-  shortcuts: "Shortcuts",
-  "open-apps": "Open in",
+  projects: "项目",
+  environments: "环境",
+  display: "显示与声音",
+  about: "关于",
+  composer: "编辑器",
+  dictation: "语音输入",
+  shortcuts: "快捷键",
+  "open-apps": "打开方式",
   git: "Git",
-  server: "Server",
-  agents: "Agents",
+  server: "服务器",
+  agents: "代理",
   codex: "Codex",
-  features: "Features",
+  features: "功能",
 };
 
 export const SHORTCUT_DRAFT_KEY_BY_SETTING: Record<

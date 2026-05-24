@@ -9,6 +9,7 @@ import {
   renameWorktree as renameWorktreeService,
   renameWorktreeUpstream as renameWorktreeUpstreamService,
 } from "../../../services/tauri";
+import i18n from "@/locales/i18n";
 
 type UseWorktreeOpsOptions = {
   onDebug?: (entry: DebugEntry) => void;
@@ -93,7 +94,7 @@ export function useWorktreeOps({
       }
       const trimmedFolder = copiesFolder.trim();
       if (!trimmedFolder) {
-        throw new Error("Copies folder is required.");
+        throw new Error(i18n.t("copiesFolderRequired", { ns: "workspaces" }));
       }
       onDebug?.({
         id: `${Date.now()}-client-add-clone`,

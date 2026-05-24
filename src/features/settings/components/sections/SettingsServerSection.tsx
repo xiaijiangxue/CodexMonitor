@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import X from "lucide-react/dist/esm/icons/x";
@@ -130,13 +131,13 @@ export function SettingsServerSection({
     }
     if (tcpDaemonStatus.state === "running") {
       return tcpDaemonStatus.pid
-        ? `Mobile daemon is running (pid ${tcpDaemonStatus.pid}) on ${tcpDaemonStatus.listenAddr ?? "configured listen address"}.`
-        : `Mobile daemon is running on ${tcpDaemonStatus.listenAddr ?? "configured listen address"}.`;
+        ? `移动守护进程正在运行（pid ${tcpDaemonStatus.pid}），监听于 ${tcpDaemonStatus.listenAddr ?? "配置的监听地址"}。`
+        : `移动守护进程正在运行，监听于 ${tcpDaemonStatus.listenAddr ?? "配置的监听地址"}。`;
     }
     if (tcpDaemonStatus.state === "error") {
-      return tcpDaemonStatus.lastError ?? "Mobile daemon is in an error state.";
+      return tcpDaemonStatus.lastError ?? "移动守护进程处于错误状态。";
     }
-    return `Mobile daemon is stopped${tcpDaemonStatus.listenAddr ? ` (${tcpDaemonStatus.listenAddr})` : ""}.`;
+    return `移动守护进程已停止${tcpDaemonStatus.listenAddr ? `（${tcpDaemonStatus.listenAddr}）` : ""}。`;
   })();
 
   const openAddRemoteModal = () => {
@@ -170,27 +171,29 @@ export function SettingsServerSection({
         });
         setAddRemoteOpen(false);
       } catch (error) {
-        setAddRemoteError(error instanceof Error ? error.message : "Unable to add remote.");
+        setAddRemoteError(error instanceof Error ? error.message : "无法添加远程。");
       } finally {
         setAddRemoteBusy(false);
       }
     })();
   };
 
+    const { t } = useTranslation("settings");
+
   return (
     <SettingsSection
-      title="Server"
+      title={t("server.title")}
       subtitle={
         isMobileSimplified
-          ? "Configure TCP host/token from your desktop setup, then run a connection test."
-          : "Configure how CodexMonitor exposes TCP backend access for mobile and remote clients. Desktop usage remains local unless you explicitly connect through remote mode."
+          ? t("server.subtitleMobile")
+          : t("server.subtitleDesktop")
       }
     >
 
       {!isMobileSimplified && (
         <div className="settings-field">
           <label className="settings-field-label" htmlFor="backend-mode">
-            Backend mode
+            后端模式
           </label>
           <select
             id="backend-mode"
@@ -203,12 +206,11 @@ export function SettingsServerSection({
               })
             }
           >
-            <option value="local">Local (default)</option>
-            <option value="remote">Remote (daemon)</option>
+            <option value="local">本地（默认）</option>
+            <option value="remote">远程（守护进程）</option>
           </select>
           <div className="settings-help">
-            Local keeps desktop requests in-process. Remote routes desktop requests through the same
-            TCP transport path used by mobile clients.
+            本地模式在进程中处理桌面请求。远程模式通过移动客户端使用的相同 TCP 传输路径路由桌面请求。
           </div>
         </div>
       )}
@@ -217,8 +219,8 @@ export function SettingsServerSection({
         {isMobileSimplified && (
           <>
             <div className="settings-field">
-              <div className="settings-field-label">Saved remotes</div>
-              <div className="settings-mobile-remotes" role="list" aria-label="Saved remotes">
+              <div className="settings-field-label">已保存的远程</div>
+              <div className="settings-mobile-remotes" role="list" aria-label="已保存的远程">
                 {remoteBackends.map((entry, index) => {
                   const isActive = entry.id === activeRemoteBackendId;
                   return (
@@ -230,14 +232,14 @@ export function SettingsServerSection({
                       <div className="settings-mobile-remote-main">
                         <div className="settings-mobile-remote-name-row">
                           <div className="settings-mobile-remote-name">{entry.name}</div>
-                          {isActive && <span className="settings-mobile-remote-badge">Active</span>}
+                          {isActive && <span className="settings-mobile-remote-badge">活跃</span>}
                         </div>
                         <div className="settings-mobile-remote-meta">TCP · {entry.host}</div>
                         <div className="settings-mobile-remote-last">
-                          Last connected:{" "}
+                                                    上次连接：{" "}
                           {typeof entry.lastConnectedAtMs === "number"
                             ? new Date(entry.lastConnectedAtMs).toLocaleString()
-                            : "Never"}
+                            : "从未"}
                         </div>
                       </div>
                       <div className="settings-mobile-remote-actions">
@@ -248,9 +250,9 @@ export function SettingsServerSection({
                             void onSelectRemoteBackend(entry.id);
                           }}
                           disabled={isActive}
-                          aria-label={`Use ${entry.name} remote`}
+                          aria-label={`使用 ${entry.name} 远程`}
                         >
-                          {isActive ? "Using" : "Use"}
+                          {isActive ? "正在使用" : "使用"}
                         </button>
                         <button
                           type="button"
@@ -259,7 +261,7 @@ export function SettingsServerSection({
                             void onMoveRemoteBackend(entry.id, "up");
                           }}
                           disabled={index === 0}
-                          aria-label={`Move ${entry.name} up`}
+                          aria-label={`上移 ${entry.name}`}
                         >
                           ↑
                         </button>
@@ -270,7 +272,7 @@ export function SettingsServerSection({
                             void onMoveRemoteBackend(entry.id, "down");
                           }}
                           disabled={index === remoteBackends.length - 1}
-                          aria-label={`Move ${entry.name} down`}
+                          aria-label={`下移 ${entry.name}`}
                         >
                           ↓
                         </button>
@@ -280,9 +282,9 @@ export function SettingsServerSection({
                           onClick={() => {
                             setPendingDeleteRemoteId(entry.id);
                           }}
-                          aria-label={`Delete ${entry.name}`}
+                          aria-label={`删除 ${entry.name}`}
                         >
-                          Delete
+                          删除
                         </button>
                       </div>
                     </div>
@@ -295,7 +297,7 @@ export function SettingsServerSection({
                   className="button settings-button-compact"
                   onClick={openAddRemoteModal}
                 >
-                  Add remote
+                  添加远程
                 </button>
               </div>
               {remoteStatusText && (
@@ -304,19 +306,19 @@ export function SettingsServerSection({
                 </div>
               )}
               <div className="settings-help">
-                Switch the active remote here. The fields below edit the active entry.
+                在此切换活跃远程。下方的字段编辑活跃条目。
               </div>
             </div>
 
             <div className="settings-field">
               <label className="settings-field-label" htmlFor="mobile-remote-name">
-                Remote name
+                远程名称
               </label>
               <input
                 id="mobile-remote-name"
                 className="settings-input settings-input--compact"
                 value={remoteNameDraft}
-                placeholder="My desktop"
+                placeholder="我的桌面"
                 onChange={(event) => onSetRemoteNameDraft(event.target.value)}
                 onBlur={() => {
                   void onCommitRemoteName();
@@ -335,8 +337,8 @@ export function SettingsServerSection({
 
         {!isMobileSimplified && (
           <SettingsToggleRow
-            title="Keep daemon running after app closes"
-            subtitle="If disabled, CodexMonitor stops managed TCP daemon processes before exit."
+            title="应用关闭后保持守护进程运行"
+            subtitle="如果禁用，CodexMonitor 在退出前停止托管的 TCP 守护进程。"
           >
             <SettingsToggleSwitch
               pressed={appSettings.keepDaemonRunningAfterAppClose}
@@ -351,7 +353,7 @@ export function SettingsServerSection({
         )}
 
         <div className="settings-field">
-          <div className="settings-field-label">Remote backend</div>
+          <div className="settings-field-label">远程后端</div>
           <div className="settings-field-row">
             <input
               className="settings-input settings-input--compact"
@@ -367,13 +369,13 @@ export function SettingsServerSection({
                   void onCommitRemoteHost();
                 }
               }}
-              aria-label="Remote backend host"
+              aria-label="远程后端主机"
             />
             <input
               type="password"
               className="settings-input settings-input--compact"
               value={remoteTokenDraft}
-              placeholder="Token (required)"
+              placeholder="令牌（必填）"
               onChange={(event) => onSetRemoteTokenDraft(event.target.value)}
               onBlur={() => {
                 void onCommitRemoteToken();
@@ -384,20 +386,20 @@ export function SettingsServerSection({
                   void onCommitRemoteToken();
                 }
               }}
-              aria-label="Remote backend token"
+              aria-label="远程后端令牌"
             />
           </div>
           {remoteHostError && <div className="settings-help settings-help-error">{remoteHostError}</div>}
           <div className="settings-help">
             {isMobileSimplified
-              ? "Use the Tailscale host from your desktop CodexMonitor app (Server section), for example `macbook.your-tailnet.ts.net:4732`."
-              : "This host/token is used by mobile clients and desktop remote-mode testing."}
+              ? "使用桌面 CodexMonitor 应用（服务器部分）中的 Tailscale 主机，例如 `macbook.your-tailnet.ts.net:4732`。"
+              : "此主机/令牌用于移动客户端和桌面远程模式测试。"}
           </div>
         </div>
 
         {isMobileSimplified && (
           <div className="settings-field">
-            <div className="settings-field-label">Connection test</div>
+            <div className="settings-field-label">连接测试</div>
             <div className="settings-field-row">
               <button
                 type="button"
@@ -405,7 +407,7 @@ export function SettingsServerSection({
                 onClick={onMobileConnectTest}
                 disabled={mobileConnectBusy}
               >
-                {mobileConnectBusy ? "Connecting..." : "Connect & test"}
+                {mobileConnectBusy ? "连接中..." : "连接并测试"}
               </button>
             </div>
             {mobileConnectStatusText && (
@@ -414,15 +416,14 @@ export function SettingsServerSection({
               </div>
             )}
             <div className="settings-help">
-              Make sure your desktop app daemon is running and reachable on Tailscale, then retry
-              this test.
+              确保桌面应用守护进程正在运行且可通过 Tailscale 访问，然后重试此测试。
             </div>
           </div>
         )}
 
         {!isMobileSimplified && (
           <div className="settings-field">
-            <div className="settings-field-label">Mobile access daemon</div>
+            <div className="settings-field-label">移动访问守护进程</div>
             <div className="settings-field-row">
               <button
                 type="button"
@@ -432,7 +433,7 @@ export function SettingsServerSection({
                 }}
                 disabled={tcpDaemonBusyAction !== null}
               >
-                {tcpDaemonBusyAction === "start" ? "Starting..." : "Start daemon"}
+                {tcpDaemonBusyAction === "start" ? "启动中..." : "启动守护进程"}
               </button>
               <button
                 type="button"
@@ -442,7 +443,7 @@ export function SettingsServerSection({
                 }}
                 disabled={tcpDaemonBusyAction !== null}
               >
-                {tcpDaemonBusyAction === "stop" ? "Stopping..." : "Stop daemon"}
+                {tcpDaemonBusyAction === "stop" ? "停止中..." : "停止守护进程"}
               </button>
               <button
                 type="button"
@@ -452,25 +453,24 @@ export function SettingsServerSection({
                 }}
                 disabled={tcpDaemonBusyAction !== null}
               >
-                {tcpDaemonBusyAction === "status" ? "Refreshing..." : "Refresh status"}
+                {tcpDaemonBusyAction === "status" ? "刷新中..." : "刷新状态"}
               </button>
             </div>
             {tcpRunnerStatusText && <div className="settings-help">{tcpRunnerStatusText}</div>}
             {tcpDaemonStatus?.startedAtMs && (
               <div className="settings-help">
-                Started at: {new Date(tcpDaemonStatus.startedAtMs).toLocaleString()}
+                启动时间：{new Date(tcpDaemonStatus.startedAtMs).toLocaleString()}
               </div>
             )}
             <div className="settings-help">
-              Start this daemon before connecting from iOS. It uses your current token and listens
-              on <code>0.0.0.0:&lt;port&gt;</code>, matching your configured host port.
+              在从 iOS 连接前启动此守护进程。它使用当前令牌并在 <code>0.0.0.0:&lt;port&gt;</code> 上监听，与您配置的主机端口匹配。
             </div>
           </div>
         )}
 
         {!isMobileSimplified && (
           <div className="settings-field">
-            <div className="settings-field-label">Tailscale helper</div>
+            <div className="settings-field-label">Tailscale 辅助工具</div>
             <div className="settings-field-row">
               <button
                 type="button"
@@ -478,7 +478,7 @@ export function SettingsServerSection({
                 onClick={onRefreshTailscaleStatus}
                 disabled={tailscaleStatusBusy}
               >
-                {tailscaleStatusBusy ? "Checking..." : "Detect Tailscale"}
+                {tailscaleStatusBusy ? "检查中..." : "检测 Tailscale"}
               </button>
               <button
                 type="button"
@@ -486,7 +486,7 @@ export function SettingsServerSection({
                 onClick={onRefreshTailscaleCommandPreview}
                 disabled={tailscaleCommandBusy}
               >
-                {tailscaleCommandBusy ? "Refreshing..." : "Refresh daemon command"}
+                {tailscaleCommandBusy ? "刷新中..." : "刷新守护进程命令"}
               </button>
               <button
                 type="button"
@@ -496,7 +496,7 @@ export function SettingsServerSection({
                   void onUseSuggestedTailscaleHost();
                 }}
               >
-                Use suggested host
+                使用建议的主机
               </button>
             </div>
             {tailscaleStatusError && (
@@ -507,17 +507,17 @@ export function SettingsServerSection({
                 <div className="settings-help">{tailscaleStatus.message}</div>
                 <div className="settings-help">
                   {tailscaleStatus.installed
-                    ? `Version: ${tailscaleStatus.version ?? "unknown"}`
-                    : "Install Tailscale on both desktop and iOS to continue."}
+                    ? `版本：${tailscaleStatus.version ?? "unknown"}`
+                    : "在桌面和 iOS 上都安装 Tailscale 以继续。"}
                 </div>
                 {tailscaleStatus.suggestedRemoteHost && (
                   <div className="settings-help">
-                    Suggested remote host: <code>{tailscaleStatus.suggestedRemoteHost}</code>
+                    建议的远程主机：<code>{tailscaleStatus.suggestedRemoteHost}</code>
                   </div>
                 )}
                 {tailscaleStatus.tailnetName && (
                   <div className="settings-help">
-                    Tailnet: <code>{tailscaleStatus.tailnetName}</code>
+                    Tailnet：<code>{tailscaleStatus.tailnetName}</code>
                   </div>
                 )}
               </>
@@ -528,14 +528,14 @@ export function SettingsServerSection({
             {tailscaleCommandPreview && (
               <>
                 <div className="settings-help">
-                  Command template (manual fallback) for starting the daemon:
+                  启动守护进程的命令模板（手动备用）：
                 </div>
                 <pre className="settings-command-preview">
                   <code>{tailscaleCommandPreview.command}</code>
                 </pre>
                 {!tailscaleCommandPreview.tokenConfigured && (
                   <div className="settings-help settings-help-error">
-                    Remote backend token is empty. Set one before exposing daemon access.
+                    远程后端令牌为空。在暴露守护进程访问前设置一个令牌。
                   </div>
                 )}
               </>
@@ -546,23 +546,23 @@ export function SettingsServerSection({
 
       <div className="settings-help">
         {isMobileSimplified
-          ? "Use your own infrastructure only. On iOS, get the Tailscale hostname and token from your desktop CodexMonitor setup."
-          : "Mobile access should stay scoped to your own infrastructure (tailnet). CodexMonitor does not provide hosted backend services."}
+          ? "仅使用您自己的基础设施。在 iOS 上，从桌面 CodexMonitor 设置中获取 Tailscale 主机名和令牌。"
+          : "移动访问应限制在您自己的基础设施（tailnet）范围内。CodexMonitor 不提供托管后端服务。"}
       </div>
       {addRemoteOpen && (
         <ModalShell
           className="settings-add-remote-overlay"
           cardClassName="settings-add-remote-card"
           onBackdropClick={closeAddRemoteModal}
-          ariaLabel="Add remote"
+          ariaLabel="添加远程"
         >
           <div className="settings-add-remote-header">
-            <div className="settings-add-remote-title">Add remote</div>
+            <div className="settings-add-remote-title">添加远程</div>
             <button
               type="button"
               className="ghost icon-button settings-add-remote-close"
               onClick={closeAddRemoteModal}
-              aria-label="Close add remote modal"
+              aria-label="关闭添加远程弹窗"
               disabled={addRemoteBusy}
             >
               <X aria-hidden />
@@ -570,7 +570,7 @@ export function SettingsServerSection({
           </div>
           <div className="settings-field">
             <label className="settings-field-label" htmlFor="settings-add-remote-name">
-              New remote name
+              新远程名称
             </label>
             <input
               id="settings-add-remote-name"
@@ -582,7 +582,7 @@ export function SettingsServerSection({
           </div>
           <div className="settings-field">
             <label className="settings-field-label" htmlFor="settings-add-remote-host">
-              New remote host
+              新远程主机
             </label>
             <input
               id="settings-add-remote-host"
@@ -595,14 +595,14 @@ export function SettingsServerSection({
           </div>
           <div className="settings-field">
             <label className="settings-field-label" htmlFor="settings-add-remote-token">
-              New remote token
+              新远程令牌
             </label>
             <input
               id="settings-add-remote-token"
               type="password"
               className="settings-input settings-input--compact"
               value={addRemoteTokenDraft}
-              placeholder="Token"
+              placeholder="令牌"
               onChange={(event) => setAddRemoteTokenDraft(event.target.value)}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
@@ -616,7 +616,7 @@ export function SettingsServerSection({
           {addRemoteError && <div className="settings-help settings-help-error">{addRemoteError}</div>}
           <div className="settings-add-remote-actions">
             <button type="button" className="ghost" onClick={closeAddRemoteModal} disabled={addRemoteBusy}>
-              Cancel
+              取消
             </button>
             <button
               type="button"
@@ -624,7 +624,7 @@ export function SettingsServerSection({
               onClick={handleAddRemoteConfirm}
               disabled={addRemoteBusy}
             >
-              {addRemoteBusy ? "Connecting..." : "Connect & add"}
+              {addRemoteBusy ? "连接中..." : "连接并添加"}
             </button>
           </div>
         </ModalShell>
@@ -634,12 +634,11 @@ export function SettingsServerSection({
           className="settings-delete-remote-overlay"
           cardClassName="settings-delete-remote-card"
           onBackdropClick={() => setPendingDeleteRemoteId(null)}
-          ariaLabel="Delete remote confirmation"
+          ariaLabel="删除远程确认"
         >
-          <div className="settings-delete-remote-title">Delete remote?</div>
+          <div className="settings-delete-remote-title">删除远程？</div>
           <div className="settings-delete-remote-message">
-            Remove <strong>{pendingDeleteRemote.name}</strong> from saved remotes? This only
-            removes the profile from this device.
+            从已保存的远程中移除 <strong>{pendingDeleteRemote.name}</strong>？这仅会从此设备移除配置。
           </div>
           <div className="settings-delete-remote-actions">
             <button
@@ -657,7 +656,7 @@ export function SettingsServerSection({
                 setPendingDeleteRemoteId(null);
               }}
             >
-              Delete remote
+              删除远程
             </button>
           </div>
         </ModalShell>

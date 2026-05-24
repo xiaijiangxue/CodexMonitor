@@ -1,4 +1,5 @@
 import { useEffect, type CSSProperties, type RefObject } from "react";
+import { useTranslation } from "react-i18next";
 import type { AutocompleteItem } from "../hooks/useComposerAutocomplete";
 import Brain from "lucide-react/dist/esm/icons/brain";
 import FileText from "lucide-react/dist/esm/icons/file-text";
@@ -115,6 +116,17 @@ export function ComposerSuggestionsPopover({
   suggestionsOpen,
   suggestionsStyle,
 }: ComposerSuggestionsPopoverProps) {
+  const { t } = useTranslation("composer");
+  const sectionGroupLabel = (group: string) => {
+    const keyMap: Record<string, string> = {
+      Files: t("sectionFiles"),
+      Skills: t("sectionSkills"),
+      Apps: t("sectionApps"),
+      Slash: t("sectionSlash"),
+      Prompts: t("sectionPrompts"),
+    };
+    return keyMap[group] ?? group;
+  };
   const reviewPromptOpen = Boolean(reviewPrompt);
   const suggestionsCount = suggestions.length;
 
@@ -208,7 +220,7 @@ export function ComposerSuggestionsPopover({
 
           return (
             <div key={item.id}>
-              {showGroup && <div className="composer-suggestion-section">{item.group}</div>}
+              {showGroup && <div className="composer-suggestion-section">{sectionGroupLabel(item.group!)}</div>}
               <button
                 type="button"
                 className={`composer-suggestion${index === highlightIndex ? " is-active" : ""}`}

@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import type { LaunchScriptIconId } from "../../../types";
 export type { LaunchScriptIconId } from "../../../types";
+import i18n from "../../../locales/i18n";
 import Play from "lucide-react/dist/esm/icons/play";
 import Hammer from "lucide-react/dist/esm/icons/hammer";
 import Bug from "lucide-react/dist/esm/icons/bug";
@@ -80,5 +81,5 @@ export function getLaunchScriptIcon(id?: string | null): LucideIcon {
 
 export function getLaunchScriptIconLabel(id?: string | null): string {
   const iconId = coerceLaunchScriptIconId(id);
-  return ICON_LABELS[iconId];
+  return i18n.t(iconId, { ns: "app", defaultValue: ICON_LABELS[iconId] });
 }

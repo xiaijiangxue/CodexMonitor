@@ -1,12 +1,13 @@
 import type { ConversationItem } from "../types";
+import i18n from "../locales/i18n";
 
 function formatMessage(item: Extract<ConversationItem, { kind: "message" }>) {
-  const roleLabel = item.role === "user" ? "User" : "Assistant";
+  const roleLabel = item.role === "user" ? i18n.t("roleUser", { ns: "messages" }) : i18n.t("roleAssistant", { ns: "messages" });
   return `${roleLabel}: ${item.text}`;
 }
 
 function formatReasoning(item: Extract<ConversationItem, { kind: "reasoning" }>) {
-  const parts = ["Reasoning:"];
+  const parts = [i18n.t("reasoning", { ns: "messages" }) + ":"];
   if (item.summary) {
     parts.push(item.summary);
   }
@@ -18,28 +19,28 @@ function formatReasoning(item: Extract<ConversationItem, { kind: "reasoning" }>)
 
 function formatUserInput(item: Extract<ConversationItem, { kind: "userInput" }>) {
   const lines = item.questions.map((entry, index) => {
-    const title = entry.question || entry.header || `Question ${index + 1}`;
+    const title = entry.question || entry.header || i18n.t("questionNum", { ns: "messages", n: index + 1 });
     const answers =
-      entry.answers.length > 0 ? entry.answers.join(" | ") : "No answer provided";
+      entry.answers.length > 0 ? entry.answers.join(" | ") : i18n.t("noAnswerDot", { ns: "messages" });
     return `- ${title}: ${answers}`;
   });
-  return ["Input answered:", ...lines].join("\n");
+  return [i18n.t("inputAnswerPrefix", { ns: "messages" }), ...lines].join("\n");
 }
 
 function formatTool(item: Extract<ConversationItem, { kind: "tool" }>) {
-  const parts = [`Tool: ${item.title}`];
+  const parts = [`${i18n.t("toolPrefix", { ns: "messages" })} ${item.title}`];
   if (item.detail) {
     parts.push(item.detail);
   }
   if (item.status) {
-    parts.push(`Status: ${item.status}`);
+    parts.push(`${i18n.t("statusPrefix", { ns: "messages" })} ${item.status}`);
   }
   if (item.output) {
     parts.push(item.output);
   }
   if (item.changes && item.changes.length > 0) {
     parts.push(
-      "Changes:\n" +
+      i18n.t("changes", { ns: "messages" }) + ":\n" +
         item.changes
           .map((change) => `- ${change.path}${change.kind ? ` (${change.kind})` : ""}`)
           .join("\n"),
@@ -49,17 +50,17 @@ function formatTool(item: Extract<ConversationItem, { kind: "tool" }>) {
 }
 
 function formatDiff(item: Extract<ConversationItem, { kind: "diff" }>) {
-  const header = `Diff: ${item.title}`;
-  const status = item.status ? `Status: ${item.status}` : null;
+  const header = `${i18n.t("diffPrefix", { ns: "messages" })} ${item.title}`;
+  const status = item.status ? `${i18n.t("statusPrefix", { ns: "messages" })} ${item.status}` : null;
   return [header, status, item.diff].filter(Boolean).join("\n");
 }
 
 function formatReview(item: Extract<ConversationItem, { kind: "review" }>) {
-  return `Review (${item.state}): ${item.text}`;
+  return `${i18n.t("review", { ns: "messages" })} (${item.state}): ${item.text}`;
 }
 
 function formatExplore(item: Extract<ConversationItem, { kind: "explore" }>) {
-  const title = item.status === "exploring" ? "Exploring" : "Explored";
+  const title = item.status === "exploring" ? i18n.t("exploring", { ns: "messages" }) : i18n.t("explored", { ns: "messages" });
   const lines = item.entries.map((entry) => {
     const prefix = entry.kind[0].toUpperCase() + entry.kind.slice(1);
     return `- ${prefix} ${entry.label}${entry.detail ? ` (${entry.detail})` : ""}`;

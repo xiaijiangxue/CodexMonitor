@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+import i18n from "@/locales/i18n";
 import type { AppSettings, ComposerEditorSettings, WorkspaceInfo } from "@/types";
 import type { ThreadState } from "@/features/threads/hooks/useThreadsReducer";
 import type { WorkspaceLaunchScriptsState } from "@app/hooks/useWorkspaceLaunchScripts";
@@ -731,10 +732,10 @@ function buildGitSurface({
       onModeChange: gitState.handleGitPanelModeChange,
       filePanelMode: gitState.filePanelMode,
       onFilePanelModeChange: gitState.setFilePanelMode,
-      worktreeApplyLabel: "apply",
+      worktreeApplyLabel: i18n.t("gitApplyLabel", { ns: "layout" }),
       worktreeApplyTitle: worktreeState.activeParentWorkspace?.name
-        ? `Apply changes to ${worktreeState.activeParentWorkspace.name}`
-        : "Apply changes to parent workspace",
+        ? i18n.t("gitApplyTitle", { ns: "layout", name: worktreeState.activeParentWorkspace.name })
+        : i18n.t("gitApplyTitleFallback", { ns: "layout" }),
       worktreeApplyLoading: worktreeState.isWorktreeWorkspace
         ? gitState.worktreeApplyLoading
         : false,

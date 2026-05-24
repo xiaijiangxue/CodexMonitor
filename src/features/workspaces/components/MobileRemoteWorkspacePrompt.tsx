@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { ModalShell } from "../../design-system/components/modal/ModalShell";
 
 type MobileRemoteWorkspacePromptProps = {
@@ -20,6 +21,7 @@ export function MobileRemoteWorkspacePrompt({
   onCancel,
   onConfirm,
 }: MobileRemoteWorkspacePromptProps) {
+  const { t } = useTranslation("workspaces");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const focusTextareaAtEnd = () => {
     const textarea = textareaRef.current;
@@ -37,18 +39,18 @@ export function MobileRemoteWorkspacePrompt({
 
   return (
     <ModalShell
-      ariaLabel="Add remote workspace paths"
+      ariaLabel={t("addRemoteWorkspacePaths")}
       className="mobile-remote-workspace-modal"
       cardClassName="mobile-remote-workspace-modal-card"
       onBackdropClick={onCancel}
     >
       <div className="mobile-remote-workspace-modal-content">
-        <div className="ds-modal-title">Add project directories</div>
+        <div className="ds-modal-title">{t("addProjectDirectories")}</div>
         <div className="ds-modal-subtitle">
-          Enter directories on the connected server.
+          {t("enterDirectoriesOnServer")}
         </div>
         <label className="ds-modal-label" htmlFor="mobile-remote-workspace-paths">
-          Paths
+          {t("paths")}
         </label>
         <textarea
           id="mobile-remote-workspace-paths"
@@ -61,11 +63,11 @@ export function MobileRemoteWorkspacePrompt({
           wrap="off"
         />
         <div className="mobile-remote-workspace-modal-hint">
-          One path per line. Comma and semicolon separators also work. You can use `~/...`.
+          {t("onePathPerLine")}
         </div>
         {recentPaths.length > 0 && (
           <div className="mobile-remote-workspace-modal-recent">
-            <div className="mobile-remote-workspace-modal-recent-title">Recently added</div>
+            <div className="mobile-remote-workspace-modal-recent-title">{t("recentlyAdded")}</div>
             <div className="mobile-remote-workspace-modal-recent-list">
               {recentPaths.map((path) => (
                 <button
@@ -88,10 +90,10 @@ export function MobileRemoteWorkspacePrompt({
         {error && <div className="ds-modal-error">{error}</div>}
         <div className="ds-modal-actions">
           <button className="ghost ds-modal-button" onClick={onCancel} type="button">
-            Cancel
+            {t("cancel")}
           </button>
           <button className="primary ds-modal-button" onClick={onConfirm} type="button">
-            Add
+            {t("add")}
           </button>
         </div>
       </div>

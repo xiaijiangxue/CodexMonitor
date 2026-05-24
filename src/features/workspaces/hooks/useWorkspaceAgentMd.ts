@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import type { DebugEntry, WorkspaceInfo } from "../../../types";
 import { readAgentMd, writeAgentMd } from "../../../services/tauri";
 import { useFileEditor, type FileEditorResponse } from "../../shared/hooks/useFileEditor";
+import i18n from "@/locales/i18n";
 
 type UseWorkspaceAgentMdOptions = {
   activeWorkspace: WorkspaceInfo | null;
@@ -84,7 +85,7 @@ export function useWorkspaceAgentMd({ activeWorkspace, onDebug }: UseWorkspaceAg
     key: workspaceId,
     read: readWithDebug,
     write: writeWithDebug,
-    readErrorTitle: "Couldn’t load AGENTS.md",
-    writeErrorTitle: "Couldn’t save AGENTS.md",
+    readErrorTitle: i18n.t("couldNotLoadAgentsMd", { ns: "workspaces" }),
+    writeErrorTitle: i18n.t("couldNotSaveAgentsMd", { ns: "workspaces" }),
   });
 }

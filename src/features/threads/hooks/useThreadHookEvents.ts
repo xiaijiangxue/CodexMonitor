@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import type { Dispatch } from "react";
+import i18n from "@/locales/i18n";
 import type { ConversationItem } from "@/types";
 import type { ThreadAction } from "./useThreadsReducer";
 
@@ -70,7 +71,7 @@ function buildHookConversationItem(run: HookRun, status: string): ConversationIt
     id: `hook-${asString(run.id).trim()}`,
     kind: "tool",
     toolType: "hook",
-    title: `Hook: ${eventName || "unknown"}`,
+    title: `Hook: ${eventName || i18n.t("hookUnknown", { ns: "threads" })}`,
     detail: formatHookDetail(run),
     status,
     output: formatHookOutput(run),

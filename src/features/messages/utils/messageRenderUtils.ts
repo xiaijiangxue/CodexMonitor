@@ -1,4 +1,5 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
+import i18n from "@/locales/i18n";
 import type { ConversationItem } from "../../../types";
 
 export type ToolSummary = {
@@ -85,13 +86,13 @@ function formatCollabAgentLabel(agent: {
   const nickname = agent.nickname?.trim();
   const role = agent.role?.trim();
   if (nickname && role) {
-    return `${nickname} [${role}]`;
+    return i18n.t("collabAgentFormat", { ns: "messages", name: nickname, role });
   }
   if (nickname) {
     return nickname;
   }
   if (role) {
-    return `${agent.threadId} [${role}]`;
+    return i18n.t("collabAgentFormat", { ns: "messages", name: agent.threadId, role });
   }
   return agent.threadId;
 }
@@ -100,21 +101,21 @@ function summarizeCollabLabel(title: string, status?: string) {
   const tool = title.replace(/^collab:\s*/i, "").trim().toLowerCase();
   const tone = statusToneFromText(status);
   if (tool.includes("wait")) {
-    return tone === "processing" ? "waiting for" : "waited for";
+    return tone === "processing" ? i18n.t("collabWaiting", { ns: "messages" }) : i18n.t("collabWaited", { ns: "messages" });
   }
   if (tool.includes("resume")) {
-    return tone === "processing" ? "resuming" : "resumed";
+    return tone === "processing" ? i18n.t("collabResuming", { ns: "messages" }) : i18n.t("collabResumed", { ns: "messages" });
   }
   if (tool.includes("close")) {
-    return tone === "processing" ? "closing" : "closed";
+    return tone === "processing" ? i18n.t("collabClosing", { ns: "messages" }) : i18n.t("collabClosed", { ns: "messages" });
   }
   if (tool.includes("spawn")) {
-    return tone === "processing" ? "spawning" : "spawned";
+    return tone === "processing" ? i18n.t("collabSpawning", { ns: "messages" }) : i18n.t("collabSpawned", { ns: "messages" });
   }
   if (tool.includes("send") || tool.includes("interaction")) {
-    return tone === "processing" ? "sending to" : "sent to";
+    return tone === "processing" ? i18n.t("collabSending", { ns: "messages" }) : i18n.t("collabSent", { ns: "messages" });
   }
-  return "sub-agent";
+  return i18n.t("collabSubAgent", { ns: "messages" });
 }
 
 function summarizeCollabReceiver(
@@ -132,7 +133,7 @@ function summarizeCollabReceiver(
   if (receivers.length === 1) {
     return formatCollabAgentLabel(receivers[0]);
   }
-  return `${formatCollabAgentLabel(receivers[0])} +${receivers.length - 1}`;
+  return `${formatCollabAgentLabel(receivers[0])} ${i18n.t("moreCount", { ns: "messages", count: receivers.length - 1 })}`;
 }
 
 export function toolNameFromTitle(title: string) {
@@ -171,7 +172,7 @@ export function parseReasoning(
     ? cleanTitle.length > 80
       ? `${cleanTitle.slice(0, 80)}…`
       : cleanTitle
-    : "Reasoning";
+    : i18n.t("reasoning", { ns: "messages" });
   const summaryLines = summary.split("\n");
   const contentLines = content.split("\n");
   const summaryBody =
@@ -343,8 +344,8 @@ export function buildToolSummary(
   if (item.toolType === "commandExecution") {
     const cleanedCommand = cleanCommandText(commandText);
     return {
-      label: "command",
-      value: cleanedCommand || "Command",
+      label: i18n.t("toolSummaryCommand", { ns: "messages" }),
+      value: cleanedCommand || i18n.t("toolSummaryCommandFallback", { ns: "messages" }),
       detail: "",
       output: item.output || "",
     };
@@ -352,23 +353,23 @@ export function buildToolSummary(
 
   if (item.toolType === "webSearch") {
     return {
-      label: statusToneFromText(item.status) === "processing" ? "searching" : "searched",
-      value: item.detail || "the web",
+      label: statusToneFromText(item.status) === "processing" ? i18n.t("toolSummarySearching", { ns: "messages" }) : i18n.t("toolSummarySearched", { ns: "messages" }),
+      value: item.detail || i18n.t("toolSummaryWeb", { ns: "messages" }),
     };
   }
 
   if (item.toolType === "imageView") {
     const file = basename(item.detail || "");
     return {
-      label: "read",
-      value: file || "image",
+      label: i18n.t("toolSummaryRead", { ns: "messages" }),
+      value: file || i18n.t("toolSummaryImage", { ns: "messages" }),
     };
   }
 
   if (item.toolType === "hook") {
     return {
-      label: "hook",
-      value: item.title.replace(/^Hook:\s*/i, "").trim() || item.title || "hook",
+      label: i18n.t("toolSummaryHook", { ns: "messages" }),
+      value: item.title.replace(/^Hook:\s*/i, "").trim() || item.title || i18n.t("toolSummaryHook", { ns: "messages" }),
       detail: item.detail || "",
       output: item.output || "",
     };
@@ -388,7 +389,10 @@ export function buildToolSummary(
     const args = parseToolArgs(item.detail);
     if (toolName.toLowerCase().includes("search")) {
       return {
-        label: statusToneFromText(item.status) === "processing" ? "searching" : "searched",
+        label:
+          statusToneFromText(item.status) === "processing"
+            ? i18n.t("toolSummarySearching", { ns: "messages" })
+            : i18n.t("toolSummarySearched", { ns: "messages" }),
         value:
           firstStringField(args, ["query", "pattern", "text"]) || item.detail,
       };
@@ -397,14 +401,14 @@ export function buildToolSummary(
       const targetPath =
         firstStringField(args, ["path", "file", "filename"]) || item.detail;
       return {
-        label: "read",
+        label: i18n.t("toolSummaryRead", { ns: "messages" }),
         value: basename(targetPath),
         detail: targetPath && targetPath !== basename(targetPath) ? targetPath : "",
       };
     }
     if (toolName) {
       return {
-        label: "tool",
+        label: i18n.t("toolSummaryTool", { ns: "messages" }),
         value: toolName,
         detail: item.detail || "",
       };
@@ -412,7 +416,7 @@ export function buildToolSummary(
   }
 
   return {
-    label: "tool",
+    label: i18n.t("toolSummaryTool", { ns: "messages" }),
     value: item.title || "",
     detail: item.detail || "",
     output: item.output || "",

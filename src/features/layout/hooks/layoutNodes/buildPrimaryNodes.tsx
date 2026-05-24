@@ -9,6 +9,7 @@ import { ErrorToasts } from "../../../notifications/components/ErrorToasts";
 import { Composer } from "../../../composer/components/Composer";
 import { TabBar } from "../../../app/components/TabBar";
 import { TabletNav } from "../../../app/components/TabletNav";
+import type { TFunction } from "i18next";
 import type {
   LayoutNodesResult,
   LayoutPrimarySurface,
@@ -31,7 +32,7 @@ type PrimaryLayoutNodes = Pick<
   | "tabBarNode"
 >;
 
-export function buildPrimaryNodes(options: PrimaryLayoutNodesOptions): PrimaryLayoutNodes {
+export function buildPrimaryNodes(options: PrimaryLayoutNodesOptions, t: TFunction): PrimaryLayoutNodes {
   const sidebarNode = <Sidebar {...options.sidebarProps} />;
 
   const messagesNode = <Messages {...options.messagesProps} />;
@@ -56,7 +57,7 @@ export function buildPrimaryNodes(options: PrimaryLayoutNodesOptions): PrimaryLa
         <button
           className="icon-button back-button"
           onClick={options.desktopTopbarProps.onExitDiff}
-          aria-label="Back to chat"
+          aria-label={t("nav.backToChat")}
         >
           <ArrowLeft aria-hidden />
         </button>

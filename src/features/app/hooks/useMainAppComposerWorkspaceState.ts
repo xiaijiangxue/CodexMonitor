@@ -1,4 +1,5 @@
 import { useMemo, type RefObject } from "react";
+import i18n from "@/locales/i18n";
 import type {
   AppSettings,
   ConversationItem,
@@ -217,9 +218,9 @@ export function useMainAppComposerWorkspaceState({
 
   const queuePausedReason =
     queueFlushPaused && hasUserInputRequestForActiveThread
-      ? "Paused — waiting for your answers."
+      ? i18n.t("pausedWaitingAnswers", { ns: "app" })
       : queueFlushPaused && isPlanReadyAwaitingResponse
-        ? "Paused — waiting for plan accept/changes."
+        ? i18n.t("pausedWaitingPlan", { ns: "app" })
         : null;
 
   const composerState = useComposerController({

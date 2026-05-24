@@ -1,3 +1,4 @@
+import i18n from "@/locales/i18n";
 import type {
   AccountSnapshot,
   LocalUsageDay,
@@ -108,120 +109,160 @@ export function buildHomeUsageViewModel({
     usageMetric === "tokens"
       ? [
           {
-            label: "Today",
+            label: i18n.t("today", { ns: "home" }),
             value: formatCompactNumber(latestUsageDay?.totalTokens ?? 0),
-            suffix: "tokens",
+            suffix: i18n.t("suffixTokens", { ns: "home" }),
             caption: latestUsageDay
-              ? `${formatDayLabel(latestUsageDay.day)} · ${formatCount(
-                  latestUsageDay.inputTokens,
-                )} in / ${formatCount(latestUsageDay.outputTokens)} out`
-              : "Latest available day",
+              ? i18n.t("dayLabelTokens", {
+                  ns: "home",
+                  day: formatDayLabel(latestUsageDay.day),
+                  input: formatCount(latestUsageDay.inputTokens),
+                  output: formatCount(latestUsageDay.outputTokens),
+                })
+              : i18n.t("latestAvailableDay", { ns: "home" }),
           },
           {
-            label: "Last 7 days",
+            label: i18n.t("last7Days", { ns: "home" }),
             value: formatCompactNumber(usageTotals?.last7DaysTokens ?? last7Tokens),
-            suffix: "tokens",
-            caption: `Avg ${formatCompactNumber(usageTotals?.averageDailyTokens)} / day`,
+            suffix: i18n.t("suffixTokens", { ns: "home" }),
+            caption: i18n.t("avgPerDay", {
+              ns: "home",
+              avg: formatCompactNumber(usageTotals?.averageDailyTokens),
+            }),
           },
           {
-            label: "Last 30 days",
+            label: i18n.t("last30Days", { ns: "home" }),
             value: formatCompactNumber(usageTotals?.last30DaysTokens ?? last7Tokens),
-            suffix: "tokens",
-            caption: `Total ${formatCount(usageTotals?.last30DaysTokens ?? last7Tokens)}`,
+            suffix: i18n.t("suffixTokens", { ns: "home" }),
+            caption: i18n.t("totalCount", {
+              ns: "home",
+              count: formatCount(usageTotals?.last30DaysTokens ?? last7Tokens),
+            }),
           },
           {
-            label: "Cache hit rate",
+            label: i18n.t("cacheHitRate", { ns: "home" }),
             value: usageTotals
               ? `${usageTotals.cacheHitRatePercent.toFixed(1)}%`
               : "--",
-            caption: "Last 7 days",
+            caption: i18n.t("last7Days", { ns: "home" }),
           },
           {
-            label: "Cached tokens",
+            label: i18n.t("cachedTokens", { ns: "home" }),
             value: formatCompactNumber(last7Cached),
-            suffix: "saved",
+            suffix: i18n.t("suffixSaved", { ns: "home" }),
             caption:
               last7Input > 0
-                ? `${((last7Cached / last7Input) * 100).toFixed(1)}% of prompt tokens`
-                : "Last 7 days",
+                ? i18n.t("percentOfPromptTokens", {
+                    ns: "home",
+                    pct: ((last7Cached / last7Input) * 100).toFixed(1),
+                  })
+                : i18n.t("last7Days", { ns: "home" }),
           },
           {
-            label: "Avg / run",
+            label: i18n.t("avgPerRun", { ns: "home" }),
             value:
               averageTokensPerRun === null
                 ? "--"
                 : formatCompactNumber(averageTokensPerRun),
-            suffix: "tokens",
+            suffix: i18n.t("suffixTokens", { ns: "home" }),
             caption:
               last7AgentRuns > 0
-                ? `${formatCount(last7AgentRuns)} runs in last 7 days`
-                : "No runs yet",
+                ? i18n.t("runsInLast7Days", {
+                    ns: "home",
+                    count: formatCount(last7AgentRuns),
+                  })
+                : i18n.t("noRunsYet", { ns: "home" }),
           },
           {
-            label: "Peak day",
+            label: i18n.t("peakDay", { ns: "home" }),
             value: formatDayLabel(usageTotals?.peakDay),
-            caption: `${formatCompactNumber(usageTotals?.peakDayTokens)} tokens`,
+            caption: i18n.t("tokensCount", {
+              ns: "home",
+              count: formatCompactNumber(usageTotals?.peakDayTokens),
+            }),
           },
         ]
       : [
           {
-            label: "Last 7 days",
+            label: i18n.t("last7Days", { ns: "home" }),
             value: formatDurationCompact(last7AgentMs),
-            suffix: "agent time",
-            caption: `Avg ${formatDurationCompact(averageDailyAgentMs)} / day`,
+            suffix: i18n.t("suffixAgentTime", { ns: "home" }),
+            caption: i18n.t("avgPerDay", {
+              ns: "home",
+              avg: formatDurationCompact(averageDailyAgentMs),
+            }),
           },
           {
-            label: "Last 30 days",
+            label: i18n.t("last30Days", { ns: "home" }),
             value: formatDurationCompact(last30AgentMs),
-            suffix: "agent time",
-            caption: `Total ${formatDuration(last30AgentMs)}`,
+            suffix: i18n.t("suffixAgentTime", { ns: "home" }),
+            caption: i18n.t("totalDuration", {
+              ns: "home",
+              duration: formatDuration(last30AgentMs),
+            }),
           },
           {
-            label: "Runs",
+            label: i18n.t("runs", { ns: "home" }),
             value: formatCount(last7AgentRuns),
-            suffix: "runs",
-            caption: `Last 30 days: ${formatCount(last30AgentRuns)} runs`,
+            suffix: i18n.t("suffixRuns", { ns: "home" }),
+            caption: i18n.t("last30DaysRunsCount", {
+              ns: "home",
+              count: formatCount(last30AgentRuns),
+            }),
           },
           {
-            label: "Avg / run",
+            label: i18n.t("avgPerRun", { ns: "home" }),
             value: formatDurationCompact(averageRunDurationMs),
             caption:
               last7AgentRuns > 0
-                ? `Across ${formatCount(last7AgentRuns)} runs`
-                : "No runs yet",
+                ? i18n.t("acrossRunsCount", {
+                    ns: "home",
+                    count: formatCount(last7AgentRuns),
+                  })
+                : i18n.t("noRunsYet", { ns: "home" }),
           },
           {
-            label: "Avg / active day",
+            label: i18n.t("avgPerActiveDay", { ns: "home" }),
             value: formatDurationCompact(averageActiveDayAgentMs),
             caption:
               last7ActiveDays > 0
-                ? `${formatCount(last7ActiveDays)} active days in last 7`
-                : "No active days yet",
+                ? i18n.t("activeDaysInLast7", {
+                    ns: "home",
+                    count: formatCount(last7ActiveDays),
+                  })
+                : i18n.t("noActiveDaysYet", { ns: "home" }),
           },
           {
-            label: "Peak day",
+            label: i18n.t("peakDay", { ns: "home" }),
             value: formatDayLabel(peakAgentDay?.day ?? null),
-            caption: `${formatDurationCompact(peakAgentDay?.agentTimeMs ?? 0)} agent time`,
+            caption: i18n.t("durationAgentTime", {
+              ns: "home",
+              duration: formatDurationCompact(peakAgentDay?.agentTimeMs ?? 0),
+            }),
           },
         ];
 
   const usageInsights = [
     {
-      label: "Longest streak",
+      label: i18n.t("longestStreak", { ns: "home" }),
       value: longestStreak > 0 ? formatDayCount(longestStreak) : "--",
       caption:
         longestStreak > 0
-          ? "Across current usage range"
-          : "No active streak yet",
+          ? i18n.t("acrossCurrentUsageRange", { ns: "home" })
+          : i18n.t("noActiveStreakYet", { ns: "home" }),
       compact: true,
     },
     {
-      label: "Active days",
+      label: i18n.t("activeDays", { ns: "home" }),
       value: last7Days.length > 0 ? `${last7ActiveDays} / ${last7Days.length}` : "--",
       caption:
         usageDays.length > 0
-          ? `${last30ActiveDays} / ${usageDays.length} in current range`
-          : "No activity yet",
+          ? i18n.t("activeDaysInRange", {
+              ns: "home",
+              active: last30ActiveDays,
+              total: usageDays.length,
+            })
+          : i18n.t("noActivityYet", { ns: "home" }),
       compact: true,
     },
   ] satisfies HomeStatCard[];
@@ -233,24 +274,28 @@ export function buildHomeUsageViewModel({
 
   if (usagePercentLabels.sessionPercent !== null) {
     accountCards.push({
-      label: usageShowRemaining ? "Session left" : "Session usage",
+      label: usageShowRemaining
+        ? i18n.t("sessionLeft", { ns: "home" })
+        : i18n.t("sessionUsage", { ns: "home" }),
       value: `${usagePercentLabels.sessionPercent}%`,
       caption: buildWindowCaption(
         usagePercentLabels.sessionResetLabel,
         accountRateLimits?.primary?.windowDurationMins,
-        "Current window",
+        i18n.t("currentWindow", { ns: "home" }),
       ),
     });
   }
 
   if (usagePercentLabels.showWeekly && usagePercentLabels.weeklyPercent !== null) {
     accountCards.push({
-      label: usageShowRemaining ? "Weekly left" : "Weekly usage",
+      label: usageShowRemaining
+        ? i18n.t("weeklyLeft", { ns: "home" })
+        : i18n.t("weeklyUsage", { ns: "home" }),
       value: `${usagePercentLabels.weeklyPercent}%`,
       caption: buildWindowCaption(
         usagePercentLabels.weeklyResetLabel,
         accountRateLimits?.secondary?.windowDurationMins,
-        "Longer window",
+        i18n.t("longerWindow", { ns: "home" }),
       ),
     });
   }
@@ -259,22 +304,22 @@ export function buildHomeUsageViewModel({
     accountCards.push(
       accountRateLimits.credits.unlimited
         ? {
-            label: "Credits",
-            value: "Unlimited",
-            caption: "Available balance",
+            label: i18n.t("credits", { ns: "home" }),
+            value: i18n.t("unlimited", { ns: "home" }),
+            caption: i18n.t("availableBalance", { ns: "home" }),
           }
         : {
-            label: "Credits",
+            label: i18n.t("credits", { ns: "home" }),
             value: creditsBalance ?? "--",
-            suffix: creditsBalance ? "credits" : null,
-            caption: "Available balance",
+            suffix: creditsBalance ? i18n.t("suffixCredits", { ns: "home" }) : null,
+            caption: i18n.t("availableBalance", { ns: "home" }),
           },
     );
   }
 
   if (planLabel) {
     accountCards.push({
-      label: "Plan",
+      label: i18n.t("plan", { ns: "home" }),
       value: planLabel,
       caption: formatAccountTypeLabel(accountInfo?.type),
     });
@@ -284,7 +329,10 @@ export function buildHomeUsageViewModel({
     accountCards,
     accountMeta: accountInfo?.email ?? null,
     updatedLabel: localUsageSnapshot
-      ? `Updated ${formatRelativeTime(localUsageSnapshot.updatedAt)}`
+      ? i18n.t("updatedLabel", {
+          ns: "home",
+          time: formatRelativeTime(localUsageSnapshot.updatedAt),
+        })
       : null,
     usageCards,
     usageDays,

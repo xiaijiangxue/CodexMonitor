@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import type { Dispatch, MutableRefObject } from "react";
 import * as Sentry from "@sentry/react";
+import i18n from "@/locales/i18n";
 import type {
   AppMention,
   ComposerSendIntent,
@@ -439,7 +440,7 @@ export function useThreadMessaging({
     dispatch({
       type: "addAssistantMessage",
       threadId: activeThreadId,
-      text: "Session stopped.",
+      text: i18n.t("sessionStopped", { ns: "threads" }),
     });
     if (!activeTurnId) {
       pendingInterruptsRef.current.add(activeThreadId);
@@ -779,7 +780,7 @@ export function useThreadMessaging({
         });
       } catch (error) {
         const message =
-          error instanceof Error ? error.message : "Failed to load MCP status.";
+          error instanceof Error ? error.message : i18n.t("failedToLoadMcpStatus", { ns: "threads" });
         dispatch({
           type: "addAssistantMessage",
           threadId,
@@ -832,7 +833,7 @@ export function useThreadMessaging({
         });
       } catch (error) {
         const message =
-          error instanceof Error ? error.message : "Failed to load apps.";
+          error instanceof Error ? error.message : i18n.t("failedToLoadApps", { ns: "threads" });
         dispatch({
           type: "addAssistantMessage",
           threadId,
@@ -917,7 +918,7 @@ export function useThreadMessaging({
           threadId,
           error instanceof Error
             ? error.message
-            : "Failed to start context compaction.",
+            : i18n.t("failedToStartCompact", { ns: "threads" }),
         );
       } finally {
         safeMessageActivity();

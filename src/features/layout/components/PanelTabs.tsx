@@ -2,6 +2,7 @@ import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import Folder from "lucide-react/dist/esm/icons/folder";
 import GitBranch from "lucide-react/dist/esm/icons/git-branch";
 import ScrollText from "lucide-react/dist/esm/icons/scroll-text";
+import { useTranslation } from "react-i18next";
 
 export type PanelTabId = "git" | "files" | "prompts";
 
@@ -17,30 +18,30 @@ type PanelTabsProps = {
   tabs?: PanelTab[];
 };
 
-const defaultTabs: PanelTab[] = [
-  { id: "git", label: "Git", icon: <GitBranch aria-hidden /> },
-  { id: "files", label: "Files", icon: <Folder aria-hidden /> },
-  { id: "prompts", label: "Prompts", icon: <ScrollText aria-hidden /> },
-];
-
-export function PanelTabs({ active, onSelect, tabs = defaultTabs }: PanelTabsProps) {
+export function PanelTabs({ active, onSelect, tabs }: PanelTabsProps) {
+  const { t } = useTranslation("layout");
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const activeIndex = tabs.findIndex((tab) => tab.id === active);
+  const resolvedTabs: PanelTab[] = tabs ?? [
+    { id: "git", label: t("panel.git"), icon: <GitBranch aria-hidden /> },
+    { id: "files", label: t("panel.files"), icon: <Folder aria-hidden /> },
+    { id: "prompts", label: t("panel.prompts"), icon: <ScrollText aria-hidden /> },
+  ];
+  const activeIndex = resolvedTabs.findIndex((tab) => tab.id === active);
   const focusableIndex = activeIndex >= 0 ? activeIndex : 0;
 
   const selectByIndex = (index: number, options?: { focus?: boolean }) => {
-    if (tabs.length === 0) {
+    if (resolvedTabs.length === 0) {
       return;
     }
-    const normalized = (index + tabs.length) % tabs.length;
-    onSelect(tabs[normalized].id);
+    const normalized = (index + resolvedTabs.length) % resolvedTabs.length;
+    onSelect(resolvedTabs[normalized].id);
     if (options?.focus) {
       tabRefs.current[normalized]?.focus();
     }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
-    if (tabs.length <= 1) {
+    if (resolvedTabs.length <= 1) {
       return;
     }
     const currentIndex = activeIndex >= 0 ? activeIndex : index;
@@ -61,13 +62,13 @@ export function PanelTabs({ active, onSelect, tabs = defaultTabs }: PanelTabsPro
     }
     if (event.key === "End") {
       event.preventDefault();
-      selectByIndex(tabs.length - 1, { focus: true });
+      selectByIndex(resolvedTabs.length - 1, { focus: true });
     }
   };
 
   return (
-    <div className="panel-tabs" role="tablist" aria-label="Panel" aria-orientation="horizontal">
-      {tabs.map((tab, index) => {
+    <div className="panel-tabs" role="tablist" aria-label={t("panel.title")} aria-orientation="horizontal">
+      {resolvedTabs.map((tab, index) => {
         const isActive = active === tab.id;
         return (
           <button

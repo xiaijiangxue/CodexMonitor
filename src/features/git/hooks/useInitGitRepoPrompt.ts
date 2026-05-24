@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import i18n from "@/locales/i18n";
 import type { WorkspaceInfo } from "../../../types";
 import { validateBranchName } from "../utils/branchValidation";
 import type { InitGitRepoOutcome } from "./useGitActions";
@@ -133,7 +134,7 @@ export function useInitGitRepoPrompt({
     const trimmedBranch = prompt.branch.trim();
     const validationError =
       trimmedBranch.length === 0
-        ? "Branch name is required."
+        ? i18n.t("git:branchNameRequired")
         : validateBranchName(prompt.branch);
     if (validationError) {
       setInitGitRepoPrompt((prev) =>
@@ -146,13 +147,13 @@ export function useInitGitRepoPrompt({
     if (prompt.createRemote) {
       if (!trimmedRepo) {
         setInitGitRepoPrompt((prev) =>
-          prev ? { ...prev, error: "Repository name is required." } : prev,
+          prev ? { ...prev, error: i18n.t("git:repoNameRequired") } : prev,
         );
         return;
       }
       if (/\s/.test(trimmedRepo)) {
         setInitGitRepoPrompt((prev) =>
-          prev ? { ...prev, error: "Repository name cannot contain spaces." } : prev,
+          prev ? { ...prev, error: i18n.t("git:repoNameNoSpaces") } : prev,
         );
         return;
       }
@@ -173,7 +174,7 @@ export function useInitGitRepoPrompt({
 
     if (initOutcome !== "initialized") {
       setInitGitRepoPrompt((prev) =>
-        prev ? { ...prev, error: prev.error ?? "Failed to initialize Git repository." } : prev,
+        prev ? { ...prev, error: prev.error ?? i18n.t("git:failedInitGitRepo") } : prev,
       );
       return;
     }

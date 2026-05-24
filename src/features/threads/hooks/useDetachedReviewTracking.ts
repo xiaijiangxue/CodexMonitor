@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import type { Dispatch } from "react";
+import i18n from "@/locales/i18n";
 import {
   loadDetachedReviewLinks,
   saveDetachedReviewLinks,
@@ -69,7 +70,7 @@ export function useDetachedReviewTracking({
         dispatch({
           type: "addAssistantMessage",
           threadId: parentId,
-          text: `Detached review started. [Open review thread](/thread/${childId})`,
+          text: i18n.t("detachedReviewStarted", { ns: "threads", childId }),
         });
       }
 
@@ -127,7 +128,7 @@ export function useDetachedReviewTracking({
         dispatch({
           type: "addAssistantMessage",
           threadId: parentId,
-          text: `Detached review completed. [Open review thread](/thread/${threadId})`,
+          text: i18n.t("detachedReviewCompleted", { ns: "threads", threadId }),
         });
       }
       if (parentId !== activeThreadId) {

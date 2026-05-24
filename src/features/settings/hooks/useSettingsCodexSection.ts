@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
+import i18n from "@/locales/i18n";
 import type {
   AppSettings,
   CodexDoctorResult,
@@ -216,7 +217,7 @@ export const useSettingsCodexSection = ({
             afterVersion: null,
             upgraded: false,
             output: null,
-            details: "Codex updates are not available in this build.",
+            details: i18n.t("codex.updatesUnavailable", { ns: "settings" }),
           },
         });
         return;

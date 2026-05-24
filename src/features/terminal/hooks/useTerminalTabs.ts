@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import i18n from "@/locales/i18n";
 
 export type TerminalTab = {
   id: string;
@@ -28,7 +29,7 @@ function renumberAutoNamedTabs(tabs: TerminalTabRecord[]): TerminalTabRecord[] {
     if (!tab.autoNamed) {
       return tab;
     }
-    const nextTitle = `Terminal ${autoNamedIndex}`;
+    const nextTitle = i18n.t("autoName", { ns: "terminal", index: autoNamedIndex });
     autoNamedIndex += 1;
     if (tab.title === nextTitle) {
       return tab;

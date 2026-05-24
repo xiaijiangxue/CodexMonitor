@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import i18n from "@/locales/i18n";
 import type { AppSettings, OpenAppTarget } from "@/types";
 import { DEFAULT_OPEN_APP_ID, OPEN_APP_STORAGE_KEY } from "@app/constants";
 import type { OpenAppDraft } from "@settings/components/settingsTypes";
@@ -117,7 +118,7 @@ export const useSettingsOpenAppDrafts = ({
   const handleAddOpenApp = () => {
     const newTarget: OpenAppDraft = {
       id: createOpenAppId(),
-      label: "New App",
+      label: i18n.t("settings.newApp", { ns: "settings" }),
       kind: "app",
       appName: "",
       command: null,

@@ -1,4 +1,5 @@
 import type { CodexFeature } from "@/types";
+import { useTranslation } from "react-i18next";
 import {
   SettingsSection,
   SettingsSubsection,
@@ -8,75 +9,111 @@ import {
 import type { SettingsFeaturesSectionProps } from "@settings/hooks/useSettingsFeaturesSection";
 import { fileManagerName, openInFileManagerLabel } from "@utils/platformPaths";
 
-const FEATURE_DESCRIPTION_FALLBACKS: Record<string, string> = {
-  undo: "Create a ghost commit at each turn.",
-  shell_tool: "Enable the default shell tool.",
-  unified_exec: "Use the single unified PTY-backed exec tool.",
-  shell_snapshot: "Enable shell snapshotting.",
-  js_repl: "Enable JavaScript REPL tools backed by a persistent Node kernel.",
-  js_repl_tools_only: "Only expose js_repl tools directly to the model.",
-  web_search_request: "Deprecated. Use top-level web_search instead.",
-  web_search_cached: "Deprecated. Use top-level web_search instead.",
-  search_tool: "Removed legacy search flag kept for backward compatibility.",
-  runtime_metrics: "Enable runtime metrics snapshots via a manual reader.",
-  sqlite: "Persist rollout metadata to a local SQLite database.",
-  memory_tool: "Enable startup memory extraction and memory consolidation.",
-  child_agents_md: "Append additional AGENTS.md guidance to user instructions.",
-  apply_patch_freeform: "Include the freeform apply_patch tool.",
-  use_linux_sandbox_bwrap: "Use the bubblewrap-based Linux sandbox pipeline.",
-  request_rule: "Allow approval requests and exec rule proposals.",
-  experimental_windows_sandbox:
-    "Removed Windows sandbox flag kept for backward compatibility.",
-  elevated_windows_sandbox:
-    "Removed elevated Windows sandbox flag kept for backward compatibility.",
-  remote_models: "Refresh remote models before AppReady.",
-  powershell_utf8: "Enforce UTF-8 output in PowerShell.",
-  enable_request_compression:
-    "Compress streaming request bodies sent to codex-backend.",
-  apps: "Enable ChatGPT Apps integration.",
-  apps_mcp_gateway: "Route Apps MCP calls through the configured gateway.",
-  skill_mcp_dependency_install:
-    "Allow prompting and installing missing MCP dependencies.",
-  skill_env_var_dependency_prompt:
-    "Prompt for missing skill environment variable dependencies.",
-  steer: "Enable turn steering capability when supported by Codex.",
-  collaboration_modes: "Enable collaboration mode presets.",
-  personality: "Enable personality selection.",
-  responses_websockets:
-    "Use Responses API WebSocket transport for OpenAI by default.",
-  responses_websockets_v2: "Enable Responses API WebSocket v2 mode.",
-};
-
-function formatFeatureLabel(feature: CodexFeature): string {
-  const displayName = feature.displayName?.trim();
-  if (displayName) {
-    return displayName;
-  }
-  return feature.name
-    .split("_")
-    .filter((part) => part.length > 0)
-    .map((part) => part[0].toUpperCase() + part.slice(1))
-    .join(" ");
+function featureNameToKeyParts(name: string): string[] {
+  return name
+    .replace(/[_-]+/g, " ")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .split(/\s+/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => part.toLowerCase());
 }
 
-function featureSubtitle(feature: CodexFeature): string {
+function normalizeFeatureText(value: string | null | undefined): string {
+  return value?.trim().toLowerCase() ?? "";
+}
+
+function translatePreventSleepFeature(
+  feature: CodexFeature,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): { title: string; subtitle: string } | null {
+  const title = normalizeFeatureText(feature.displayName);
+  const subtitle = normalizeFeatureText(feature.description);
+  const announcement = normalizeFeatureText(feature.announcement);
+  const name = normalizeFeatureText(feature.name);
+  const titleAliases = new Set([
+    "prevent sleep while running",
+    "preventsleepwhilerunning",
+  ]);
+  const subtitleAliases = new Set([
+    "keep your computer awake while codex is running a thread.",
+  ]);
+  if (
+    titleAliases.has(title) ||
+    titleAliases.has(name) ||
+    subtitleAliases.has(subtitle) ||
+    subtitleAliases.has(announcement)
+  ) {
+    return {
+      title: t("features.titlePreventSleepWhileRunning"),
+      subtitle: t("features.descPreventSleepWhileRunning"),
+    };
+  }
+  return null;
+}
+
+function featureNameToDescKey(name: string): string {
+  const parts = featureNameToKeyParts(name);
+  return `features.desc${parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("")}`;
+}
+
+function featureNameToTitleKey(name: string): string {
+  const parts = featureNameToKeyParts(name);
+  return `features.title${parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("")}`;
+}
+
+function featureSubtitle(
+  feature: CodexFeature,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): string {
+  const specialCase = translatePreventSleepFeature(feature, t);
+  if (specialCase) {
+    return specialCase.subtitle;
+  }
+  const descKey = featureNameToDescKey(feature.name);
+  const translatedDesc = t(descKey);
+  if (translatedDesc !== descKey) {
+    return translatedDesc;
+  }
   if (feature.description?.trim()) {
     return feature.description;
   }
   if (feature.announcement?.trim()) {
     return feature.announcement;
   }
-  const fallbackDescription = FEATURE_DESCRIPTION_FALLBACKS[feature.name];
-  if (fallbackDescription) {
-    return fallbackDescription;
-  }
   if (feature.stage === "deprecated") {
-    return "Deprecated feature flag.";
+    return t("features.featureDeprecated");
   }
   if (feature.stage === "removed") {
-    return "Legacy feature flag kept for backward compatibility.";
+    return t("features.featureRemoved");
   }
-  return `Feature key: features.${feature.name}`;
+  return t("features.featureKey", { name: feature.name });
+}
+
+function formatFeatureLabel(
+  feature: CodexFeature,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): string {
+  const specialCase = translatePreventSleepFeature(feature, t);
+  if (specialCase) {
+    return specialCase.title;
+  }
+  const titleKey = featureNameToTitleKey(feature.name);
+  const translatedTitle = t(titleKey);
+  if (translatedTitle !== titleKey) {
+    return translatedTitle;
+  }
+  const displayName = feature.displayName?.trim();
+  if (displayName) {
+    return displayName;
+  }
+  return feature.name
+    .replace(/[_-]+/g, " ")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .split(/\s+/)
+    .filter((part) => part.length > 0)
+    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 export function SettingsFeaturesSection({
@@ -93,14 +130,16 @@ export function SettingsFeaturesSection({
   onToggleCodexFeature,
   onUpdateAppSettings,
 }: SettingsFeaturesSectionProps) {
+  const { t } = useTranslation("settings");
+
   return (
     <SettingsSection
-      title="Features"
-      subtitle="Manage stable and experimental Codex features."
+      title={t("features.title")}
+      subtitle={t("features.subtitle")}
     >
       <SettingsToggleRow
-        title="Config file"
-        subtitle={`Open the Codex config in ${fileManagerName()}.`}
+        title={t("features.configFile")}
+        subtitle={t("features.configFileSub", { fileManager: fileManagerName() })}
       >
         <button type="button" className="ghost" onClick={onOpenConfig}>
           {openInFileManagerLabel()}
@@ -108,17 +147,12 @@ export function SettingsFeaturesSection({
       </SettingsToggleRow>
       {openConfigError && <div className="settings-help">{openConfigError}</div>}
       <SettingsSubsection
-        title="Stable Features"
-        subtitle="Production-ready features enabled by default."
+        title={t("features.stableTitle")}
+        subtitle={t("features.stableSubtitle")}
       />
       <SettingsToggleRow
-        title="Personality"
-        subtitle={
-          <>
-            Choose Codex communication style (writes top-level <code>personality</code> in
-            config.toml).
-          </>
-        }
+        title={t("features.personality")}
+        subtitle={t("features.personalityHelp")}
       >
         <select
           id="features-personality-select"
@@ -130,15 +164,15 @@ export function SettingsFeaturesSection({
               personality: event.target.value as (typeof appSettings)["personality"],
             })
           }
-          aria-label="Personality"
+          aria-label={t("features.personality")}
         >
-          <option value="friendly">Friendly</option>
-          <option value="pragmatic">Pragmatic</option>
+          <option value="friendly">{t("features.personalityFriendly")}</option>
+          <option value="pragmatic">{t("features.personalityPragmatic")}</option>
         </select>
       </SettingsToggleRow>
       <SettingsToggleRow
-        title="Pause queued messages when a response is required"
-        subtitle="Keep queued messages paused while Codex is waiting for plan accept/changes or your answers."
+        title={t("features.pauseTitle")}
+        subtitle={t("features.pauseSubtitle")}
       >
         <SettingsToggleSwitch
           pressed={appSettings.pauseQueuedMessagesWhenResponseRequired}
@@ -154,8 +188,8 @@ export function SettingsFeaturesSection({
       {stableFeatures.map((feature) => (
         <SettingsToggleRow
           key={feature.name}
-          title={formatFeatureLabel(feature)}
-          subtitle={featureSubtitle(feature)}
+          title={formatFeatureLabel(feature, t)}
+          subtitle={featureSubtitle(feature, t)}
         >
           <SettingsToggleSwitch
             pressed={feature.enabled}
@@ -168,17 +202,17 @@ export function SettingsFeaturesSection({
         !featuresLoading &&
         !featureError &&
         stableFeatures.length === 0 && (
-        <div className="settings-help">No stable feature flags returned by Codex.</div>
-      )}
+          <div className="settings-help">{t("features.noStableFlags")}</div>
+        )}
       <SettingsSubsection
-        title="Experimental Features"
-        subtitle="Preview and under-development features."
+        title={t("features.experimentalTitle")}
+        subtitle={t("features.experimentalSubtitle")}
       />
       {experimentalFeatures.map((feature) => (
         <SettingsToggleRow
           key={feature.name}
-          title={formatFeatureLabel(feature)}
-          subtitle={featureSubtitle(feature)}
+          title={formatFeatureLabel(feature, t)}
+          subtitle={featureSubtitle(feature, t)}
         >
           <SettingsToggleSwitch
             pressed={feature.enabled}
@@ -193,16 +227,14 @@ export function SettingsFeaturesSection({
         hasDynamicFeatureRows &&
         experimentalFeatures.length === 0 && (
           <div className="settings-help">
-            No preview or under-development feature flags returned by Codex.
+            {t("features.noExperimentalFlags")}
           </div>
         )}
       {featuresLoading && (
-        <div className="settings-help">Loading Codex feature flags...</div>
+        <div className="settings-help">{t("features.loadingFlags")}</div>
       )}
       {!hasFeatureWorkspace && !featuresLoading && (
-        <div className="settings-help">
-          Connect a workspace to load Codex feature flags.
-        </div>
+        <div className="settings-help">{t("features.connectForFlags")}</div>
       )}
       {featureError && <div className="settings-help">{featureError}</div>}
     </SettingsSection>

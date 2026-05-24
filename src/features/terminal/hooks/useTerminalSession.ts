@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { RefObject } from "react";
+import { useTranslation } from "react-i18next";
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
@@ -119,6 +120,7 @@ export function useTerminalSession({
   onDebug,
   onSessionExit,
 }: UseTerminalSessionOptions): TerminalSessionState {
+  const { t } = useTranslation("terminal");
   const containerRef = useRef<HTMLDivElement | null>(null);
   const terminalRef = useRef<Terminal | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
@@ -131,7 +133,7 @@ export function useTerminalSession({
   const activeTerminalIdRef = useRef<string | null>(null);
   const pendingFocusRef = useRef(false);
   const [status, setStatus] = useState<TerminalStatus>("idle");
-  const [message, setMessage] = useState("Open a terminal to start a session.");
+  const [message, setMessage] = useState(t("openTerminal"));
   const [hasSession, setHasSession] = useState(false);
   const [readyKey, setReadyKey] = useState<string | null>(null);
   const [sessionResetCounter, setSessionResetCounter] = useState(0);
@@ -147,9 +149,9 @@ export function useTerminalSession({
       terminalRef.current?.reset();
       setHasSession(false);
       setStatus("idle");
-      setMessage("Open a terminal to start a session.");
+      setMessage(t("openTerminal"));
     }
-  }, [readyKey]);
+  }, [readyKey, t]);
 
   const activeKey = useMemo(() => {
     if (!activeWorkspace || !activeTerminalId) {
@@ -312,14 +314,14 @@ export function useTerminalSession({
     }
     if (!activeWorkspace || !activeTerminalId) {
       setStatus("idle");
-      setMessage("Open a terminal to start a session.");
+      setMessage(t("openTerminal"));
       setHasSession(false);
       setReadyKey(null);
       return;
     }
     if (!terminalRef.current || !fitAddonRef.current) {
       setStatus("idle");
-      setMessage("Preparing terminal...");
+      setMessage(t("preparingTerminal"));
       setHasSession(false);
       setReadyKey(null);
       return;
@@ -332,13 +334,13 @@ export function useTerminalSession({
     const rows = terminalRef.current.rows;
     const openSession = async () => {
       setStatus("connecting");
-      setMessage("Starting terminal session...");
+      setMessage(t("startingSession"));
       if (!openedSessionsRef.current.has(key)) {
         await openTerminalSession(activeWorkspace.id, activeTerminalId, cols, rows);
         openedSessionsRef.current.add(key);
       }
       setStatus("ready");
-      setMessage("Terminal ready.");
+      setMessage(t("terminalReady"));
       setHasSession(true);
       setReadyKey(key);
       if (renderedKeyRef.current !== key) {
@@ -351,7 +353,7 @@ export function useTerminalSession({
 
     openSession().catch((error) => {
       setStatus("error");
-      setMessage("Failed to start terminal session.");
+      setMessage(t("failedToStart"));
       onDebug?.(buildErrorDebugEntry("terminal open error", error));
     });
   }, [
@@ -362,6 +364,7 @@ export function useTerminalSession({
     refreshTerminal,
     syncActiveBuffer,
     sessionResetCounter,
+    t,
   ]);
 
   useEffect(() => {

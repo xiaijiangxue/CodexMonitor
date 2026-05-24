@@ -1,4 +1,5 @@
 import type { CustomPromptOption } from "../types";
+import i18n from "../locales/i18n";
 
 const PROMPTS_CMD_PREFIX = "prompts";
 const PROMPTS_CMD = `${PROMPTS_CMD_PREFIX}:`;
@@ -58,7 +59,7 @@ export function getPromptArgumentHint(prompt: CustomPromptOption) {
     return names.map((name) => `${name}=`).join(" ");
   }
   if (promptHasNumericPlaceholders(prompt.content)) {
-    return "[args]";
+    return i18n.t("promptArgsHint", { ns: "app" });
   }
   return undefined;
 }
@@ -231,9 +232,9 @@ type PromptInputsResult =
 
 function formatPromptArgsError(command: string, error: PromptArgsError) {
   if (error.kind === "MissingAssignment") {
-    return `Could not parse ${command}: expected key=value but found '${error.token}'. Wrap values in double quotes if they contain spaces.`;
+    return i18n.t("parseError", { ns: "app", command, token: error.token });
   }
-  return `Could not parse ${command}: expected a name before '=' in '${error.token}'.`;
+  return i18n.t("parseErrorMissingKey", { ns: "app", command, token: error.token });
 }
 
 function parsePromptInputs(rest: string): PromptInputsResult {
@@ -346,7 +347,7 @@ export function expandCustomPromptText(
     const missing = required.filter((name) => !(name in parsedInputs.values));
     if (missing.length > 0) {
       return {
-        error: `Missing required args for /${parsed.name}: ${missing.join(", ")}. Provide as key=value (quote values with spaces).`,
+        error: i18n.t("missingArgs", { ns: "app", name: parsed.name, missing: missing.join(", ") }),
       } as const;
     }
     return {

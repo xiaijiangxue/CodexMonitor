@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
@@ -6,6 +7,7 @@ const GITHUB_URL = "https://github.com/Dimillian/CodexMonitor";
 const TWITTER_URL = "https://x.com/dimillian";
 
 export function AboutView() {
+  const { t } = useTranslation("app");
   const [version, setVersion] = useState<string | null>(null);
 
   const handleOpenGitHub = () => {
@@ -49,10 +51,10 @@ export function AboutView() {
           <div className="about-title">Codex Monitor</div>
         </div>
         <div className="about-version">
-          {version ? `Version ${version}` : "Version —"}
+          {version != null ? `${t("version")} ${version}` : `${t("version")} —`}
         </div>
         <div className="about-tagline">
-          Monitor the situation of your Codex agents
+          {t("tagline")}
         </div>
         <div className="about-divider" />
         <div className="about-links">
@@ -61,7 +63,7 @@ export function AboutView() {
             className="about-link"
             onClick={handleOpenGitHub}
           >
-            GitHub
+            {t("github")}
           </button>
           <span className="about-link-sep">|</span>
           <button
@@ -69,10 +71,10 @@ export function AboutView() {
             className="about-link"
             onClick={handleOpenTwitter}
           >
-            Twitter
+            {t("twitter")}
           </button>
         </div>
-        <div className="about-footer">Made with ♥ by Codex & Dimillian</div>
+        <div className="about-footer">{t("footer")}</div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type {
   ApprovalRequest,
   DebugEntry,
@@ -70,6 +71,7 @@ export function useAgentResponseRequiredNotifications({
   getWorkspaceName,
   onDebug,
 }: ResponseRequiredNotificationOptions) {
+  const { t } = useTranslation("notifications");
   const lastNotifiedAtRef = useRef(0);
   const notifiedApprovalsRef = useRef(new Set<string>());
   const notifiedUserInputsRef = useRef(new Set<string>());
@@ -224,8 +226,8 @@ export function useAgentResponseRequiredNotifications({
 
     const workspaceName = getWorkspaceName?.(latestUnnotifiedApproval.workspace_id);
     const title = workspaceName
-      ? `Approval needed — ${workspaceName}`
-      : "Approval needed";
+      ? t("approvalNeededFor", { workspace: workspaceName })
+      : t("approvalNeeded");
     const commandInfo = getApprovalCommandInfo(latestUnnotifiedApproval.params ?? {});
     const body = commandInfo?.preview
       ? truncateText(commandInfo.preview, MAX_BODY_LENGTH)
@@ -283,9 +285,9 @@ export function useAgentResponseRequiredNotifications({
     notifiedUserInputsRef.current.add(questionKey);
 
     const workspaceName = getWorkspaceName?.(latestUnnotifiedQuestion.workspace_id);
-    const title = workspaceName ? `Question — ${workspaceName}` : "Question";
+    const title = workspaceName ? t("questionFor", { workspace: workspaceName }) : t("question");
     const first = latestUnnotifiedQuestion.params.questions[0];
-    const bodyRaw = first?.header?.trim() || first?.question?.trim() || "Your input is needed.";
+    const bodyRaw = first?.header?.trim() || first?.question?.trim() || t("inputNeeded");
     const body = truncateText(bodyRaw, MAX_BODY_LENGTH);
 
     void notify(title, body, {
@@ -355,11 +357,11 @@ export function useAgentResponseRequiredNotifications({
         return;
       }
       const workspaceName = getWorkspaceName?.(workspaceId);
-      const title = workspaceName ? `Plan ready — ${workspaceName}` : "Plan ready";
+      const title = workspaceName ? t("planReadyFor", { workspace: workspaceName }) : t("planReady");
       const text = String(item.text ?? "").trim();
       const body = text
         ? truncateText(text.split("\n")[0] ?? text, MAX_BODY_LENGTH)
-        : "Plan is ready. Open CodexMonitor to respond.";
+        : t("planReadyBody");
       const extra = {
         kind: "response_required",
         type: "plan",

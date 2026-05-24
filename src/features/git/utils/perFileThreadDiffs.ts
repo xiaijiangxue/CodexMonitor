@@ -1,4 +1,5 @@
 import type { ConversationItem } from "../../../types";
+import i18n from "@/locales/i18n";
 
 export type PerFileDiffEdit = {
   id: string;
@@ -132,7 +133,7 @@ export function buildPerFileThreadDiffs(items: ConversationItem[]): {
       const edit: PerFileDiffEdit = {
         id,
         path,
-        label: `Edit ${nextCount}`,
+        label: i18n.t("editLabel", { ns: "git", count: nextCount }),
         status: mapChangeKindToStatus(change.kind),
         diff,
         sourceItemId: item.id,

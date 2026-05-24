@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import i18n from "@/locales/i18n";
 import type {
   ModelOption,
   SendMessageResult,
@@ -92,7 +93,7 @@ const buildRunTitle = (prompt: string) => {
   const firstLine = prompt.trim().split("\n")[0] ?? "";
   const normalized = firstLine.replace(/\s+/g, " ").trim();
   if (!normalized) {
-    return "New run";
+    return i18n.t("newRun", { ns: "workspaces" });
   }
   if (normalized.length > MAX_TITLE_LENGTH) {
     return `${normalized.slice(0, MAX_TITLE_LENGTH)}...`;
@@ -407,7 +408,7 @@ export function useWorkspaceHome({
       }));
 
     if (runMode === "worktree" && selectedModels.length === 0) {
-      setWorkspaceError("Select at least one model to run in a worktree.");
+      setWorkspaceError(i18n.t("selectModelForWorktree", { ns: "workspaces" }));
       return false;
     }
 
@@ -488,7 +489,7 @@ export function useWorkspaceHome({
             activate: false,
           });
           if (!threadId) {
-            throw new Error("Failed to start a local thread.");
+            throw new Error(i18n.t("failedToStartLocalThread", { ns: "workspaces" }));
           }
           seedThreadCodexParams?.(activeWorkspace.id, threadId, {
             modelId: selectedModelId,
@@ -511,7 +512,7 @@ export function useWorkspaceHome({
             workspaceId: activeWorkspace.id,
             threadId,
             modelId: selectedModelId ?? null,
-            modelLabel: resolveModelLabel(model, "Default model"),
+            modelLabel: resolveModelLabel(model, i18n.t("defaultModel", { ns: "workspaces" })),
             sequence: 1,
           });
         } catch (error) {
@@ -541,7 +542,7 @@ export function useWorkspaceHome({
                 { activate: false },
               );
               if (!worktreeWorkspace) {
-                throw new Error("Failed to create worktree.");
+                throw new Error(i18n.t("failedToCreateWorktree", { ns: "workspaces" }));
               }
               if (!worktreeWorkspace.connected) {
                 await connectWorkspace(worktreeWorkspace);
@@ -555,7 +556,7 @@ export function useWorkspaceHome({
                 activate: false,
               });
               if (!threadId) {
-                throw new Error("Failed to start a worktree thread.");
+                throw new Error(i18n.t("failedToStartWorktreeThread", { ns: "workspaces" }));
               }
               seedThreadCodexParams?.(worktreeWorkspace.id, threadId, {
                 modelId: selection.modelId,
@@ -591,7 +592,7 @@ export function useWorkspaceHome({
           }
         }
         if (failureCount > 0) {
-          runError = `Started ${instances.length}/${totalInstanceCount} runs. ${failureCount} failed.`;
+          runError = i18n.t("startedRunsSummary", { ns: "workspaces", started: instances.length, total: totalInstanceCount, failed: failureCount });
         }
       }
     } catch (error) {
@@ -600,7 +601,7 @@ export function useWorkspaceHome({
     } finally {
       let status: WorkspaceHomeRun["status"] = "ready";
       if (instances.length === 0) {
-        runError ??= "Failed to start any instances.";
+        runError ??= i18n.t("failedToStartInstances", { ns: "workspaces" });
         status = "failed";
       } else if (runError) {
         status = "partial";

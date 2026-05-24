@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { formatRelativeTime } from "../../../utils/time";
 import {
   getWorkspaceHomeThreadState,
@@ -80,15 +81,16 @@ export function WorkspaceHomeHistory({
   threadStatusById,
   onSelectInstance,
 }: WorkspaceHomeHistoryProps) {
+  const { t } = useTranslation("workspaces");
   return (
     <>
       <div className="workspace-home-runs">
         <div className="workspace-home-section-header">
-          <div className="workspace-home-section-title">Recent runs</div>
+          <div className="workspace-home-section-title">{t("recentRuns")}</div>
         </div>
         {runs.length === 0 ? (
           <div className="workspace-home-empty">
-            Start a run to see its instances tracked here.
+            {t("startRunToSeeInstances")}
           </div>
         ) : (
           <div className="workspace-home-run-grid">

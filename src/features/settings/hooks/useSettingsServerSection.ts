@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import i18n from "@/locales/i18n";
 import type {
   AppSettings,
   TailscaleDaemonCommandPreview,
@@ -96,7 +97,7 @@ const createRemoteBackendId = () =>
 
 const buildFallbackRemoteBackend = (settings: AppSettings): RemoteBackendTarget => ({
   id: settings.activeRemoteBackendId ?? "remote-default",
-  name: "Primary remote",
+  name: i18n.t("server.primaryRemoteName", { ns: "settings" }),
   provider: "tcp",
   host: settings.remoteBackendHost,
   token: settings.remoteBackendToken,
@@ -118,15 +119,15 @@ const getActiveRemoteBackend = (settings: AppSettings): RemoteBackendTarget => {
 const validateRemoteHost = (value: string): string | null => {
   const trimmed = value.trim();
   if (!trimmed) {
-    return "Host is required.";
+    return i18n.t("server.hostRequired", { ns: "settings" });
   }
   const match = trimmed.match(/^([^:\s]+|\[[^\]]+\]):([0-9]{1,5})$/);
   if (!match) {
-    return "Use host:port (for example `macbook.tailnet.ts.net:4732`).";
+    return i18n.t("server.hostFormat", { ns: "settings" });
   }
   const port = Number(match[2]);
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
-    return "Port must be between 1 and 65535.";
+    return i18n.t("server.portRange", { ns: "settings" });
   }
   return null;
 };
@@ -134,7 +135,7 @@ const validateRemoteHost = (value: string): string | null => {
 const buildNextRemoteName = (remoteBackends: RemoteBackendTarget[]) => {
   const normalized = new Set(remoteBackends.map((entry) => entry.name.trim().toLowerCase()));
   let index = remoteBackends.length + 1;
-  let candidate = `Remote ${index}`;
+  let candidate = i18n.t("server.remoteFallbackName", { ns: "settings", index });
   while (normalized.has(candidate.toLowerCase())) {
     index += 1;
     candidate = `Remote ${index}`;
@@ -196,7 +197,7 @@ export const useSettingsServerSection = ({
     index: number,
   ): RemoteBackendTarget => ({
     id: entry.id?.trim() || `remote-${index + 1}`,
-    name: entry.name?.trim() || `Remote ${index + 1}`,
+    name: entry.name?.trim() || i18n.t("server.remoteFallbackName", { ns: "settings", index: index + 1 }),
     provider: "tcp",
     host: entry.host?.trim() || DEFAULT_REMOTE_HOST,
     token: entry.token?.trim() ? entry.token.trim() : null,
@@ -289,7 +290,7 @@ export const useSettingsServerSection = ({
     setRemoteHostError(null);
     setRemoteHostDraft(normalizedHost);
     await updateActiveRemoteBackend({ host: normalizedHost });
-    setRemoteStatus("Remote host saved.");
+    setRemoteStatus(i18n.t("server.remoteHostSaved", { ns: "settings" }));
     return true;
   };
 
@@ -298,7 +299,7 @@ export const useSettingsServerSection = ({
     const active = getActiveRemoteBackend(latestSettings);
     const nextName = remoteNameDraft.trim();
     if (!nextName) {
-      const message = "Name is required.";
+      const message = i18n.t("server.nameRequired", { ns: "settings" });
       setRemoteNameError(message);
       setRemoteStatus(message, true);
       return;
@@ -307,7 +308,7 @@ export const useSettingsServerSection = ({
       (entry) => entry.id !== active.id && entry.name.trim().toLowerCase() === nextName.toLowerCase(),
     );
     if (duplicate) {
-      const message = `A remote named "${nextName}" already exists.`;
+      const message = i18n.t("server.duplicateName", { ns: "settings", name: nextName });
       setRemoteNameError(message);
       setRemoteStatus(message, true);
       return;
@@ -315,7 +316,7 @@ export const useSettingsServerSection = ({
     setRemoteNameError(null);
     setRemoteNameDraft(nextName);
     await updateActiveRemoteBackend({ name: nextName });
-    setRemoteStatus(`Saved remote name "${nextName}".`);
+    setRemoteStatus(i18n.t("server.savedRemoteName", { ns: "settings", name: nextName }));
   };
 
   const handleCommitRemoteHost = async () => {
@@ -326,7 +327,7 @@ export const useSettingsServerSection = ({
     const nextToken = remoteTokenDraft.trim() ? remoteTokenDraft.trim() : null;
     setRemoteTokenDraft(nextToken ?? "");
     await updateActiveRemoteBackend({ token: nextToken });
-    setRemoteStatus("Remote token saved.");
+    setRemoteStatus(i18n.t("server.remoteTokenSaved", { ns: "settings" }));
   };
 
   const handleSelectRemoteBackend = async (id: string) => {
@@ -337,7 +338,7 @@ export const useSettingsServerSection = ({
       return;
     }
     await persistRemoteBackends(candidates, id);
-    setRemoteStatus(`Active remote set to "${selected.name}".`);
+    setRemoteStatus(i18n.t("server.activeRemoteSet", { ns: "settings", name: selected.name }));
   };
 
   const handleAddRemoteBackend = async (draft: AddRemoteBackendDraft) => {
@@ -345,7 +346,7 @@ export const useSettingsServerSection = ({
     const existingBackends = getConfiguredRemoteBackends(latestSettings);
     const nextName = draft.name.trim();
     if (!nextName) {
-      const message = "Name is required.";
+      const message = i18n.t("server.nameRequired", { ns: "settings" });
       setRemoteStatus(message, true);
       throw new Error(message);
     }
@@ -353,7 +354,7 @@ export const useSettingsServerSection = ({
       (entry) => entry.name.trim().toLowerCase() === nextName.toLowerCase(),
     );
     if (duplicate) {
-      const message = `A remote named "${nextName}" already exists.`;
+      const message = i18n.t("server.duplicateName", { ns: "settings", name: nextName });
       setRemoteStatus(message, true);
       throw new Error(message);
     }
@@ -365,7 +366,7 @@ export const useSettingsServerSection = ({
     }
     const nextToken = draft.token.trim() ? draft.token.trim() : null;
     if (!nextToken) {
-      const message = "Remote backend token is required.";
+      const message = i18n.t("server.tokenMissing", { ns: "settings" });
       setRemoteStatus(message, true);
       throw new Error(message);
     }
@@ -396,7 +397,7 @@ export const useSettingsServerSection = ({
 
       const workspaces = await listWorkspaces();
       const workspaceCount = workspaces.length;
-      const workspaceWord = workspaceCount === 1 ? "workspace" : "workspaces";
+      const workspaceWord = workspaceCount === 1 ? i18n.t("workspace", { ns: "workspaces" }) : i18n.t("workspaces", { ns: "workspaces", count: workspaceCount });
       const connectedBackends = candidateBackends.map((entry) =>
         entry.id === nextId ? { ...entry, lastConnectedAtMs: Date.now() } : entry,
       );
@@ -408,7 +409,7 @@ export const useSettingsServerSection = ({
       await onUpdateAppSettings(connectedSettings);
       latestSettingsRef.current = connectedSettings;
       setRemoteStatus(
-        `Added "${nextName}" and connected. ${workspaceCount} ${workspaceWord} reachable on the remote backend.`,
+        i18n.t("server.addedConnected", { ns: "settings", name: nextName, count: workspaceCount, word: workspaceWord }),
       );
       await onMobileConnectSuccess?.();
     } catch (error) {
@@ -420,7 +421,7 @@ export const useSettingsServerSection = ({
           // Keep the original connection error surfaced below.
         }
       }
-      const message = formatErrorMessage(error, "Unable to connect to the new remote backend.");
+      const message = i18n.t("server.unableToConnectNew", { ns: "settings" });
       setRemoteStatus(message, true);
       throw new Error(message);
     }
@@ -453,14 +454,14 @@ export const useSettingsServerSection = ({
     nextBackends[index] = nextBackends[targetIndex];
     nextBackends[targetIndex] = entry;
     await persistRemoteBackends(nextBackends);
-    setRemoteStatus(`Moved "${entry.name}" ${direction}.`);
+    setRemoteStatus(i18n.t("server.movedRemote", { ns: "settings", name: entry.name, direction }));
   };
 
   const handleDeleteRemoteBackend = async (id: string) => {
     const latestSettings = latestSettingsRef.current;
     const existingBackends = getConfiguredRemoteBackends(latestSettings);
     if (existingBackends.length <= 1) {
-      setRemoteStatus("You need at least one remote.", true);
+      setRemoteStatus(i18n.t("server.needsOneRemote", { ns: "settings" }), true);
       return;
     }
     const index = existingBackends.findIndex((entry) => entry.id === id);
@@ -474,7 +475,7 @@ export const useSettingsServerSection = ({
         ? remaining[Math.min(index, remaining.length - 1)]?.id ?? remaining[0]?.id ?? null
         : latestSettings.activeRemoteBackendId;
     await persistRemoteBackends(remaining, nextActiveId);
-    setRemoteStatus(`Deleted "${removed.name}".`);
+    setRemoteStatus(i18n.t("server.deletedRemote", { ns: "settings", name: removed.name }));
   };
 
   const handleMobileConnectTest = () => {
@@ -484,7 +485,7 @@ export const useSettingsServerSection = ({
 
       if (!nextToken) {
         setMobileConnectStatusError(true);
-        setMobileConnectStatusText("Remote backend token is required.");
+        setMobileConnectStatusText(i18n.t("server.tokenMissing", { ns: "settings" }));
         return;
       }
 
@@ -509,20 +510,20 @@ export const useSettingsServerSection = ({
 
         const workspaces = await listWorkspaces();
         const workspaceCount = workspaces.length;
-        const workspaceWord = workspaceCount === 1 ? "workspace" : "workspaces";
+        const workspaceWord = workspaceCount === 1 ? i18n.t("workspace", { ns: "workspaces" }) : i18n.t("workspaces", { ns: "workspaces", count: workspaceCount });
         try {
           await updateActiveRemoteBackend({ lastConnectedAtMs: Date.now() });
         } catch {
           // Keep successful connectivity outcome even if timestamp persistence fails.
         }
         setMobileConnectStatusText(
-          `Connected. ${workspaceCount} ${workspaceWord} reachable on the remote backend.`,
+          i18n.t("server.connectedRemote", { ns: "settings", count: workspaceCount, word: workspaceWord }),
         );
         await onMobileConnectSuccess?.();
       } catch (error) {
         setMobileConnectStatusError(true);
         setMobileConnectStatusText(
-          error instanceof Error ? error.message : "Unable to connect to remote backend.",
+          error instanceof Error ? error.message : i18n.t("server.unableToConnectRemote", { ns: "settings" }),
         );
       } finally {
         setMobileConnectBusy(false);
@@ -547,7 +548,7 @@ export const useSettingsServerSection = ({
         setTailscaleStatus(status);
       } catch (error) {
         setTailscaleStatusError(
-          formatErrorMessage(error, "Unable to load Tailscale status."),
+          formatErrorMessage(error, i18n.t("server.unableToLoadTailscale", { ns: "settings" })),
         );
       } finally {
         setTailscaleStatusBusy(false);
@@ -564,7 +565,7 @@ export const useSettingsServerSection = ({
         setTailscaleCommandPreview(preview);
       } catch (error) {
         setTailscaleCommandError(
-          formatErrorMessage(error, "Unable to build Tailscale daemon command."),
+          formatErrorMessage(error, i18n.t("server.unableToBuildTailscale", { ns: "settings" })),
         );
       } finally {
         setTailscaleCommandBusy(false);
@@ -595,7 +596,7 @@ export const useSettingsServerSection = ({
             ? error.message
             : typeof error === "string"
               ? error
-              : "Unable to update mobile access daemon status.";
+              : i18n.t("server.unableToUpdateDaemon", { ns: "settings" });
         setTcpDaemonStatus((prev) => ({
           state: "error",
           pid: null,

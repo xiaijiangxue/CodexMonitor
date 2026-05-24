@@ -1,4 +1,5 @@
 import type { ThreadSummary } from "@/types";
+import i18n from "@/locales/i18n";
 import type { ThreadAction, ThreadState } from "../useThreadsReducer";
 import { prefersUpdatedSort } from "./common";
 
@@ -57,7 +58,7 @@ export function reduceThreadLifecycle(
       }
       const thread: ThreadSummary = {
         id: action.threadId,
-        name: "New Agent",
+        name: i18n.t("newAgent", { ns: "threads" }),
         updatedAt: 0,
       };
       return {

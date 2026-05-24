@@ -1,5 +1,7 @@
 type PlatformKind = "mac" | "windows" | "linux" | "unknown";
 
+import i18n from "../locales/i18n";
+
 function platformKind(): PlatformKind {
   if (typeof navigator === "undefined") {
     return "unknown";
@@ -64,27 +66,27 @@ export function isMobilePlatform(): boolean {
 export function fileManagerName(): string {
   const platform = platformKind();
   if (platform === "mac") {
-    return "Finder";
+    return i18n.t("finder", { ns: "app" });
   }
   if (platform === "windows") {
-    return "Explorer";
+    return i18n.t("explorer", { ns: "app" });
   }
-  return "File Manager";
+  return i18n.t("fileManager", { ns: "app" });
 }
 
 export function revealInFileManagerLabel(): string {
   const platform = platformKind();
   if (platform === "mac") {
-    return "Reveal in Finder";
+    return i18n.t("revealInFinder", { ns: "app" });
   }
   if (platform === "windows") {
-    return "Show in Explorer";
+    return i18n.t("showInExplorer", { ns: "app" });
   }
-  return "Reveal in File Manager";
+  return i18n.t("revealInFileManager", { ns: "app" });
 }
 
 export function openInFileManagerLabel(): string {
-  return `Open in ${fileManagerName()}`;
+  return i18n.t("openInFileManager", { ns: "app", name: fileManagerName() });
 }
 
 function looksLikeWindowsAbsolutePath(value: string): boolean {

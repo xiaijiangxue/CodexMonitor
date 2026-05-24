@@ -1,3 +1,4 @@
+import i18n from "@/locales/i18n";
 export const STORAGE_KEY_PENDING_POST_UPDATE_VERSION =
   "codexmonitor.pendingPostUpdateVersion";
 const GITHUB_RELEASES_API_BASE =
@@ -85,7 +86,7 @@ export async function fetchReleaseNotesForVersion(
 ): Promise<PostUpdateReleaseInfo> {
   const normalized = normalizeStoredVersion(version);
   if (!normalized) {
-    throw new Error("Invalid release version.");
+    throw new Error(i18n.t("invalidReleaseVersion", { ns: "app" }));
   }
 
   const candidates = [`v${normalized}`, normalized];
@@ -106,7 +107,7 @@ export async function fetchReleaseNotesForVersion(
       continue;
     }
     if (!response.ok) {
-      throw new Error(`GitHub releases request failed (${response.status}).`);
+      throw new Error(i18n.t("githubReleaseRequestFailed", { status: response.status, ns: "app" }));
     }
     const payload = (await response.json()) as GitHubReleaseResponse;
     const body = payload.body?.trim() ? payload.body : null;
@@ -125,5 +126,5 @@ export async function fetchReleaseNotesForVersion(
     };
   }
 
-  throw new Error(`Could not find GitHub release for version ${normalized}.`);
+  throw new Error(i18n.t("couldNotFindRelease", { version: normalized, ns: "app" }));
 }

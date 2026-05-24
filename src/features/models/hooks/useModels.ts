@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { DebugEntry, ModelOption, WorkspaceInfo } from "../../../types";
 import { getConfigModel, getModelList } from "../../../services/tauri";
 import {
@@ -13,8 +14,6 @@ type UseModelsOptions = {
   preferredEffort?: string | null;
   selectionKey?: string | null;
 };
-
-const CONFIG_MODEL_DESCRIPTION = "Configured in CODEX_HOME/config.toml";
 
 const findModelByIdOrModel = (
   models: ModelOption[],
@@ -43,6 +42,7 @@ export function useModels({
   preferredEffort = null,
   selectionKey = null,
 }: UseModelsOptions) {
+  const { t } = useTranslation("models");
   const [models, setModels] = useState<ModelOption[]>([]);
   const [configModel, setConfigModel] = useState<string | null>(null);
   const [selectedModelId, setSelectedModelIdState] = useState<string | null>(null);
@@ -216,8 +216,8 @@ export function useModels({
         const configOption: ModelOption = {
           id: configModelFromConfig,
           model: configModelFromConfig,
-          displayName: `${configModelFromConfig} (config)`,
-          description: CONFIG_MODEL_DESCRIPTION,
+          displayName: t("configLabel", { name: configModelFromConfig }),
+          description: t("configDescription"),
           supportedReasoningEfforts: [],
           defaultReasoningEffort: null,
           isDefault: false,
@@ -261,6 +261,7 @@ export function useModels({
     selectedEffort,
     selectedModelId,
     resolveEffort,
+    t,
     workspaceId,
   ]);
 

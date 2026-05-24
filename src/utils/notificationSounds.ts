@@ -1,4 +1,5 @@
 import type { DebugEntry } from "../types";
+import i18n from "@/locales/i18n";
 
 type DebugLogger = (entry: DebugEntry) => void;
 
@@ -29,7 +30,7 @@ function getAudioContext(): AudioContext {
 
   const AudioContextImpl = resolveAudioContextConstructor();
   if (!AudioContextImpl) {
-    throw new Error("Web Audio API is not available in this environment");
+    throw new Error(i18n.t("webAudioApiUnavailable", { ns: "app" }));
   }
 
   audioContext = new AudioContextImpl();

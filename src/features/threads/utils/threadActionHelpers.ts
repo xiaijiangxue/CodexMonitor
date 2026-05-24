@@ -1,3 +1,4 @@
+import i18n from "@/locales/i18n";
 import type {
   ConversationItem,
   ThreadListSortKey,
@@ -177,7 +178,7 @@ export function buildResumeHydrationPlan({
   const preview = asString(thread.preview ?? "");
   const customName = getCustomName(workspaceId, threadId);
   const threadName =
-    !customName && preview ? previewThreadName(preview, "New Agent") : null;
+    !customName && preview ? previewThreadName(preview, i18n.t("newAgent", { ns: "threads" })) : null;
   const lastAgentMessage = [...mergedItems]
     .reverse()
     .find(

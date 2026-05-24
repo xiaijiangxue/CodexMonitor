@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ask } from "@tauri-apps/plugin-dialog";
+import i18n from "@/locales/i18n";
 import {
   applyWorktreeChanges as applyWorktreeChangesService,
   createGitHubRepo as createGitHubRepoService,
@@ -138,8 +139,8 @@ export function useGitActions({
       return;
     }
     const confirmed = await ask(
-      "Revert all changes in this repo?\n\nThis will discard all staged and unstaged changes, including untracked files.",
-      { title: "Revert all changes", kind: "warning" },
+      i18n.t("git:revertAllConfirm"),
+      { title: i18n.t("git:revertAllTitle"), kind: "warning" },
     );
     if (!confirmed) {
       return;
@@ -207,14 +208,13 @@ export function useGitActions({
 
       if (response.status === "needs_confirmation") {
         const entryCount = response.entryCount ?? 0;
-        const plural = entryCount === 1 ? "" : "s";
         const confirmed = await ask(
-          `Initialize Git in this folder?\n\nThis will create a .git directory, set the initial branch to "${branch}", and create an initial commit.\n\nThis folder contains ${entryCount} existing item${plural}.`,
+          i18n.t("git:initGitConfirm", { branch, count: entryCount }),
           {
-            title: "Initialize Git",
+            title: i18n.t("git:initializeGitTitle"),
             kind: "warning",
-            okLabel: "Initialize",
-            cancelLabel: "Cancel",
+            okLabel: i18n.t("git:initialize"),
+            cancelLabel: i18n.t("git:cancel"),
           },
         );
         if (!confirmed) {
@@ -241,9 +241,7 @@ export function useGitActions({
 
       if (commitError) {
         onError?.(
-          new Error(
-            `Git was initialized, but the initial commit failed.\n\n${commitError}\n\nYou may need to set git user.name and user.email, then commit manually.`,
-          ),
+          new Error(i18n.t("git:initFailedCommit", { error: commitError })),
         );
       }
     } catch (error) {
@@ -268,7 +266,7 @@ export function useGitActions({
       branch: string,
     ): Promise<{ ok: true } | { ok: false; error: string }> => {
       if (!workspaceId) {
-        return { ok: false, error: "No active workspace." };
+        return { ok: false, error: i18n.t("git:noActiveWorkspace") };
       }
 
       const actionWorkspaceId = workspaceId;
@@ -281,7 +279,7 @@ export function useGitActions({
           branch,
         );
         if (workspaceIdRef.current !== actionWorkspaceId) {
-          return { ok: false, error: "Workspace changed." };
+          return { ok: false, error: i18n.t("git:workspaceChanged") };
         }
 
         if (response.status === "ok") {
@@ -292,17 +290,17 @@ export function useGitActions({
         const defaultBranchError = response.defaultBranchError?.trim() ?? "";
         const parts = [];
         if (pushError) {
-          parts.push(`Push failed:\n${pushError}`);
+          parts.push(i18n.t("git:pushFailed", { error: pushError }));
         }
         if (defaultBranchError) {
-          parts.push(`Failed to set default branch:\n${defaultBranchError}`);
+          parts.push(i18n.t("git:failedDefaultBranch", { error: defaultBranchError }));
         }
         const errorMessage =
-          parts.length > 0 ? parts.join("\n\n") : "Remote repo was created, but setup was incomplete.";
+          parts.length > 0 ? parts.join("\n\n") : i18n.t("git:remoteSetupIncomplete");
         return { ok: false, error: errorMessage };
       } catch (error) {
         if (workspaceIdRef.current !== actionWorkspaceId) {
-          return { ok: false, error: "Workspace changed." };
+          return { ok: false, error: i18n.t("git:workspaceChanged") };
         }
         return {
           ok: false,

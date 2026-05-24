@@ -1,4 +1,5 @@
 import { useEffect, useRef, type MouseEvent, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { MainTopbar } from "../../app/components/MainTopbar";
 import { ChatPane } from "./ChatPane";
 
@@ -109,6 +110,7 @@ export function DesktopLayout({
 }: DesktopLayoutProps) {
   const diffLayerRef = useRef<HTMLDivElement | null>(null);
   const chatLayerRef = useRef<HTMLDivElement | null>(null);
+  const { t } = useTranslation("layout");
   const chatPaneNode = <ChatPane messagesNode={messagesNode} composerNode={composerNode} />;
   const diffLayerActive = isActiveLayer(centerMode, "diff");
   const chatLayerActive = isActiveLayer(centerMode, "chat");
@@ -146,7 +148,7 @@ export function DesktopLayout({
         className="sidebar-resizer"
         role="separator"
         aria-orientation="vertical"
-        aria-label="Resize sidebar"
+        aria-label={t("sidebar.resizeSidebar")}
         onMouseDown={onSidebarResizeStart}
       />
 
@@ -176,7 +178,7 @@ export function DesktopLayout({
                     className="content-split-resizer"
                     role="separator"
                     aria-orientation="vertical"
-                    aria-label="Resize chat/diff split"
+                    aria-label={t("sidebar.resizeChatDiffSplit")}
                     onMouseDown={onChatDiffSplitPositionResizeStart}
                   />
                   <div
@@ -222,7 +224,7 @@ export function DesktopLayout({
               className="right-panel-resizer"
               role="separator"
               aria-orientation="vertical"
-              aria-label="Resize right panel"
+              aria-label={t("sidebar.resizeRightPanel")}
               onMouseDown={onRightPanelResizeStart}
             />
             <div className={`right-panel ${hasActivePlan ? "" : "plan-collapsed"}`}>
@@ -232,7 +234,7 @@ export function DesktopLayout({
                 className="right-panel-divider"
                 role="separator"
                 aria-orientation="horizontal"
-                aria-label="Resize plan panel"
+                aria-label={t("sidebar.resizePlanPanel")}
                 onMouseDown={onPlanPanelResizeStart}
               />
               <div className="right-panel-bottom">{planPanelNode}</div>

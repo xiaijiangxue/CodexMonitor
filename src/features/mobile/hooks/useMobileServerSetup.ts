@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import i18n from "@/locales/i18n";
 import { listWorkspaces } from "../../../services/tauri";
 import type { AppSettings } from "../../../types";
 import { isMobilePlatform } from "../../../utils/platformPaths";
@@ -23,7 +24,7 @@ function isRemoteServerConfigured(settings: AppSettings): boolean {
 }
 
 function defaultMobileSetupMessage(): string {
-  return "Enter your desktop Tailscale host and token, then run Connect & test.";
+  return i18n.t("mobileConnectDefaultMessage", { ns: "app" });
 }
 
 function markActiveRemoteBackendConnected(settings: AppSettings, connectedAtMs: number): AppSettings {
@@ -33,7 +34,7 @@ function markActiveRemoteBackendConnected(settings: AppSettings, connectedAtMs: 
       : [
           {
             id: settings.activeRemoteBackendId ?? "remote-default",
-            name: "Primary remote",
+            name: i18n.t("primaryRemote", { ns: "app" }),
             provider: "tcp" as const,
             host: settings.remoteBackendHost,
             token: settings.remoteBackendToken,
@@ -105,15 +106,14 @@ export function useMobileServerSetup({
         setStatusError(false);
         if (options?.announceSuccess) {
           const count = entries.length;
-          const workspaceWord = count === 1 ? "workspace" : "workspaces";
-          setStatusMessage(`Connected. ${count} ${workspaceWord} available from your desktop backend.`);
+          setStatusMessage(i18n.t("connectedCount", { count, ns: "app" }));
         } else {
           setStatusMessage(null);
         }
         return true;
       } catch (error) {
         const message =
-          error instanceof Error ? error.message : "Unable to reach remote backend.";
+          error instanceof Error ? error.message : i18n.t("unableToReachBackend", { ns: "app" });
         setMobileServerReady(false);
         setStatusError(true);
         setStatusMessage(message);
@@ -157,7 +157,7 @@ export function useMobileServerSetup({
         }
       } catch (error) {
         const message =
-          error instanceof Error ? error.message : "Unable to save remote backend settings.";
+          error instanceof Error ? error.message : i18n.t("unableToSaveSettings", { ns: "app" });
         setMobileServerReady(false);
         setStatusError(true);
         setStatusMessage(message);
@@ -193,7 +193,7 @@ export function useMobileServerSetup({
     void (async () => {
       const ok = await runConnectivityCheck();
       if (active && !ok) {
-        setStatusMessage((previous) => previous ?? "Unable to connect to remote backend.");
+        setStatusMessage((previous) => previous ?? i18n.t("unableToConnectBackend", { ns: "app" }));
       }
       if (active) {
         setChecking(false);

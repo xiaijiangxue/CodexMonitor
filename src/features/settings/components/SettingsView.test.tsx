@@ -11,6 +11,7 @@ import {
 import type { ComponentProps } from "react";
 import { describe, expect, it, vi } from "vitest";
 import type { AppSettings, WorkspaceInfo } from "@/types";
+import i18n from "@/locales/i18n";
 import {
   connectWorkspace,
   getAppBuildType,
@@ -1711,8 +1712,65 @@ describe("SettingsView Features", () => {
       appSettings: { steerEnabled: true },
     });
 
-    await screen.findByText("Background terminal");
+    await screen.findByText("Unified Exec");
     expect(screen.queryByText("Steer mode")).toBeNull();
+  });
+
+  it("translates camelCase feature names", async () => {
+    renderFeaturesSection({
+      experimentalFeaturesResponse: {
+        data: [
+          {
+            name: "preventSleepWhileRunning",
+            stage: "stable",
+            enabled: true,
+            defaultEnabled: true,
+            displayName: null,
+            description: null,
+            announcement: null,
+          },
+        ],
+        nextCursor: null,
+      },
+    });
+
+    await screen.findByText("Prevent Sleep While Running");
+    await screen.findByText(
+      "Keep your computer awake while Codex is running a thread.",
+    );
+  });
+
+  it("translates prevent sleep feature by label fallback", async () => {
+    const previousLanguage = i18n.language;
+    await act(async () => {
+      await i18n.changeLanguage("zh-CN");
+    });
+    try {
+      renderFeaturesSection({
+        experimentalFeaturesResponse: {
+          data: [
+            {
+              name: "some_unexpected_feature_key",
+              stage: "stable",
+              enabled: true,
+              defaultEnabled: true,
+              displayName: "Prevent sleep while running",
+              description:
+                "Keep your computer awake while Codex is running a thread.",
+              announcement: null,
+            },
+          ],
+          nextCursor: null,
+        },
+      });
+
+      await screen.findByText("运行时防休眠");
+      await screen.findByText("在 Codex 运行线程时保持计算机唤醒状态。");
+    } finally {
+      await act(async () => {
+        await i18n.changeLanguage(previousLanguage);
+      });
+    }
   });
 
   it("hides steer mode when returned as an experimental feature", async () => {
@@ -1756,7 +1814,7 @@ describe("SettingsView Features", () => {
       appSettings: { unifiedExecEnabled: true },
     });
 
-    const terminalTitle = await screen.findByText("Background terminal");
+    const terminalTitle = await screen.findByText("Unified Exec");
     const terminalRow = terminalTitle.closest(".settings-toggle-row");
     expect(terminalRow).not.toBeNull();
 

@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import type { AutocompleteItem } from "./useComposerAutocomplete";
 import { useComposerAutocomplete } from "./useComposerAutocomplete";
 import type { AppOption, CustomPromptOption } from "../../../types";
@@ -84,6 +85,7 @@ export function useComposerAutocompleteState({
   setSelectionStart,
   onItemApplied,
 }: UseComposerAutocompleteStateArgs) {
+  const { t } = useTranslation("composer");
   const skillItems = useMemo<AutocompleteItem[]>(
     () => [
       ...skills.map((skill) => ({
@@ -91,7 +93,7 @@ export function useComposerAutocompleteState({
         label: skill.name,
         description: skill.description,
         insertText: skill.name,
-        group: "Skills" as const,
+        group: t("sectionSkills"),
       })),
       ...apps
         .filter((app) => app.isAccessible)
@@ -100,7 +102,7 @@ export function useComposerAutocompleteState({
           label: app.name,
           description: app.description,
           insertText: connectorMentionSlug(app.name),
-          group: "Apps" as const,
+          group: t("sectionApps"),
           mentionPath: `app://${app.id}`,
         })),
     ],
@@ -121,7 +123,7 @@ export function useComposerAutocompleteState({
               id: path,
               label: path,
               insertText: path,
-              group: "Files" as const,
+              group: t("sectionFiles"),
             }));
           })()
         : [],
@@ -141,7 +143,7 @@ export function useComposerAutocompleteState({
             hint: getPromptArgumentHint(prompt),
             insertText: insert.text,
             cursorOffset: insert.cursorOffset,
-            group: "Prompts" as const,
+            group: t("sectionPrompts"),
           };
         }),
     [prompts],
@@ -152,71 +154,71 @@ export function useComposerAutocompleteState({
       {
         id: "compact",
         label: "compact",
-        description: "compact the active thread context",
+        description: t("slashCompact"),
         insertText: "compact",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "fast",
         label: "fast",
-        description: "toggle Fast mode for upcoming turns",
+        description: t("slashFast"),
         insertText: "fast",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "fork",
         label: "fork",
-        description: "branch into a new thread",
+        description: t("slashFork"),
         insertText: "fork",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "mcp",
         label: "mcp",
-        description: "list configured MCP tools",
+        description: t("slashMcp"),
         insertText: "mcp",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "new",
         label: "new",
-        description: "start a new chat",
+        description: t("slashNew"),
         insertText: "new",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "review",
         label: "review",
-        description: "start a code review",
+        description: t("slashReview"),
         insertText: "review",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "resume",
         label: "resume",
-        description: "refresh the active thread",
+        description: t("slashResume"),
         insertText: "resume",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
       {
         id: "status",
         label: "status",
-        description: "show session status",
+        description: t("slashStatus"),
         insertText: "status",
-        group: "Slash",
+        group: t("sectionSlash"),
       },
     ];
     if (appsEnabled) {
       commands.push({
         id: "apps",
         label: "apps",
-        description: "list available apps",
+        description: t("slashApps"),
         insertText: "apps",
-        group: "Slash",
+        group: t("sectionSlash"),
       });
     }
     return commands.sort((a, b) => a.label.localeCompare(b.label));
-  }, [appsEnabled]);
+  }, [appsEnabled, t]);
 
   const slashItems = useMemo<AutocompleteItem[]>(
     () => [...slashCommandItems, ...promptItems],
