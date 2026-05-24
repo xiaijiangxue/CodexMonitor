@@ -9,13 +9,56 @@ import {
 import type { SettingsFeaturesSectionProps } from "@settings/hooks/useSettingsFeaturesSection";
 import { fileManagerName, openInFileManagerLabel } from "@utils/platformPaths";
 
+function featureNameToKeyParts(name: string): string[] {
+  return name
+    .replace(/[_-]+/g, " ")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .split(/\s+/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => part.toLowerCase());
+}
+
+function normalizeFeatureText(value: string | null | undefined): string {
+  return value?.trim().toLowerCase() ?? "";
+}
+
+function translatePreventSleepFeature(
+  feature: CodexFeature,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): { title: string; subtitle: string } | null {
+  const title = normalizeFeatureText(feature.displayName);
+  const subtitle = normalizeFeatureText(feature.description);
+  const announcement = normalizeFeatureText(feature.announcement);
+  const name = normalizeFeatureText(feature.name);
+  const titleAliases = new Set([
+    "prevent sleep while running",
+    "preventsleepwhilerunning",
+  ]);
+  const subtitleAliases = new Set([
+    "keep your computer awake while codex is running a thread.",
+  ]);
+  if (
+    titleAliases.has(title) ||
+    titleAliases.has(name) ||
+    subtitleAliases.has(subtitle) ||
+    subtitleAliases.has(announcement)
+  ) {
+    return {
+      title: t("features.titlePreventSleepWhileRunning"),
+      subtitle: t("features.descPreventSleepWhileRunning"),
+    };
+  }
+  return null;
+}
+
 function featureNameToDescKey(name: string): string {
-  const parts = name.split("_").filter(Boolean);
+  const parts = featureNameToKeyParts(name);
   return `features.desc${parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("")}`;
 }
 
 function featureNameToTitleKey(name: string): string {
-  const parts = name.split("_").filter(Boolean);
+  const parts = featureNameToKeyParts(name);
   return `features.title${parts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("")}`;
 }
 
@@ -23,6 +66,15 @@ function featureSubtitle(
   feature: CodexFeature,
   t: (key: string, options?: Record<string, unknown>) => string,
 ): string {
+  const specialCase = translatePreventSleepFeature(feature, t);
+  if (specialCase) {
+    return specialCase.subtitle;
+  }
+  const descKey = featureNameToDescKey(feature.name);
+  const translatedDesc = t(descKey);
+  if (translatedDesc !== descKey) {
+    return translatedDesc;
+  }
   if (feature.description?.trim()) {
     return feature.description;
   }
@@ -35,12 +87,6 @@ function featureSubtitle(
   if (feature.stage === "removed") {
     return t("features.featureRemoved");
   }
-  const descKey = featureNameToDescKey(feature.name);
-  const translated = t(descKey);
-  // i18next returns the key string itself when no translation is found
-  if (translated !== descKey) {
-    return translated;
-  }
   return t("features.featureKey", { name: feature.name });
 }
 
@@ -48,17 +94,23 @@ function formatFeatureLabel(
   feature: CodexFeature,
   t: (key: string, options?: Record<string, unknown>) => string,
 ): string {
+  const specialCase = translatePreventSleepFeature(feature, t);
+  if (specialCase) {
+    return specialCase.title;
+  }
+  const titleKey = featureNameToTitleKey(feature.name);
+  const translatedTitle = t(titleKey);
+  if (translatedTitle !== titleKey) {
+    return translatedTitle;
+  }
   const displayName = feature.displayName?.trim();
   if (displayName) {
     return displayName;
   }
-  const titleKey = featureNameToTitleKey(feature.name);
-  const translated = t(titleKey);
-  if (translated !== titleKey) {
-    return translated;
-  }
   return feature.name
-    .split("_")
+    .replace(/[_-]+/g, " ")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .split(/\s+/)
     .filter((part) => part.length > 0)
     .map((part) => part[0].toUpperCase() + part.slice(1))
     .join(" ");

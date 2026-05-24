@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Codex Monitor",
+    "name": "Codex 监控",
     "tagline": "监控您的 Codex 代理运行状态"
   },
   "common": {

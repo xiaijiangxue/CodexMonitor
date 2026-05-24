@@ -57,7 +57,7 @@ export function Home({
   return (
     <div className="home">
       <div className="home-hero">
-        <div className="home-title">{t("app:common.app.name")}</div>
+        <div className="home-title">{t("common:app.name")}</div>
         <div className="home-subtitle">
           {t("subtitle")}
         </div>
